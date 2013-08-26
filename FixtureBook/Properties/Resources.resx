@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="M_Fixture_Book_GetSheet" xml:space="preserve">
+    <value>シート「{0}」はブック「{1}」に存在しません</value>
+  </data>
+  <data name="M_Fixture_Case_GetArray" xml:space="preserve">
+    <value>{0} に「D.パラメタ」の記述が見つかりません</value>
+  </data>
+  <data name="M_Fixture_Case_GetList" xml:space="preserve">
+    <value>{0} に「D.パラメタ」の記述が見つかりません</value>
+  </data>
+  <data name="M_Fixture_Case_GetObject" xml:space="preserve">
+    <value>{0} に「D.パラメタ」の記述が見つかりません</value>
+  </data>
+  <data name="M_Fixture_Case_GetSection" xml:space="preserve">
+    <value>セクション番号 {0} は間違っています（{1}）</value>
+  </data>
+  <data name="M_Fixture_Case_Validate_Object" xml:space="preserve">
+    <value>{0} に「E.取得データ」の記述が見つかりません</value>
+  </data>
+  <data name="M_Fixture_Case_Validate_Storage" xml:space="preserve">
+    <value>{0} に「F.更新後データ」の記述が見つかりません</value>
+  </data>
+  <data name="M_Fixture_Section_GetTable" xml:space="preserve">
+    <value>テーブル定義「{0}」は「{1}」の中に記述されていません</value>
+  </data>
+  <data name="M_Fixture_Sheet_GetCase" xml:space="preserve">
+    <value>テストケース 「{0}」はシート「{1}」に存在しません</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseConnection_NoConnectionSettings" xml:space="preserve">
+    <value>データベース接続設定がありません。
+App.config ファイルを作成し、以下のように connectionStrings の設定を行ってください。
+-----------------
+App.config 記述例
+-----------------
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
+  &lt;connectionStrings&gt;
+    &lt;clear/&gt;
+    &lt;add name="任意の接続名" providerName="プロバイダ名" connectionString="接続文字列"/&gt;
+  &lt;/connectionStrings&gt;
+&lt;/configuration&gt;</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseConnection_NoSuchName" xml:space="preserve">
+    <value>指定された名前（{0}）のデータベース接続設定がありません。
+App.config ファイルを作成し、以下のように connectionStrings の設定を行ってください。
+-----------------
+App.config 記述例
+-----------------
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
+  &lt;connectionStrings&gt;
+    &lt;clear/&gt;
+    &lt;add name="{0}" providerName="プロバイダ名" connectionString="接続文字列"/&gt;
+  &lt;/connectionStrings&gt;
+&lt;/configuration&gt;</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseOperator_Column_NotFound" xml:space="preserve">
+    <value>DBテーブル「{0}」には「{1}」という名前の列はありません。（{2}）</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseValidator_NotFound" xml:space="preserve">
+    <value>DBテーブル「{0}」には、{2}行目で指定された条件に合致するデータが見つかりません。（{1}、検索条件：{3}）</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseValidator_NotFound_With_Comment" xml:space="preserve">
+    <value>DBテーブル「{0}」には、{2}行目で指定された条件に合致するデータが見つかりません。列名の先頭に * を付けて検索条件を指定することをおすすめします。（{1}、検索条件：{3}）</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseValidator_OneMoreData" xml:space="preserve">
+    <value>DBテーブル「{0}」には、{2}行目で指定された条件に合致するデータが複数件あります。一件になるような検索条件を指定してください（{1}、検索条件：{3}）</value>
+  </data>
+  <data name="M_Fixture_Temp_DatabaseValidator_UnexpectedData" xml:space="preserve">
+    <value>DBテーブル「{0}」には、削除されているはずのデータ（{2}行目）が存在します。（{1}、検索条件：{3}）</value>
+  </data>
+  <data name="M_Fixture_Temp_Database_CreateInsertCommand" xml:space="preserve">
+    <value>DBテーブル「{0}」へのデータ登録に失敗しました。（{1}）</value>
+  </data>
+  <data name="M_Fixture_Temp_Database_DeleteRow" xml:space="preserve">
+    <value>{2}行目のデータを用いたDBテーブル「{0}」の行削除が失敗しました。（{1}）</value>
+  </data>
+  <data name="M_Fixture_Temp_Database_GetMetaData" xml:space="preserve">
+    <value>DBテーブル「{0}」の情報取得に失敗しました。（{1}）</value>
+  </data>
+  <data name="M_Fixture_Temp_Database_InsertRow" xml:space="preserve">
+    <value>{2}行目のデータをDBテーブル「{0}」に登録できませんでした。（{1}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectFactory_ConvertError" xml:space="preserve">
+    <value>{4}行目で列{0}に指定された "{1}" を {2}型に変換できません。（{3}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectFactory_NoSuchProperty" xml:space="preserve">
+    <value>{3}行目のデータの列名「{0}」と同じ名前のプロパティは{1}型に存在しません。（{2}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectFactory_SetProperty" xml:space="preserve">
+    <value>{3}行目の列「{0}」の値 "{4}" を{1} に設定できません。（{2}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectOperator_GetTableName" xml:space="preserve">
+    <value>指定されたオブジェクトからテーブル定義を特定できませんでした。メソッドの引数で明示的にテーブル定義名を指定してください。（{0}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertEquals" xml:space="preserve">
+    <value>{1}行目で列{2}に指定された予想結果は "{3}" ですが、実際の値は "{4}" {5} でした。 （{0}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertLineNumber" xml:space="preserve">
+    <value>テーブル定義「{1}」には{2}行のデータが予想結果として定義されていますが、実際には{3}行でした。（{0}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertNotNull" xml:space="preserve">
+    <value>テーブル定義「{0}」が定義されていますが、実際の値は null でした。（{1}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumber" xml:space="preserve">
+    <value>引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」でした。（{2}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_Exception" xml:space="preserve">
+    <value>指定された例外 {0} が発生しませんでした。</value>
+  </data>
+  <data name="M_Fixture_XlsxFile_Read" xml:space="preserve">
+    <value>シート「{0}」が存在しません。</value>
+  </data>
+  <data name="M_Junk_Config_Get" xml:space="preserve">
+    <value>{0}が設定ファイルの xjc.config セクションにありません。
+-------
+設定例：
+-------
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section name="xjc.config" type="System.Configuration.NameValueFileSectionHandler" /&gt;
+  &lt;/configSections&gt;
+    &lt;xjc.config&gt;
+      ...
+      &lt;add key="{0}" value="設定する値"/&gt;
+      ...
+    &lt;/xjc.config&gt;
+&lt;/configuration&gt;</value>
+  </data>
+</root>

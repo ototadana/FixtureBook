@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7144A023-2F04-47DC-B98C-98E9D0E31EB2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XPFriend</RootNamespace>
+    <AssemblyName>FixtureBook</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\FixtureBook.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FixtureBook.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.VisualStudio.QualityTools.UnitTestFramework\10.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fixture\Cast\DressingRoom.cs" />
+    <Compile Include="Fixture\Cast\Temp\Assertie.cs" />
+    <Compile Include="Fixture\Cast\Temp\Database.cs" />
+    <Compile Include="Fixture\Cast\Temp\DatabaseConnection.cs" />
+    <Compile Include="Fixture\Cast\Temp\DatabaseOperator.cs" />
+    <Compile Include="Fixture\Cast\Temp\DatabaseUpdater.cs" />
+    <Compile Include="Fixture\Cast\Temp\DatabaseValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\DataSetFactory.cs" />
+    <Compile Include="Fixture\Cast\Temp\DataSetValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\DataTableFactory.cs" />
+    <Compile Include="Fixture\Cast\Temp\DataTableValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\DictionaryFactory.cs" />
+    <Compile Include="Fixture\Cast\Temp\DictionaryValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\FileValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\ObjectFactoryBase.cs" />
+    <Compile Include="Fixture\Cast\Temp\ObjectOperatorBase.cs" />
+    <Compile Include="Fixture\Cast\Temp\ObjectValidatorBase.cs" />
+    <Compile Include="Fixture\Cast\Temp\PocoFactory.cs" />
+    <Compile Include="Fixture\Cast\Temp\PocoUtil.cs" />
+    <Compile Include="Fixture\Cast\Temp\PocoValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\TempObjectFactory.cs" />
+    <Compile Include="Fixture\Cast\Temp\TempObjectValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\TypeConverter.cs" />
+    <Compile Include="Fixture\FixtureAttribute.cs" />
+    <Compile Include="Fixture\FixtureBook.cs" />
+    <Compile Include="Fixture\FixtureBookAttribute.cs" />
+    <Compile Include="Fixture\Role\IActor.cs" />
+    <Compile Include="Fixture\Role\IObjectFactory.cs" />
+    <Compile Include="Fixture\Role\IObjectValidator.cs" />
+    <Compile Include="Fixture\Role\IStorageUpdater.cs" />
+    <Compile Include="Fixture\Role\IStorageValidator.cs" />
+    <Compile Include="Fixture\Staff\Author.cs" />
+    <Compile Include="Fixture\Staff\Book.cs" />
+    <Compile Include="Fixture\Staff\Case.cs" />
+    <Compile Include="Fixture\Staff\Column.cs" />
+    <Compile Include="Fixture\Staff\Director.cs" />
+    <Compile Include="Fixture\Staff\Row.cs" />
+    <Compile Include="Fixture\Staff\Section.cs" />
+    <Compile Include="Fixture\Staff\Sheet.cs" />
+    <Compile Include="Fixture\Staff\Table.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\Namespace.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxAuthor.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxCellParser.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxFile.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxSharedStrings.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxStyles.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxUtil.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxWorkbook.cs" />
+    <Compile Include="Fixture\Staff\Xlsx\XlsxWorksheetHandler.cs" />
+    <Compile Include="Fixture\Toolkit\PathUtil.cs" />
+    <Compile Include="Fixture\Toolkit\StackFrameFinder.cs" />
+    <Compile Include="Junk\Classes.cs" />
+    <Compile Include="Junk\Config.cs" />
+    <Compile Include="Junk\ConfigException.cs" />
+    <Compile Include="Junk\Convi.cs" />
+    <Compile Include="Junk\ExceptionHandler.cs" />
+    <Compile Include="Junk\Formi.cs" />
+    <Compile Include="Junk\Loggi.cs" />
+    <Compile Include="Junk\Resi.cs" />
+    <Compile Include="Junk\Strings.cs" />
+    <Compile Include="Junk\Temp\ClassManager.cs" />
+    <Compile Include="Junk\Temp\ConfigManager.cs" />
+    <Compile Include="Junk\Temp\Formatter.cs" />
+    <Compile Include="Junk\Temp\LoggiLogger.cs" />
+    <Compile Include="Junk\Temp\ResourceProvider.cs" />
+    <Compile Include="Junk\Temp\TextConverter.cs" />
+    <Compile Include="Junk\Types.cs" />
+    <Compile Include="Namespace.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FixtureBook.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

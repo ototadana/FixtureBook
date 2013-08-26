@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/ototadana/FixtureBook/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ototadana/FixtureBook</projectUrl>
+    <iconUrl>http://xpfriend.com/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>初版</releaseNotes>
+    <copyright>Copyright 2013 XPFriend Community</copyright>
+    <tags>ユニットテスト 単体テスト フィクスチャ XPFriend fixture unit test testing .xlsx</tags>
+  </metadata>
+</package>

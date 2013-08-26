@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixtureBook", "FixtureBook\FixtureBook.csproj", "{7144A023-2F04-47DC-B98C-98E9D0E31EB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixtureBookTest", "FixtureBookTest\FixtureBookTest.csproj", "{43B162FF-6A57-4DD4-A5CF-BA9B89ED1B90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7144A023-2F04-47DC-B98C-98E9D0E31EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7144A023-2F04-47DC-B98C-98E9D0E31EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7144A023-2F04-47DC-B98C-98E9D0E31EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7144A023-2F04-47DC-B98C-98E9D0E31EB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B162FF-6A57-4DD4-A5CF-BA9B89ED1B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B162FF-6A57-4DD4-A5CF-BA9B89ED1B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B162FF-6A57-4DD4-A5CF-BA9B89ED1B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B162FF-6A57-4DD4-A5CF-BA9B89ED1B90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
