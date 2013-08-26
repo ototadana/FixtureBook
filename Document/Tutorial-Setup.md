@@ -7,10 +7,10 @@
 セットアップは以下の手順で行います。
 
 1.  単体テストプロジェクトを作成する。
-2.  XPFriend.Fixture.xml, XPFriend.Fixture.dll, XPFriend.Junk.dll, Ionic.Zip.dll を任意のフォルダに格納する。
-3.  作成した単体テストプロジェクトで、XPFriend.Fixture.dll に対して参照設定を行う。
-4.  作成した単体テストプロジェクトで、テスト対象のプロジェクトに対して参照設定を行う。
-5.  作成した単体テストプロジェクトの中に App.config を作成し、下記のようにデータベース接続設定を行う。
+2.  作成した単体テストプロジェクトの参照設定で「NuGet パッケージの管理」を行い、
+    [FixtureBook](https://www.nuget.org/packages/FixtureBook/) をインストールする。
+3.  作成した単体テストプロジェクトで、テスト対象のプロジェクトに対して参照設定を行う。
+4.  作成した単体テストプロジェクトの中に App.config を作成し、下記のようにデータベース接続設定を行う。
 
 
 データベース接続設定
@@ -52,4 +52,10 @@
 FixtureBook のテーブル名指定箇所に `[テーブル名]@[接続名]` という形式で接続名の指定を行います。
 
 ![テーブル記述](./images/Tutorial-Setup-01.png?raw=true)
+
+
+------------------------
+
+*   [チュートリアル#02 - Entity Framework コードファースト開発での利用例](./Tutorial-CodeFirst.md)
+*   [チュートリアル#03 - DataSet / DataTableを使った開発での利用例](./Tutorial-DataSet.md)
 

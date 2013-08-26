@@ -19,6 +19,12 @@ FixtureBook を使うと、.xlsx ファイル上に記述した以下のよう�
 *   テスト後のDBテーブルのあるべき状態を表すデータ。
 
 
+セットアップ方法
+----------------
+
+[NuGet](https://www.nuget.org/packages/FixtureBook/) でインストールするのが簡単です。
+
+
 使い方
 ------
 
@@ -69,7 +75,7 @@ FixtureBook 利用例
 
 ### FixtureBook 記述例
 
-![FixtureBook記述例](./document/images/README-01.png)
+![FixtureBook記述例](./Document/images/README-01.png)
 
 *   `A.テストケース` の<b>C列</b>にテスト内容を一行で記述する。
 *   `D.パラメタ`には、テストに使用するデータを記述する（<b>C列</b>にクラス名、<b>D列</b>以降にプロパティ値を指定）。
@@ -154,8 +160,9 @@ FixtureBook 属性と Fixture 属性
     public void TestMethod1()
 ```
 
-FixtureBook 利用上の制約
-------------------------
+
+利用上の制約
+------------
 
 FixtureBook には現在のところ以下の制約があります。
 

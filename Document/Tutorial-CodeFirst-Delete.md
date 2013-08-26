@@ -84,3 +84,12 @@ FixtureBook では以下の記述を行います。
     }
 ```
 
+
+------------------------
+
+*   [チュートリアル#02 - Entity Framework コードファースト開発での利用例](./Tutorial-CodeFirst.md)
+    *   [#02-01 データ登録メソッド Save のテスト](./Tutorial-CodeFirst-Save.md)
+    *   #02-02 データ削除メソッド Delete のテスト
+    *   [#02-03 データ取得メソッド GetAllEmployees のテスト](./Tutorial-CodeFirst-GetAllEmployees.md)
+    *   [#02-04 データ検索メソッド GetEmployees のテスト](./Tutorial-CodeFirst-GetEmployees.md)
+    *   [#02-05 例外発生のテスト](./Tutorial-CodeFirst-Exception.md)
