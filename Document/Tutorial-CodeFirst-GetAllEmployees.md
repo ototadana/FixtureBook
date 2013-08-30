@@ -97,3 +97,4 @@ FixtureBook では以下の記述を行います。
     *   #02-03 データ取得メソッド GetAllEmployees のテスト
     *   [#02-04 データ検索メソッド GetEmployees のテスト](./Tutorial-CodeFirst-GetEmployees.md)
     *   [#02-05 例外発生のテスト](./Tutorial-CodeFirst-Exception.md)
+    *   [#02-06 テストメソッドの簡略化](./Tutorial-CodeFirst-Expect.md)

@@ -28,6 +28,8 @@ namespace XPFriend.Fixture.Cast
         private List<IStorageUpdater> storageUpdaters = new List<IStorageUpdater>();
         private List<IStorageValidator> storageValidators = new List<IStorageValidator>();
 
+        public IConductor Conductor { get; set; }
+
         /// <summary>
         /// <see cref="IObjectFactory"/> のリスト。
         /// </summary>

@@ -16,6 +16,7 @@
 using System;
 using System.Reflection;
 using XPFriend.Fixture.Role;
+using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -49,6 +50,7 @@ namespace XPFriend.Fixture.Cast.Temp
             }
             catch (TException e)
             {
+                Loggi.Debug(e);
                 Validate(e, typeName);
             }
         }

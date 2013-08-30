@@ -73,6 +73,7 @@
     <Compile Include="FixtureTest\Cast\Temp\PocoFactoryTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\PocoValidatorTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\TempActors.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\TempConductorTest.cs" />
     <Compile Include="FixtureTest\FixtureBookAttributeTest.cs" />
     <Compile Include="FixtureTest\FixtureBookTest.cs" />
     <Compile Include="FixtureTest\Staff\BookTest.cs" />
@@ -131,6 +132,7 @@
     <None Include="FixtureTest\Cast\Temp\DataTableValidatorTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\DictionaryFactoryTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\DictionaryValidatorTest.xlsx" />
+    <None Include="FixtureTest\Cast\Temp\TempConductorTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\PocoFactoryTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\PocoValidatorTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\TempActors.xlsx" />

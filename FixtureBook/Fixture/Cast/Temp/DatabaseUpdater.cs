@@ -47,13 +47,13 @@ namespace XPFriend.Fixture.Cast.Temp
 
             using (Database database = new Database())
             {
-                if (DeleteSection != null && DeleteSection.TableNames.Length > 0)
+                if (DeleteSection != null && DeleteSection.HasTable())
                 {
                     DataSet dataSet = GetDataSet(Section.SectionType.DataToDelete);
                     database.Delete(dataSet, DeleteSection);
                 }
 
-                if (CreateSection != null && CreateSection.TableNames.Length > 0)
+                if (CreateSection != null && CreateSection.HasTable())
                 {
                     UpdateColumnTypes(database, Section.SectionType.DataToCreate);
                     DataSet dataSet = GetDataSet(Section.SectionType.DataToCreate);

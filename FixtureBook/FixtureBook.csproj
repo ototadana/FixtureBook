@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +71,7 @@
     <Compile Include="Fixture\Cast\Temp\PocoFactory.cs" />
     <Compile Include="Fixture\Cast\Temp\PocoUtil.cs" />
     <Compile Include="Fixture\Cast\Temp\PocoValidator.cs" />
+    <Compile Include="Fixture\Cast\Temp\TempConductor.cs" />
     <Compile Include="Fixture\Cast\Temp\TempObjectFactory.cs" />
     <Compile Include="Fixture\Cast\Temp\TempObjectValidator.cs" />
     <Compile Include="Fixture\Cast\Temp\TypeConverter.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Fixture\FixtureBook.cs" />
     <Compile Include="Fixture\FixtureBookAttribute.cs" />
     <Compile Include="Fixture\Role\IActor.cs" />
+    <Compile Include="Fixture\Role\IConductor.cs" />
     <Compile Include="Fixture\Role\IObjectFactory.cs" />
     <Compile Include="Fixture\Role\IObjectValidator.cs" />
     <Compile Include="Fixture\Role\IStorageUpdater.cs" />
@@ -136,6 +140,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

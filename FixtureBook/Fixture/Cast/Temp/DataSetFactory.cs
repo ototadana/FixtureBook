@@ -41,7 +41,7 @@ namespace XPFriend.Fixture.Cast.Temp
             DataSet dataSet = new DataSet();
             if (typeName.Length == 0)
             {
-                typeName = Section.TableNames;
+                typeName = Section.TableNames.ToArray();
             }
 
             foreach (string name in typeName)

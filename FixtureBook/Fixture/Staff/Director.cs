@@ -73,6 +73,7 @@ namespace XPFriend.Fixture.Staff
             dressingRoom.StorageValidators.Add(Initialize(new FileValidator(), testCase));
             dressingRoom.ObjectFactories.Add(Initialize(new TempObjectFactory(), testCase));
             dressingRoom.ObjectValidators.Add(Initialize(new TempObjectValidator(), testCase));
+            dressingRoom.Conductor = Initialize(new TempConductor(), testCase);
 
             return dressingRoom;
         }

@@ -138,6 +138,18 @@
   <data name="M_Fixture_Case_Validate_Storage" xml:space="preserve">
     <value>{0} に「F.更新後データ」の記述が見つかりません</value>
   </data>
+  <data name="M_Fixture_FixtureBook_GetSection_ExpectedResult" xml:space="preserve">
+    <value>「E.取得データ」がありません。({0})</value>
+  </data>
+  <data name="M_Fixture_FixtureBook_GetSection_ObjectForExec" xml:space="preserve">
+    <value>「D.パラメタ」がありません。({0})</value>
+  </data>
+  <data name="M_Fixture_FixtureBook_GetTable_ExpectedResult" xml:space="preserve">
+    <value>「E.取得データ」に{0}番目のテーブル定義がありません。({1})</value>
+  </data>
+  <data name="M_Fixture_FixtureBook_GetTable_ObjectForExec" xml:space="preserve">
+    <value>「D.パラメタ」に{0}番目のテーブル定義がありません。({1})</value>
+  </data>
   <data name="M_Fixture_Section_GetTable" xml:space="preserve">
     <value>テーブル定義「{0}」は「{1}」の中に記述されていません</value>
   </data>
@@ -220,11 +232,17 @@ App.config 記述例
   <data name="M_Fixture_Temp_ObjectValidator_AssertNotNull" xml:space="preserve">
     <value>テーブル定義「{0}」が定義されていますが、実際の値は null でした。（{1}）</value>
   </data>
-  <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumber" xml:space="preserve">
+  <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumberExp" xml:space="preserve">
     <value>引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」でした。（{2}）</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumberImp" xml:space="preserve">
+    <value>テーブル定義名が明示的に指定されなかったため、全テーブルを検証しようとしましたが、「E.取得データ」のテーブル定義の数({0})が DataSet.Tables の数({1})よりも少なかったため、検証できませんでした。 ({2})</value>
   </data>
   <data name="M_Fixture_Temp_ObjectValidator_Exception" xml:space="preserve">
     <value>指定された例外 {0} が発生しませんでした。</value>
+  </data>
+  <data name="M_Fixture_Temp_ObjectValidator_UseTableOrder" xml:space="preserve">
+    <value>テーブル定義名が明示的に指定されなかったため、全テーブルを順番に検証します。({0})</value>
   </data>
   <data name="M_Fixture_XlsxFile_Read" xml:space="preserve">
     <value>シート「{0}」が存在しません。</value>

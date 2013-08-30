@@ -44,9 +44,18 @@ namespace XPFriend.Junk.Temp
         {
             classes.Clear();
             ConfigurationManager.RefreshSection("xjc.classes");
-            NameValueCollection collection = (NameValueCollection)ConfigurationManager.GetSection("xjc.classes");
-            if (collection == null)
+            NameValueCollection collection;
+            try
             {
+                collection = (NameValueCollection)ConfigurationManager.GetSection("xjc.classes");
+                if (collection == null)
+                {
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.Ignore(e);
                 return;
             }
 

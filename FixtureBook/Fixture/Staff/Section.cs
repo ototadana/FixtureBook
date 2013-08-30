@@ -68,6 +68,7 @@ namespace XPFriend.Fixture.Staff
         private int sectionNumber;
         private Dictionary<string, Table> tables = new Dictionary<string, Table>();
         private Dictionary<string, Table> tablesWithAliases = new Dictionary<string, Table>();
+        private List<string> tableNames = new List<string>();
 
         internal Section(Case testCase, string sectionName)
         {
@@ -99,13 +100,11 @@ namespace XPFriend.Fixture.Staff
         /// <summary>
         /// このセクション内に定義されているテーブルの名前。
         /// </summary>
-        public string[] TableNames
+        public List<string> TableNames
         {
             get
             {
-                string[] tableName = new string[tables.Count];
-                tables.Keys.CopyTo(tableName, 0);
-                return tableName;
+                return tableNames;
             }
         }
 
@@ -135,6 +134,7 @@ namespace XPFriend.Fixture.Staff
                 {
                     tablesWithAliases[tableName.Substring(0, atIndex)] = table;
                 }
+                tableNames.Add(tableName);
             }
             return table;
         }
@@ -183,6 +183,16 @@ namespace XPFriend.Fixture.Staff
         public override string ToString()
         {
             return testCase.ToString() + ", " + Name;
+        }
+
+        internal bool HasTable(int index)
+        {
+            return 0 <= index && index < tableNames.Count;
+        }
+
+        internal Table GetTable(int index)
+        {
+            return GetTable(tableNames[index]);
         }
     }
 }

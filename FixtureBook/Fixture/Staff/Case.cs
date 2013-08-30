@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 using System;
-using System.Data;
 using System.Collections.Generic;
 using XPFriend.Fixture.Cast;
 using XPFriend.Fixture.Role;
@@ -36,6 +35,7 @@ namespace XPFriend.Fixture.Staff
         private String caseName;
         private DressingRoom dressingRoom;
         private Section[] sections = new Section[Section.MaxNumber + 1];
+        private bool notYet = true;
 
         /// <summary>
         /// テストケース定義を作成する。
@@ -115,6 +115,7 @@ namespace XPFriend.Fixture.Staff
         /// <returns>生成されたオブジェクト</returns>
         public T GetObject<T>(params string[] typeName)
         {
+            SetupIfNotYet();
             foreach (IObjectFactory actor in dressingRoom.ObjectFactories)
             {
                 if (actor.HasRole<T>(typeName))
@@ -133,6 +134,7 @@ namespace XPFriend.Fixture.Staff
         /// <returns>生成されたリスト</returns>
         public List<T> GetList<T>(string typeName)
         {
+            SetupIfNotYet();
             foreach (IObjectFactory actor in dressingRoom.ObjectFactories)
             {
                 if (actor.HasRole<T>(typeName))
@@ -151,6 +153,7 @@ namespace XPFriend.Fixture.Staff
         /// <returns>生成された配列</returns>
         public T[] GetArray<T>(string typeName)
         {
+            SetupIfNotYet();
             foreach (IObjectFactory actor in dressingRoom.ObjectFactories)
             {
                 if (actor.HasRole<T>(typeName))
@@ -167,6 +170,14 @@ namespace XPFriend.Fixture.Staff
         /// </summary>
         public void ValidateStorage()
         {
+            if (!ValidateStorageInternal())
+            {
+                throw new ConfigException("M_Fixture_Case_Validate_Storage", this);
+            }
+        }
+
+        internal bool ValidateStorageInternal()
+        {
             bool validated = false;
             foreach (IStorageValidator actor in dressingRoom.StorageValidators)
             {
@@ -176,10 +187,7 @@ namespace XPFriend.Fixture.Staff
                     actor.Validate();
                 }
             }
-            if (!validated)
-            {
-                throw new ConfigException("M_Fixture_Case_Validate_Storage", this);
-            }
+            return validated;
         }
 
         /// <summary>
@@ -210,6 +218,7 @@ namespace XPFriend.Fixture.Staff
         /// </summary>
         public void Setup()
         {
+            sheet.SetupIfNotYet();
             foreach (IStorageUpdater actor in dressingRoom.StorageUpdaters)
             {
                 if (actor.HasRole())
@@ -219,11 +228,26 @@ namespace XPFriend.Fixture.Staff
             }
         }
 
+        private void SetupIfNotYet()
+        {
+            if (notYet)
+            {
+                Setup();
+                notYet = false;
+            }
+        }
+
         public override string ToString()
         {
             return sheet.ToString() + "[" + Name + "]";
         }
 
+        /// <summary>
+        /// 指定された処理で発生した例外が「E.取得データ」に記述された予想結果と適合することを調べる。
+        /// </summary>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象の処理</param>
+        /// <param name="typeName">テーブル定義名</param>
         public void Validate<TException>(Action action, string typeName) where TException : Exception
         {
             bool validated = false;
@@ -239,6 +263,40 @@ namespace XPFriend.Fixture.Staff
             {
                 throw new ConfigException("M_Fixture_Case_Validate_Object", this);
             }
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// ValidateStorage の実行を行う。
+        /// </summary>
+        /// <param name="action">テスト対象処理</param>
+        /// <param name="types">actionに渡す引数の型</param>
+        public void Expect(Delegate action, params Type[] types)
+        {
+            dressingRoom.Conductor.Expect(action, types);
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして func を実行し、
+        /// Validate で戻り値を検証し、ValidateStorage の実行を行う。
+        /// </summary>
+        /// <param name="func">テスト対象処理</param>
+        /// <param name="types">funcに渡す引数の型</param>
+        public void ExpectReturn(Delegate func, params Type[] types)
+        {
+            dressingRoom.Conductor.ExpectReturn(func, types);
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// </summary>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <param name="types">actionに渡す引数の型</param>
+        public void ExpectThrown<TException>(Delegate action, params Type[] types) where TException : Exception
+        {
+            dressingRoom.Conductor.ExpectThrown<TException>(action, types);
         }
     }
 }

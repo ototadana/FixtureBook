@@ -4,6 +4,7 @@ using XPFriend.Fixture;
 using XPFriend.Junk;
 using XPFriend.Fixture.Cast.Temp;
 using System.Collections.Generic;
+using System.Data;
 
 namespace XPFriend.FixtureTest
 {
@@ -35,7 +36,7 @@ namespace XPFriend.FixtureTest
             // then
             Assert.AreEqual("efg", obj.Text);
         }
-        
+
         [TestMethod]
         [Fixture("Sheet1", "Fixture属性で参照できること")]
         public void Test_Fixture属性で参照できること()
@@ -133,6 +134,411 @@ namespace XPFriend.FixtureTest
             catch (AssertFailedException e)
             {
                 Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        public void Validateで例外発生がテストできる() 
+        {
+            // expect : normal
+            new FixtureBook().Validate<Exception>(() => { throw new Exception("zzz"); });
+            new FixtureBook().Validate<Exception>(() => { throw new Exception("xxx"); }, "Result");
+
+            // expect : error
+            try
+            {
+                new FixtureBook().Validate<Exception>(() => { throw new Exception("ZZZ"); });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<ZZZ>") > -1);
+            }
+            try
+            {
+                new FixtureBook().Validate<Exception>(() => { throw new Exception("XXX"); }, "Result");
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.IsTrue(e.Message.IndexOf("<xxx>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<XXX>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void Expectは指定されたラムダ式の実行ができる()
+        {
+            // setup
+            bool called = false;
+
+            // when
+            FixtureBook.Expect(() => called = true);
+
+            // then
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void Expect1はDパラメタに定義されたオブジェクトを1つの引数として取得ができる()
+        {
+            // setup
+            bool called = false;
+
+            // when
+            FixtureBook.Expect((FixtureBookTestData p1) => 
+            { 
+                called = true;
+                Assert.AreEqual("abc", p1.Text);
+            });
+
+            // then
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void Expect2はDパラメタに定義されたオブジェクトを2つの引数として取得ができる()
+        {
+            // setup
+            bool called = false;
+
+            // when
+            FixtureBook.Expect((FixtureBookTestData p1, FixtureBookTestData p2) =>
+            {
+                called = true;
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+            });
+
+            // then
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void Expect3はDパラメタに定義されたオブジェクトを3つの引数として取得ができる()
+        {
+            // setup
+            bool called = false;
+
+            // when
+            FixtureBook.Expect((FixtureBookTestData p1, FixtureBookTestData p2, FixtureBookTestData p3) =>
+            {
+                called = true;
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                Assert.AreEqual("ghi", p3.Text);
+            });
+
+            // then
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void Expect4はDパラメタに定義されたオブジェクトを4つの引数として取得ができる()
+        {
+            // setup
+            bool called = false;
+
+            // when
+            FixtureBook.Expect((FixtureBookTestData p1, FixtureBookTestData p2, 
+                FixtureBookTestData p3, FixtureBookTestData p4) =>
+            {
+                called = true;
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                Assert.AreEqual("ghi", p3.Text);
+                Assert.AreEqual("jkl", p4.Text);
+            });
+
+            // then
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void ExpectReturnは指定されたラムダ式の戻り値が検証できる()
+        {
+            // expect : normal
+            FixtureBook.ExpectReturn(() => new FixtureBookTestData { Text = "zzz" });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectReturn(() => new FixtureBookTestData { Text = "zzp" });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzp>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void ExpectReturn1はDパラメタに定義されたオブジェクトを1つの引数として取得ができ戻り値検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectReturn((FixtureBookTestData p1) => 
+            { 
+                Assert.AreEqual("abc", p1.Text);
+                return new FixtureBookTestData { Text = "zzz" };
+            });
+            
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectReturn((FixtureBookTestData p1) => 
+                {
+                    return new FixtureBookTestData { Text = "zzq" };
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzq>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void ExpectReturn2はDパラメタに定義されたオブジェクトを2つの引数として取得ができ戻り値検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2) =>
+            {
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                return new FixtureBookTestData { Text = "zzz" };
+            });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2) =>
+                {
+                    return new FixtureBookTestData { Text = "zzr" };
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzr>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void ExpectReturn3はDパラメタに定義されたオブジェクトを3つの引数として取得ができ戻り値検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2, FixtureBookTestData p3) =>
+            {
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                Assert.AreEqual("ghi", p3.Text);
+                return new FixtureBookTestData { Text = "zzz" };
+            });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2, FixtureBookTestData p3) =>
+                {
+                    return new FixtureBookTestData { Text = "zzs" };
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzs>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("Expect", "ExpectおよびExpectResultのテスト")]
+        public void ExpectReturn4はDパラメタに定義されたオブジェクトを4つの引数として取得ができ戻り値検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2,
+                FixtureBookTestData p3, FixtureBookTestData p4) =>
+            {
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                Assert.AreEqual("ghi", p3.Text);
+                Assert.AreEqual("jkl", p4.Text);
+                return new FixtureBookTestData { Text = "zzz" };
+            });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectReturn((FixtureBookTestData p1, FixtureBookTestData p2,
+                    FixtureBookTestData p3, FixtureBookTestData p4) =>
+                {
+                    return new FixtureBookTestData { Text = "zzt" };
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzt>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("ExpectThrown", "ExpectThrownのテスト")]
+        public void ExpectThrownは指定されたラムダ式の例外が検証できる()
+        {
+            // expect : normal
+            FixtureBook.ExpectThrown<Exception>(() => { throw new Exception("zzz"); });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectThrown<Exception>(() => { throw new Exception("zzp"); });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzp>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("ExpectThrown", "ExpectThrownのテスト")]
+        public void ExpectThrown1はDパラメタに定義されたオブジェクトを1つの引数として取得ができ例外検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectThrown<FixtureBookTestData, Exception>(p1 => 
+            { 
+                Assert.AreEqual("abc", p1.Text);
+                throw new Exception("zzz");
+            });
+            
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectThrown<FixtureBookTestData, Exception>(p1 => 
+                {
+                    throw new Exception("zzq");
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzq>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("ExpectThrown", "ExpectThrownのテスト")]
+        public void ExpectThrown2はDパラメタに定義されたオブジェクトを2つの引数として取得ができ例外検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, Exception>((p1, p2) =>
+            {
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                throw new Exception("zzz");
+            });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, Exception>((p1, p2) =>
+                {
+                    throw new Exception("zzr");
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzr>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("ExpectThrown", "ExpectThrownのテスト")]
+        public void ExpectThrown3はDパラメタに定義されたオブジェクトを3つの引数として取得ができ例外検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, FixtureBookTestData, Exception>((p1, p2, p3) =>
+            {
+                Assert.AreEqual("abc", p1.Text);
+                Assert.AreEqual("def", p2.Text);
+                Assert.AreEqual("ghi", p3.Text);
+                throw new Exception("zzz");
+            });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, FixtureBookTestData, Exception>((p1, p2, p3) =>
+                {
+                    throw new Exception("zzs");
+                });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzs>") > -1);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("ExpectThrown", "ExpectThrownのテスト")]
+        public void ExpectThrown4はDパラメタに定義されたオブジェクトを4つの引数として取得ができ例外検証ができる()
+        {
+            // expect : normal
+            FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, FixtureBookTestData,
+                FixtureBookTestData, Exception>((p1, p2, p3, p4) =>
+                {
+                    Assert.AreEqual("abc", p1.Text);
+                    Assert.AreEqual("def", p2.Text);
+                    Assert.AreEqual("ghi", p3.Text);
+                    Assert.AreEqual("jkl", p4.Text);
+                    throw new Exception("zzz");
+                });
+
+            // expect : error
+            try
+            {
+                FixtureBook.ExpectThrown<FixtureBookTestData, FixtureBookTestData, FixtureBookTestData,
+                    FixtureBookTestData, Exception>((p1, p2, p3, p4) =>
+                    {
+                        throw new Exception("zzt");
+                    });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("<zzz>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<zzt>") > -1);
             }
         }
     }

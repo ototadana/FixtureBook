@@ -54,6 +54,27 @@ FixtureBook のテーブル名指定箇所に `[テーブル名]@[接続名]` �
 ![テーブル記述](./images/Tutorial-Setup-01.png?raw=true)
 
 
+
+デバッグログ出力設定
+--------------------
+
+以下の設定 ( &lt;system.diagnostics&gt; ～ &lt;/system.diagnostics&gt; ) を追加すると、
+FixtureBook の処理中に実行された SQL 文やデータベース接続情報がデバッグ出力されるようになります。
+
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+        <configuration>
+          ...
+          <system.diagnostics>
+            <switches>
+              <add name="XPFriend" value="4"/>
+            </switches>
+          </system.diagnostics>
+          ...
+        </configuration>
+```
+
+
 ------------------------
 
 *   [チュートリアル#02 - Entity Framework コードファースト開発での利用例](./Tutorial-CodeFirst.md)

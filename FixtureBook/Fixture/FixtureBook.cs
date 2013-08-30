@@ -18,10 +18,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using XPFriend.Properties;
 using XPFriend.Fixture.Staff;
 using XPFriend.Fixture.Toolkit;
 using XPFriend.Junk;
+using XPFriend.Properties;
 
 namespace XPFriend.Fixture
 {
@@ -98,12 +98,19 @@ namespace XPFriend.Fixture
         private Book book;
         private Sheet sheet;
         private Case testCase;
-        private bool notYet = true;
 
         /// <summary>
         /// FixtureBook を作成する。
         /// </summary>
-        public FixtureBook() { }
+        public FixtureBook() : this(false) { }
+
+        private FixtureBook(bool initialize)
+        {
+            if (initialize)
+            {
+                Initialize();
+            }
+        }
 
         private void Initialize() 
         {
@@ -174,22 +181,12 @@ namespace XPFriend.Fixture
         public void Setup()
         {
             InitializeIfNotYet();
-            sheet.SetupIfNotYet();
             testCase.Setup();
-        }
-
-        private void SetupIfNotYet()
-        {
-            if (notYet)
-            {
-                Setup();
-                notYet = false;
-            }
         }
 
         private void InitializeIfNotYet()
         {
-            if (book == null)
+            if (testCase == null)
             {
                 Initialize();
             }
@@ -203,7 +200,7 @@ namespace XPFriend.Fixture
         /// <returns>生成されたオブジェクト</returns>
         public T GetObject<T>(params string[] name)
         {
-            SetupIfNotYet();
+            InitializeIfNotYet();
             return testCase.GetObject<T>(name);
         }
 
@@ -225,7 +222,7 @@ namespace XPFriend.Fixture
         /// <returns>生成されたリスト</returns>
         public List<T> GetList<T>(string name)
         {
-            SetupIfNotYet();
+            InitializeIfNotYet();
             return testCase.GetList<T>(name);
         }
 
@@ -247,7 +244,7 @@ namespace XPFriend.Fixture
         /// <returns>生成された配列</returns>
         public T[] GetArray<T>(string name)
         {
-            SetupIfNotYet();
+            InitializeIfNotYet();
             return testCase.GetArray<T>(name);
         }
 
@@ -267,7 +264,7 @@ namespace XPFriend.Fixture
         /// 指定された処理で発生した例外が「E.取得データ」に記述された予想結果と適合することを調べる。
         /// </summary>
         /// <typeparam name="TException">発生が予想される例外</typeparam>
-        /// <param name="action">処理</param>
+        /// <param name="action">テスト対象処理</param>
         public void Validate<TException>(Action action) where TException : Exception
         {
             Validate<TException>(action, null);
@@ -277,7 +274,7 @@ namespace XPFriend.Fixture
         /// 指定された処理で発生した例外が「E.取得データ」に記述された予想結果と適合することを調べる。
         /// </summary>
         /// <typeparam name="TException">発生が予想される例外</typeparam>
-        /// <param name="action">処理</param>
+        /// <param name="action">テスト対象処理</param>
         /// <param name="name">テーブル定義名</param>
         public void Validate<TException>(Action action, string name) where TException : Exception
         {
@@ -293,6 +290,278 @@ namespace XPFriend.Fixture
         {
             InitializeIfNotYet();
             testCase.ValidateStorage();
+        }
+
+        /// <summary>
+        /// Setup を行い、action を実行し、ValidateStorage を行う。
+        /// ただし、「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook Expect(Action action)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.Expect(action);
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// 「D.パラメタ」の最初に定義されているものを使用する。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T">actionに渡す引数の型</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook Expect<T>(Action<T> action)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.Expect(action, typeof(T));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook Expect<T1, T2>(Action<T1, T2> action)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.Expect(action, typeof(T1), typeof(T2));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">actionに渡す第三引数の型</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook Expect<T1, T2, T3>(Action<T1, T2, T3> action)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.Expect(action, typeof(T1), typeof(T2), typeof(T3));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目、4番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">actionに渡す第三引数の型</typeparam>
+        /// <typeparam name="T4">actionに渡す第四引数の型</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook Expect<T1, T2, T3, T4>(Action<T1, T2, T3, T4> action)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.Expect(action, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// Setup を行い、func を実行し、Validate で戻り値を検証し、ValidateStorage を行う。
+        /// ただし、「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="TResult">funcの戻り値の型</typeparam>
+        /// <param name="func">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn<TResult>(Func<TResult> func)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectReturn(func);
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして func を実行し、
+        /// Validate で戻り値を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// 「D.パラメタ」の最初に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T">funcに渡す引数の型</typeparam>
+        /// <typeparam name="TResult">funcの戻り値の型</typeparam>
+        /// <param name="func">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn<T, TResult>(Func<T, TResult> func)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectReturn(func, typeof(T));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして func を実行し、
+        /// Validate で戻り値を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">funcに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">funcに渡す第二引数の型</typeparam>
+        /// <typeparam name="TResult">funcの戻り値の型</typeparam>
+        /// <param name="func">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn<T1, T2, TResult>(Func<T1, T2, TResult> func)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectReturn(func, typeof(T1), typeof(T2));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして func を実行し、
+        /// Validate で戻り値を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">funcに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">funcに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">funcに渡す第三引数の型</typeparam>
+        /// <typeparam name="TResult">funcの戻り値の型</typeparam>
+        /// <param name="func">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectReturn(func, typeof(T1), typeof(T2), typeof(T3));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして func を実行し、
+        /// Validate で戻り値を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目、4番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">funcに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">funcに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">funcに渡す第三引数の型</typeparam>
+        /// <typeparam name="T4">funcに渡す第四引数の型</typeparam>
+        /// <typeparam name="TResult">funcの戻り値の型</typeparam>
+        /// <param name="func">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectReturn(func, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown<TException>(Action action) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectThrown<TException>(action);
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の最初に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T">actionに渡す引数の型</typeparam>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown<T, TException>(Action<T> action) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectThrown<TException>(action, typeof(T));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown<T1, T2, TException>(Action<T1, T2> action) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectThrown<TException>(action, typeof(T1), typeof(T2));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">actionに渡す第三引数の型</typeparam>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown<T1, T2, T3, TException>(Action<T1, T2, T3> action) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectThrown<TException>(action, typeof(T1), typeof(T2), typeof(T3));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// GetObject / GetList / GetArray で取得したオブジェクトを引数にして action を実行し、
+        /// Validate&lt;TException&gt; で想定される例外を検証し、ValidateStorage の実行を行う。
+        /// GetObject / GetList / GetArray で取得するオブジェクトは
+        /// それぞれ「D.パラメタ」の1番目、2番目、3番目、4番目に定義されているものを使う。
+        /// 「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
+        /// </summary>
+        /// <typeparam name="T1">actionに渡す第一引数の型</typeparam>
+        /// <typeparam name="T2">actionに渡す第二引数の型</typeparam>
+        /// <typeparam name="T3">actionに渡す第三引数の型</typeparam>
+        /// <typeparam name="T4">actionに渡す第四引数の型</typeparam>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="action">テスト対象処理</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown<T1, T2, T3, T4, TException>(Action<T1, T2, T3, T4> action) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            fixtureBook.testCase.ExpectThrown<TException>(action, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+            return fixtureBook;
         }
     }
 }

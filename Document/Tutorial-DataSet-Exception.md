@@ -91,3 +91,4 @@ Validate メソッドの引数として、例外を発生させるテストコ�
     *   [#03-03 データ取得メソッド GetAllEmployees のテスト](./Tutorial-DataSet-GetAllEmployees.md)
     *   [#03-04 データ検索メソッド GetEmployees のテスト](./Tutorial-DataSet-GetEmployees.md)
     *   #03-05 例外発生のテスト
+    *   [#03-06 テストメソッドの簡略化](./Tutorial-DataSet-Expect.md)

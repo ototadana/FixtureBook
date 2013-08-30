@@ -33,16 +33,18 @@ namespace XPFriend.Fixture.Cast.Temp
 
         public override void Validate(object obj, params string[] typeName)
         {
-            if(typeName == null || typeName.Length == 0) 
-            {
-                typeName = Section.TableNames;
-            }
-
             DataSet dataSet = (DataSet)obj;
+
+            if (typeName == null || typeName.Length == 0) 
+            {
+                typeName = GetTableNamesFrom(dataSet);
+            }
 
             if (dataSet.Tables.Count < typeName.Length)
             {
-                Assertie.AreEqual(typeName.Length, dataSet.Tables.Count, "M_Fixture_Temp_ObjectValidator_AssertTableNumber", ToStringInternal(typeName), ToStringInternal(dataSet.Tables), Section);
+                Assertie.AreEqual(typeName.Length, dataSet.Tables.Count, 
+                    "M_Fixture_Temp_ObjectValidator_AssertTableNumberExp", 
+                    ToStringInternal(typeName), ToStringInternal(dataSet.Tables), Section);
             }
 
             List<DataTable> dataTables = CreateDataTableList(dataSet.Tables);
@@ -51,6 +53,46 @@ namespace XPFriend.Fixture.Cast.Temp
                 DataTable dataTable = GetDataTable(typeName[i], dataTables);
                 Validate(dataTable, typeName[i]);
             }
+        }
+
+        private string[] GetTableNamesFrom(DataSet dataSet)
+        {
+            List<string> tableNames = new List<string>();
+            if (ValidateTableNames(dataSet))
+            {
+                foreach (DataTable table in dataSet.Tables)
+                {
+                    tableNames.Add(table.TableName);
+                }
+            }
+            else if (dataSet.Tables.Count > Section.TableNames.Count)
+            {
+                Assertie.Fail(
+                    "M_Fixture_Temp_ObjectValidator_AssertTableNumberImp", 
+                    dataSet.Tables.Count, Section.TableNames.Count, Section);
+            }
+            else
+            {
+                string messageFormat = Resi.Get("M_Fixture_Temp_ObjectValidator_UseTableOrder");
+                Loggi.Warn(String.Format(messageFormat, Section));
+                for(int i = 0; i < dataSet.Tables.Count; i++) 
+                {
+                    Loggi.Warn("DataSet.Table[" + i + "] = " + Section.TableNames[i]);
+                }
+            }
+            return tableNames.ToArray();
+        }
+
+        private bool ValidateTableNames(DataSet dataSet)
+        {
+            foreach (DataTable table in dataSet.Tables)
+            {
+                if (!Section.HasTable(table.TableName))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private DataTable GetDataTable(string name, List<DataTable> dataTables)

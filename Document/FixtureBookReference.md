@@ -453,7 +453,7 @@ DataRow の列値が DBNull.Value の場合、検証時には null として扱�
 
 ##### DataSet
 
-`D.パラメタ`のテーブル定義名を DataTable のテーブル名 (DataTable.TableName)、
+`E.取得データ` のテーブル定義名を DataTable のテーブル名 (DataTable.TableName)、
 列名行に記述した名前を DataTable の列 (DataColumn.ColumnName)、
 データ行に記述した予想結果値を DataRow の列値として検証を行うことができます。
 
@@ -667,3 +667,8 @@ FixtureBook の内部では、`yyyy-MM-dd HH:mm:ss` 形式の文字列に変換�
 
 は、同じ状態のオブジェクトを取得できます。
 
+
+#### 複合オブジェクト定義上の注意
+
+Expect / ExpectReturn / ExpectThrown を使用する場合、
+子テーブル定義はすべての親テーブル（子を持たないものもの含めて）の後に記述してください。

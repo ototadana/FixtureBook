@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using System;
 using System.Collections.Specialized;
 using System.Configuration;
 
@@ -36,10 +37,17 @@ namespace XPFriend.Junk.Temp
         {
             config.Clear();
             ConfigurationManager.RefreshSection("xjc.config");
-            NameValueCollection collection = (NameValueCollection)ConfigurationManager.GetSection("xjc.config");
-            if (collection != null)
+            try
             {
-                config.Add(collection);
+                NameValueCollection collection = (NameValueCollection)ConfigurationManager.GetSection("xjc.config");
+                if (collection != null)
+                {
+                    config.Add(collection);
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.Ignore(e);
             }
         }
 

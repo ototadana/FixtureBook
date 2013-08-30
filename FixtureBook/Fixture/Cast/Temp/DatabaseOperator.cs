@@ -33,7 +33,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
         protected virtual DataSet GetDataSet(Section.SectionType sectionType)
         {
-            string[] tableNames = testCase.GetSection(sectionType).TableNames;
+            string[] tableNames = testCase.GetSection(sectionType).TableNames.ToArray();
             tempObjectFactory.SectionType = sectionType;
             return tempObjectFactory.GetObject<DataSet>(tableNames);
         }

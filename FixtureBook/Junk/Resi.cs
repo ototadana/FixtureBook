@@ -22,7 +22,7 @@ namespace XPFriend.Junk
     /// <summary>
     /// リソース管理。
     /// </summary>
-    public sealed class Resi
+    internal sealed class Resi
     {
         private static ResourceProvider provider = ResourceProvider.Instance;
 

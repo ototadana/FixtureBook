@@ -132,4 +132,5 @@ FixtureBook のファイル名は `EmployeeStoreTest.xlsx` として同じフォ
 *   [#03-03 データ取得メソッド GetAllEmployees のテスト](./Tutorial-DataSet-GetAllEmployees.md)
 *   [#03-04 データ検索メソッド GetEmployees のテスト](./Tutorial-DataSet-GetEmployees.md)
 *   [#03-05 例外発生のテスト](./Tutorial-DataSet-Exception.md)
+*   [#03-06 テストメソッドの簡略化](./Tutorial-DataSet-Expect.md)
 

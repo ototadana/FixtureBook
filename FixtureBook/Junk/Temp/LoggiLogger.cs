@@ -20,7 +20,7 @@ namespace XPFriend.Junk.Temp
 {
     internal class LoggiLogger
     {
-        private TraceSwitch traceSwitch = new TraceSwitch("TraceSwitch", "TraceSwitch");
+        private TraceSwitch traceSwitch = new TraceSwitch("XPFriend", "XPFriend");
 
         public static LoggiLogger Instance
         {

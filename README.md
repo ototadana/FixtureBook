@@ -37,7 +37,7 @@ FixtureBook の使い方はとてもシンプルです。
 FixtureBook 利用例
 --------------------
 
-ここでは、以下のような「従業員クラス (Employee)」
+例えば、以下のような「従業員クラス (Employee)」
 
 ```c#
     public class Employee
@@ -50,82 +50,91 @@ FixtureBook 利用例
     }
 ```
 
-を使用した、以下のようなメソッド（UpdateRetire）
+を利用するメソッド GetEmployees
 
 ```c#
-    public class RetireHandler
+    public class EmployeeStore
     {
         /// <summary>
-        /// 年齢が60才以上ならば退職フラグを true にして名前を消去する。
+        /// 従業員データの退職フラグを条件にしてデータベースから検索を行う
         /// </summary>
-        /// <param name="data">従業員データ</param>
-        public void UpdateRetire(Employee data)
+        /// <param name="parameter">退職フラグが設定された従業員データ</param>
+        /// <returns>検索条件に合致した従業員データ</returns>
+        public List<Employee> GetEmployees(Employee parameter)
         {
-            if (data.Age >= 60)
+            using (MyAppDbContext context = new MyAppDbContext())
             {
-                data.Retire = true;
-                data.Name = null;
+                return (from employee in context.Employees
+                        where employee.Retire == parameter.Retire
+                        orderby employee.Id
+                        select employee).ToList();
             }
         }
     }
 ```
 
-をテストしたい場合の例を説明します。
+をテストしたい場合の例です。
 
 
 ### FixtureBook 記述例
 
+次のようなシートのある .xlsx ファイルを作ります。
+
 ![FixtureBook記述例](./Document/images/README-01.png)
 
 *   `A.テストケース` の<b>C列</b>にテスト内容を一行で記述する。
-*   `D.パラメタ`には、テストに使用するデータを記述する（<b>C列</b>にクラス名、<b>D列</b>以降にプロパティ値を指定）。
-*   `E.取得データ`には、テスト後の予想結果データを記述する（<b>C列</b>にクラス名、<b>D列</b>以降にプロパティ値を指定）。
-*   セルの書式や図形は自由に記述可能。
+*   テスト前にデータベース上に設定しておきたいデータを `B.テストデータクリア条件` と `C.テストデータ` に記述する
+    （<b>C列</b>にテーブル名、<b>D列</b>以降に列値を指定）。
+*   `D.パラメタ`には、メソッドの引数で渡すデータを記述する（<b>C列</b>にクラス名、<b>D列</b>以降にプロパティ値を指定）。
+*   `E.取得データ`には、メソッドの戻り値として取得できるデータを予想して記述する（<b>C列</b>にクラス名、<b>D列</b>以降にプロパティ値を指定）。
 
-作成した .xlsx ファイルは単体テストクラスのソースファイルと同じ名前にして（RetireHandlerTest.cs ならば RetireHandlerTest.xlsx とする）、
-単体テストクラスのソースファイルと同じフォルダに保存してください。
+作成した .xlsx ファイルは単体テストクラスのソースファイルと同じ名前にして（EmployeeStoreTest.cs ならば EmployeeStoreTest.xlsx とする）、
+単体テストクラスのソースファイルと同じフォルダに保存します。
 
 
 ### 単体テスト記述例
 
-単体テストでは以下の記述を行います。
+単体テストは以下のように記述します。
 
-*   `using XPFriend.Fixture;` を指定する。
-*   テストメソッドの名前は `Excelシート名__テストケース記述` とする。
-*   FixtureBook (.xlsx ファイル) の利用は FixtureBook クラスのメソッドを使って行う。
+*   `using XPFriend.Fixture;` を追加する。
+*   `Excelシート名__テストケース記述` という名前でテストメソッドを作成する。
+*   FixtureBook.ExpectReturn メソッドでテスト対象メソッドを呼び出して、予想結果のチェックを行う。
 
 &nbsp;
 
-    (..略..)
+    ...
     using XPFriend.Fixture;
 
-    (..略..)
+    ...
 
     [TestClass]
-    public class RetireHandlerTest
+    public class EmployeeStoreTest
     {
-        private FixtureBook fixtureBook = new FixtureBook();
-
         [TestMethod]
-        public void UpdateRetire__年齢が60才以上ならば退職フラグをtrueにして名前を消去する()
+        public void GetEmployees__引数の退職フラグがtrueの場合データベーステーブルEmployees上の退職者のみが取得できる()
         {
-            // setup : 「D.パラメタ」に記述した内容でオブジェクト作成する
-            Employee data = fixtureBook.GetObject<Employee>();
-
-            // when : テスト対象メソッドを呼び出す
-            new RetireHandler().UpdateRetire(data);
-
-            // then : data が「E.取得データ」に記述した予想結果と同じかどうか検証する
-            fixtureBook.Validate(data);
+            FixtureBook.ExpectReturn((Employee parameter) => new EmployeeStore().GetEmployees(parameter));
         }
     }
 
+このテストを実行すると、以下の処理が行われます。
+
+1.  `B.テストデータクリア条件` に記述された条件でデータベーステーブルからデータ行を削除した後に
+    `C.テストデータ` に記述されたデータがデータベーステーブルに追加される。
+2.  `D.パラメタ` に記述された内容で Employee クラスのインスタンスが作成され、引数（ `Employee parameter` ）として渡される。
+3.  テスト対象処理 `new EmployeeStore().GetEmployees(parameter)` が実行される。
+4.  `GetEmployees` の戻り値が `E.取得データ` に記述した内容と合致しているかどうかがチェックされる。
+
+#### 参考
+>この例では、`ExpectReturn` を使いましたが、
+>戻り値をチェックしない場合には `Expect`、
+>例外発生をチェックしたい場合には `ExpectThrown` が利用可能です。
 
 
 FixtureBook クラスのメソッド
 ----------------------------
 
-以下のメソッドが利用可能です。
+他にも、以下のようなメソッドを使って FixtureBook の操作が可能です。
 
 <table>
   <tr><td>Setup</td><td><code>B.テストデータクリア条件</code>に記述された条件でDBからデータ削除した後に<code>C.テストデータ</code>に記述されたデータをDBに追加する。</td></tr>

@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using XPFriend.Fixture.Staff;
@@ -68,8 +69,8 @@ namespace XPFriend.Fixture.Cast.Temp
                 return typeName;
             }
 
-            string[] tableNames = section.TableNames;
-            if (tableNames.Length == 1)
+            List<string> tableNames = section.TableNames;
+            if (tableNames.Count == 1)
             {
                 return tableNames[0];
             }

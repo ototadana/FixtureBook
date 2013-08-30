@@ -119,8 +119,8 @@ namespace XPFriend.FixtureTest.Staff
         public void GetObjectをDパラメタに何も定義されていない場合に呼び出すと例外が発生する()
         {
             // setup
-            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet03");
-            Case testCase = sheet.GetCase("テストケース001");
+            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet01");
+            Case testCase = sheet.GetCase("テストケース003");
 
             try
             {
@@ -133,7 +133,7 @@ namespace XPFriend.FixtureTest.Staff
                 // then
                 Console.WriteLine(e);
                 Assert.AreEqual("M_Fixture_Case_GetObject", e.ResourceKey);
-                Assert.IsTrue(e.Message.IndexOf("テストケース001") > -1);
+                Assert.IsTrue(e.Message.IndexOf("テストケース003") > -1);
             }
         }
 
@@ -141,8 +141,8 @@ namespace XPFriend.FixtureTest.Staff
         public void GetListをDパラメタに何も定義されていない場合に呼び出すと例外が発生する()
         {
             // setup
-            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet03");
-            Case testCase = sheet.GetCase("テストケース001");
+            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet01");
+            Case testCase = sheet.GetCase("テストケース003");
 
             try
             {
@@ -155,7 +155,7 @@ namespace XPFriend.FixtureTest.Staff
                 // then
                 Console.WriteLine(e);
                 Assert.AreEqual("M_Fixture_Case_GetList", e.ResourceKey);
-                Assert.IsTrue(e.Message.IndexOf("テストケース001") > -1);
+                Assert.IsTrue(e.Message.IndexOf("テストケース003") > -1);
             }
         }
 
@@ -163,8 +163,8 @@ namespace XPFriend.FixtureTest.Staff
         public void GetArrayをDパラメタに何も定義されていない場合に呼び出すと例外が発生する()
         {
             // setup
-            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet03");
-            Case testCase = sheet.GetCase("テストケース001");
+            Sheet sheet = Book.GetInstance(BookTest.BookFilePath).GetSheet("Sheet01");
+            Case testCase = sheet.GetCase("テストケース003");
 
             try
             {
@@ -177,7 +177,7 @@ namespace XPFriend.FixtureTest.Staff
                 // then
                 Console.WriteLine(e);
                 Assert.AreEqual("M_Fixture_Case_GetArray", e.ResourceKey);
-                Assert.IsTrue(e.Message.IndexOf("テストケース001") > -1);
+                Assert.IsTrue(e.Message.IndexOf("テストケース003") > -1);
             }
         }
 

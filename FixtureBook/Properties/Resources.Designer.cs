@@ -124,6 +124,42 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
+        ///   「E.取得データ」がありません。({0}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetSection_ExpectedResult {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetSection_ExpectedResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   「D.パラメタ」がありません。({0}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetSection_ObjectForExec {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetSection_ObjectForExec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   「E.取得データ」に{0}番目のテーブル定義がありません。({1}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetTable_ExpectedResult {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetTable_ExpectedResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   「D.パラメタ」に{0}番目のテーブル定義がありません。({1}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetTable_ObjectForExec {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetTable_ObjectForExec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   テーブル定義「{0}」は「{1}」の中に記述されていません に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Section_GetTable {
@@ -328,9 +364,18 @@ namespace XPFriend.Properties {
         /// <summary>
         ///   引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」でした。（{2}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumber {
+        internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberExp {
             get {
-                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertTableNumber", resourceCulture);
+                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertTableNumberExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   テーブル定義名が明示的に指定されなかったため、全テーブルを検証しようとしましたが、「E.取得データ」のテーブル定義の数({0})が DataSet.Tables の数({1})よりも少なかったため、検証できませんでした。 ({2}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberImp {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertTableNumberImp", resourceCulture);
             }
         }
         
@@ -340,6 +385,15 @@ namespace XPFriend.Properties {
         internal static string M_Fixture_Temp_ObjectValidator_Exception {
             get {
                 return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   テーブル定義名が明示的に指定されなかったため、全テーブルを順番に検証します。({0}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_ObjectValidator_UseTableOrder {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_UseTableOrder", resourceCulture);
             }
         }
         
