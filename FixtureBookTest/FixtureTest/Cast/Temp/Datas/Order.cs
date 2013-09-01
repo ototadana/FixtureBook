@@ -23,5 +23,6 @@ namespace XPFriend.FixtureTest.Cast.Temp.Datas
         public Customer CustomerInfo { get; set; }
         public List<OrderDetail> Detail { get; set; }
         public OrderDetail[] Detail2 { get; set; }
+        public OrderDetails Detail3 { get; set; }
     }
 }

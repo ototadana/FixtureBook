@@ -38,14 +38,14 @@ namespace XPFriend.Fixture.Cast.Temp
             base.ValidateInternal(dataTable.Rows, typeName, dataTable.TableName);
         }
 
-        protected override object GetPropertyValue(object obj, string name)
+        protected override object GetPropertyValue(object obj, string name, Table table, Row row)
         {
-            DataRow row = (DataRow)obj;
-            if (row.IsNull(name))
+            DataRow dataRow = (DataRow)obj;
+            if (dataRow.IsNull(name))
             {
                 return null;
             }
-            return row[name];
+            return dataRow[name];
         }
     }
 }

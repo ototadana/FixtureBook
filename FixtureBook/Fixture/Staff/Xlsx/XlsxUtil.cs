@@ -27,7 +27,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
     /// <summary>
     /// .xlsx ファイルを解釈する際に使用するユーティリティメソッド集。
     /// </summary>
-    internal sealed class XlsxUtil
+    internal static class XlsxUtil
     {
         private class Format
         {

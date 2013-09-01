@@ -20,11 +20,9 @@ namespace XPFriend.Junk
     /// <summary>
     /// 文字列とオブジェクトのコンバータ。
     /// </summary>
-    internal sealed class Convi
+    internal static class Convi
     {
         private static TextConverter instance = TextConverter.Instance;
-
-        private Convi() { }
 
         /// <summary>
         /// オブジェクトを文字列に変換する。

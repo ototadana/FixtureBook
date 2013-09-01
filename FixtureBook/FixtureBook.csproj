@@ -64,7 +64,6 @@
     <Compile Include="Fixture\Cast\Temp\DataTableValidator.cs" />
     <Compile Include="Fixture\Cast\Temp\DictionaryFactory.cs" />
     <Compile Include="Fixture\Cast\Temp\DictionaryValidator.cs" />
-    <Compile Include="Fixture\Cast\Temp\FileValidator.cs" />
     <Compile Include="Fixture\Cast\Temp\ObjectFactoryBase.cs" />
     <Compile Include="Fixture\Cast\Temp\ObjectOperatorBase.cs" />
     <Compile Include="Fixture\Cast\Temp\ObjectValidatorBase.cs" />

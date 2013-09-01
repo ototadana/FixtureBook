@@ -26,6 +26,13 @@ namespace XPFriend.Fixture.Cast.Temp
     internal class Database : IDisposable
     {
         DatabaseConnection connection = new DatabaseConnection();
+        private Dictionary<string, MetaData> metaDatas = new Dictionary<string, MetaData>();
+
+        internal class MetaData
+        {
+            public DataTable DataTable { get; set; }
+            public bool? HasIdentityColumn { get; set; }
+        }
 
         public void Use(string databaseName)
         {
@@ -105,6 +112,18 @@ namespace XPFriend.Fixture.Cast.Temp
         }
 
         private bool HasIdentityColumn(string tableName)
+        {
+            MetaData metaData = GetMetaData(tableName);
+
+            if (metaData.HasIdentityColumn == null)
+            {
+                metaData.HasIdentityColumn = HasIdentityColumnInternal(tableName);
+            }
+
+            return (bool)metaData.HasIdentityColumn;
+        }
+
+        private bool HasIdentityColumnInternal(string tableName)
         {
             DbDataAdapter dataAdapter = connection.ProviderFactory.CreateDataAdapter();
             dataAdapter.SelectCommand = CreateCommand("select * from " + tableName);
@@ -245,7 +264,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
         private void SetQueryString(DataTable table, DataRow row, DbCommand command, String queryPrefix, List<string> columnNames)
         {
-            DataTable metaData = GetMetaDataInternal(table.TableName);
+            DataTable metaData = GetMetaDataTable(table.TableName);
             StringBuilder query = new StringBuilder();
             foreach (string columnName in columnNames)
             {
@@ -353,15 +372,6 @@ namespace XPFriend.Fixture.Cast.Temp
                 parameter.DbType = DbType.Binary;
             }
             parameter.Value = parameterValue;
-        }
-
-        private string Normalize(string queryString)
-        {
-            if (connection.ParameterPrefix != '@')
-            {
-                queryString = queryString.Replace('@', connection.ParameterPrefix);
-            }
-            return queryString;
         }
 
         private void Delete(DataTable table, DataRow row, Table tableInfo, Row rowInfo)
@@ -512,23 +522,13 @@ namespace XPFriend.Fixture.Cast.Temp
             return table;
         }
 
-        private void AddParameter(DbCommand command, List<string> keyColumns, DataTable keyTable, DataRow keyRow)
-        {
-            command.Parameters.Clear();
-            foreach (string columnName in keyColumns)
-            {
-                DataColumn column = keyTable.Columns[columnName];
-                AddParameter(command, column.ColumnName, column.DataType, keyRow[column]);
-            }
-        }
-
         public DataTable GetMetaData(Table table)
         {
             string[] tableNameAndDatabaseName = SplitTableNameAndDatabaseName(table.Name);
             Use(tableNameAndDatabaseName[1]);
             try
             {
-                DataTable metaData = GetMetaDataInternal(tableNameAndDatabaseName[0]);
+                DataTable metaData = GetMetaDataTable(tableNameAndDatabaseName[0]);
                 metaData.TableName = tableNameAndDatabaseName[0];
                 return metaData;
             }
@@ -538,9 +538,27 @@ namespace XPFriend.Fixture.Cast.Temp
             }
         }
 
-        private DataTable GetMetaDataInternal(string tableName)
+        private DataTable GetMetaDataTable(string tableName)
         {
-            return ExecuteQuery("select * from " + tableName + " where 1=2");
+            MetaData metaData = GetMetaData(tableName);
+
+            if (metaData.DataTable == null)
+            {
+                metaData.DataTable = ExecuteQuery("select * from " + tableName + " where 1=2");
+            }
+            return metaData.DataTable;
+        }
+
+        private MetaData GetMetaData(string tableName)
+        {
+            MetaData metaData = null;
+            if (!metaDatas.TryGetValue(tableName, out metaData))
+            {
+                metaData = new MetaData();
+                metaDatas[tableName] = metaData;
+
+            }
+            return metaData;
         }
 
         internal DataTable ExecuteQuery(string queryString)

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 namespace XPFriend.FixtureTest.Cast.Temp.Datas
 {
     public class Data
@@ -21,7 +22,10 @@ namespace XPFriend.FixtureTest.Cast.Temp.Datas
         public string Text1 { get; set; }
         public string Text2 { get { return ""; } }
         public int Number1 { get; set; }
+        public int? Number2 { get; set; }
         public DateTime Date1 { get; set; }
+        public byte[] Bytes { get; set; }
+        public IList<Data> List { get; set; }
 
         public override string ToString()
         {

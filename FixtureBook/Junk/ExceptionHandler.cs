@@ -20,10 +20,8 @@ namespace XPFriend.Junk
     /// <summary>
     /// 例外処理ユーティリティ。
     /// </summary>
-    internal sealed class ExceptionHandler
+    internal static class ExceptionHandler
     {
-        private ExceptionHandler() { }
-
         /// <summary>
         /// 指定された例外を無視する。
         /// </summary>

@@ -30,7 +30,8 @@ namespace XPFriend.Fixture.Cast.Temp
 
         private IObjectValidator parent;
 
-        protected ObjectValidatorBase(IObjectValidator parent) : base(Section.SectionType.ExpectedResult)
+        protected ObjectValidatorBase(IObjectValidator parent)
+            : base(Section.SectionType.ExpectedResult)
         {
             this.parent = parent;
         }
@@ -52,14 +53,14 @@ namespace XPFriend.Fixture.Cast.Temp
 
         protected virtual void ValidateInternal(object obj, string typeName, string defaultTypeName)
         {
-            if(obj == null) 
+            if (obj == null)
             {
-			    AssertNotNull(typeName);
-			    return;
+                AssertNull(typeName);
+                return;
             }
-		    Table expected;
+            Table expected;
             ICollection actual;
-		    Type type;
+            Type type;
             if (obj is Array)
             {
                 actual = (Array)obj;
@@ -74,17 +75,17 @@ namespace XPFriend.Fixture.Cast.Temp
                     break;
                 }
                 actual = ToICollection((IEnumerable)obj);
-            } 
-            else 
+            }
+            else
             {
                 ArrayList list = new ArrayList();
                 list.Add(obj);
                 actual = list;
-			    type = obj.GetType();
-    		}
+                type = obj.GetType();
+            }
             expected = GetTable(Section, type, typeName, defaultTypeName);
-		    AssertEquals(expected, actual);
-		}
+            AssertEquals(expected, actual);
+        }
 
         private ICollection ToICollection(IEnumerable obj)
         {
@@ -103,11 +104,11 @@ namespace XPFriend.Fixture.Cast.Temp
             }
         }
 
-        protected virtual void AssertNotNull(string typeName)
+        protected virtual void AssertNull(string typeName)
         {
             if (Section.HasTable(typeName))
             {
-                Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertNotNull", typeName, Section.GetTable(typeName));
+                Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertNull", typeName, Section.GetTable(typeName));
             }
         }
 
@@ -146,7 +147,7 @@ namespace XPFriend.Fixture.Cast.Temp
                     string name = column.Name;
                     string expectedPropertyValue = null;
                     expectedObject.TryGetValue(name, out expectedPropertyValue);
-                    object actualPropertyValue = GetPropertyValue(actualObject, name);
+                    object actualPropertyValue = GetPropertyValue(actualObject, name, table, row);
                     AssertEquals(table, row, name, expectedPropertyValue, actualPropertyValue);
                 }
             }
@@ -237,7 +238,7 @@ namespace XPFriend.Fixture.Cast.Temp
                     return false;
                 }
             }
-            
+
             return true;
         }
 
@@ -248,18 +249,18 @@ namespace XPFriend.Fixture.Cast.Temp
                     "M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, expected, actualAsText, GetType(actualBytes));
         }
 
-        protected virtual bool AssertEqualsByRegex(Table table, Row row, string columnName, 
+        protected virtual bool AssertEqualsByRegex(Table table, Row row, string columnName,
             string expected, string actual)
         {
             if (expected.Length > 2 && expected.StartsWith("`") && expected.EndsWith("`"))
-            {   
+            {
                 String regex = expected.Substring(1, expected.Length - 2);
                 return Regex.IsMatch(actual, regex);
             }
             return false;
         }
 
-        protected virtual bool AssertEqualsAsDate(Table table, Row row, string columnName, 
+        protected virtual bool AssertEqualsAsDate(Table table, Row row, string columnName,
             string expected, object actual)
         {
             if (expected.IndexOf(TODAY) > -1 && (actual is DateTime || actual is DateTimeOffset))
@@ -291,7 +292,7 @@ namespace XPFriend.Fixture.Cast.Temp
             return actual.ToString(TypeConverter.GetDateTimeFormat(expected), null);
         }
 
-        protected virtual bool AssertPartialEquality(Table table, Row row, string columnName, 
+        protected virtual bool AssertPartialEquality(Table table, Row row, string columnName,
             string expected, string actual)
         {
             if ("%".Equals(expected))
@@ -319,7 +320,7 @@ namespace XPFriend.Fixture.Cast.Temp
             return expected.Equals(actual);
         }
 
-        protected virtual bool AssertNestedObject(Table table, Row row, string columnName, 
+        protected virtual bool AssertNestedObject(Table table, Row row, string columnName,
             string expected, object actual)
         {
             if (!Section.HasTable(expected))
@@ -330,60 +331,61 @@ namespace XPFriend.Fixture.Cast.Temp
             return true;
         }
 
-        protected virtual bool AssertNotEmpty(Table table, Row row, string columnName, 
+        protected virtual bool AssertNotEmpty(Table table, Row row, string columnName,
             string expected, object actual)
         {
-		    if("*".Equals(expected)) 
+            if ("*".Equals(expected))
             {
-			    if(actual != null) 
+                if (actual != null)
                 {
-				    if(!(actual is string)) 
+                    if (!(actual is string))
                     {
-					    return true;
-				    }
-				    if(!Strings.IsEmpty((string)actual)) 
+                        return true;
+                    }
+                    if (!Strings.IsEmpty((string)actual))
                     {
-					    return true;
-				    }
-			    }
+                        return true;
+                    }
+                }
                 Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, "*", ToStringInternal(actual), GetType(actual));
-		    }
-		    return false;
+            }
+            return false;
         }
 
-        protected virtual bool AssertEmpty(Table table, Row row, string columnName, 
+        protected virtual bool AssertEmpty(Table table, Row row, string columnName,
             string expected, object actual)
         {
-		    if(Strings.IsEmpty(expected)) 
+            if (Strings.IsEmpty(expected))
             {
-			    if(actual == null) 
+                if (actual == null)
                 {
-				    return true;
-			    }
-			    if(actual is string && Strings.IsEmpty((string)actual)) {
-				    return true;
-			    }
+                    return true;
+                }
+                if (actual is string && Strings.IsEmpty((string)actual))
+                {
+                    return true;
+                }
                 Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, "", actual, GetType(actual));
-		    }
+            }
 
-		    if(NULL.Equals(expected)) 
+            if (NULL.Equals(expected))
             {
-			    if(actual != null) 
+                if (actual != null)
                 {
                     Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, NULL, actual, GetType(actual));
-			    }
-			    return true;
-		    }
+                }
+                return true;
+            }
 
-		    if(EMPTY.Equals(expected)) 
+            if (EMPTY.Equals(expected))
             {
-			    if(actual == null || !(actual is string) || ((string)actual).Length > 0) 
+                if (actual == null || !(actual is string) || ((string)actual).Length > 0)
                 {
-				    Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, EMPTY, ToStringInternal(actual), GetType(actual));
-			    }
-			    return true;
-		    }
-		    return false;
+                    Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, EMPTY, ToStringInternal(actual), GetType(actual));
+                }
+                return true;
+            }
+            return false;
         }
 
         private object ToStringInternal(object actual)
@@ -395,8 +397,8 @@ namespace XPFriend.Fixture.Cast.Temp
             return actual.ToString();
         }
 
-        protected abstract object GetPropertyValue(object obj, string name);
-    
+        protected abstract object GetPropertyValue(object obj, string name, Table table, Row row);
+
         public virtual void Validate<TException>(Action action, string typeName) where TException : Exception
         {
             throw new NotImplementedException();

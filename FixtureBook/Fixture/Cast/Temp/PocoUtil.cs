@@ -16,6 +16,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using XPFriend.Fixture.Staff;
+using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -43,7 +45,7 @@ namespace XPFriend.Fixture.Cast.Temp
     {
         private Dictionary<Type, Properties> properties = new Dictionary<Type,Properties>();
 
-        public Properties this[Type type]
+        private Properties this[Type type]
         {
             get {
                 Properties p = null;
@@ -57,5 +59,18 @@ namespace XPFriend.Fixture.Cast.Temp
                 return p; 
             }
         }
+
+        public PropertyInfo GetPropertyInfo(string columnName, Type type, Table table, Row row)
+        {
+            try
+            {
+                return this[type][columnName];
+            }
+            catch (Exception e)
+            {
+                throw new ConfigException(e, "M_Fixture_Temp_ObjectFactory_NoSuchProperty", columnName, type, table, row);
+            }
+        }
+
     }
 }

@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using XPFriend.Fixture.Role;
+using XPFriend.Fixture.Staff;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -45,28 +46,18 @@ namespace XPFriend.Fixture.Cast.Temp
                 {
                     return false;
                 }
-                return IsDictionary0(list[0]);
+                return IsDictionaryInternal(list[0]);
             }
 
-            if (obj is Array)
-            {
-                Array array = (Array)obj;
-                if (array.Length == 0)
-                {
-                    return false;
-                }
-                return IsDictionary0(array.GetValue(0));
-            }
-
-            return IsDictionary0(obj);
+            return IsDictionaryInternal(obj);
         }
 
-        private bool IsDictionary0(object obj)
+        private bool IsDictionaryInternal(object obj)
         {
             return obj is IDictionary;
         }
 
-        protected override object GetPropertyValue(object obj, string name)
+        protected override object GetPropertyValue(object obj, string name, Table table, Row row)
         {
             IDictionary dictionary = (IDictionary)obj;
             if (!dictionary.Contains(name))

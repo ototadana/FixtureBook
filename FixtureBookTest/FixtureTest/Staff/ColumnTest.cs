@@ -16,6 +16,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using XPFriend.Fixture.Staff;
+using System.Collections.Generic;
 
 namespace XPFriend.FixtureTest.Staff
 {
@@ -101,13 +102,37 @@ namespace XPFriend.FixtureTest.Staff
         }
 
         [TestMethod]
-        public void は列名と列要素タイプのみが指定されている場合には列名コロン列要素タイプ大カッコ型式の文字列を返す()
+        public void ToStringは列名と列要素タイプのみが指定されている場合には列名コロン列要素タイプ大カッコ型式の文字列を返す()
         {
             // when
             Column column = new Column("x", null, "ct");
 
             // then
             Assert.AreEqual("x:ct[]", column.ToString());
+        }
+
+        [TestMethod]
+        public void SetTypeはColumnの型を指定できる()
+        {
+            // expect
+            SetTypeはColumnの型を指定できる(typeof(string), "System.String", null);
+            SetTypeはColumnの型を指定できる(typeof(string[]), null, "System.String");
+            SetTypeはColumnの型を指定できる(typeof(List<string>), "System.Collections.Generic.List`1[System.String]", "System.String");
+            SetTypeはColumnの型を指定できる(typeof(Dictionary<string, string>), "System.Collections.Generic.Dictionary`2[System.String,System.String]", "System.String,System.String");
+        }
+
+        private void SetTypeはColumnの型を指定できる(Type type, string typeText, string componentType)
+        {
+            // setup
+            Column column = new Column("x", null, null);
+
+            // when
+            column.SetType(type);
+
+            // then
+            Console.WriteLine(column);
+            Assert.AreEqual(typeText, column.Type);
+            Assert.AreEqual(componentType, column.ComponentType);
         }
     }
 }

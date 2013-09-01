@@ -21,11 +21,9 @@ namespace XPFriend.Junk
     /// <summary>
     /// 書式を使った文字列とオブジェクトとのコンバータ。
     /// </summary>
-    internal sealed class Formi
+    internal static class Formi
     {
         private static Formatter instance = Formatter.Instance;
-
-        private Formi() { }
 
         /// <summary>
         /// デフォルトの日時書式。

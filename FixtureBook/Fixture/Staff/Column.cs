@@ -87,7 +87,7 @@ namespace XPFriend.Fixture.Staff
             }
             else
             {
-                if (type.IsGenericTypeDefinition)
+                if (type.IsGenericType)
                 {
                     this.componentType = Join(type.GetGenericArguments());
                 }
@@ -100,11 +100,11 @@ namespace XPFriend.Fixture.Staff
             StringBuilder value = new StringBuilder();
             foreach (Type type in types)
             {
-                if (value.Length == 0)
+                if (value.Length > 0)
                 {
                     value.Append(",");
                 }
-                value.Append(value);
+                value.Append(type);
             }
             return value.ToString();
         }

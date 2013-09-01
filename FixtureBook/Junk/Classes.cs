@@ -21,11 +21,9 @@ namespace XPFriend.Junk
     /// <summary>
     /// クラス管理。
     /// </summary>
-    internal sealed class Classes
+    internal static class Classes
     {
         private static ClassManager instance = new ClassManager();
-
-        private Classes() { }
 
         /// <summary>
         /// ある基底クラスの実装クラスを設定する。

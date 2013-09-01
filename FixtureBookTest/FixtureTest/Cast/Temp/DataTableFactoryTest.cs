@@ -63,6 +63,18 @@ namespace XPFriend.FixtureTest.Cast.Temp
             Validate(dataTable);
         }
 
+        [TestMethod]
+        [Fixture("DataTableFactoryTest", "GetObjectは指定された名前の定義を読み込んでオブジェクト作成する")]
+        public void GetListは指定された名前の定義を読み込んでリスト作成する()
+        {
+            // when
+            List<DataTable> dataTable = fixtureBook.GetList<DataTable>("Data");
+
+            // then
+            Assert.AreEqual(1, dataTable.Count);
+            Validate(dataTable[0]);
+        }
+
         internal static void Validate(DataTable dataTable)
         {
             Assert.AreEqual(2, dataTable.Rows.Count);

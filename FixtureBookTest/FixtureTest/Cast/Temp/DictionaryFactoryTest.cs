@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using XPFriend.Fixture;
 using XPFriend.Fixture.Cast.Temp;
 using XPFriend.Fixture.Staff;
+using XPFriend.FixtureTest.Cast.Temp.Datas;
 
 namespace XPFriend.FixtureTest.Cast.Temp
 {
@@ -165,6 +166,24 @@ namespace XPFriend.FixtureTest.Cast.Temp
             Assert.AreEqual("002", detail[1]["detailNo"]);
             Assert.AreEqual("X02", detail[1]["itemCd"]);
             Assert.AreEqual(20, detail[1]["qty"]);
+        }
+
+        [TestMethod]
+        public void 親子構造になったデータを取得できる2()
+        {
+            // when
+            Dictionary<string, object> order = fixtureBook.GetObject<Dictionary<string, object>>("Order");
+
+            // then
+            Assert.AreEqual("H001", order["orderNo"]);
+
+            Customer customerInfo = (Customer)order["customerInfo"];
+            Assert.AreEqual("C001", customerInfo.Code);
+
+            List<OrderDetail> detail = (List<OrderDetail>)order["detail"];
+            Assert.AreEqual(2, detail.Count);
+            Assert.AreEqual("001", detail[0].DetailNo);
+            Assert.AreEqual("002", detail[1].DetailNo);
         }
 
         [TestMethod]

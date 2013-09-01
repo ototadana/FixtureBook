@@ -173,6 +173,7 @@ namespace XPFriend.Fixture
             book = Book.GetInstance(fixtureInfo.FilePath);
             sheet = book.GetSheet(fixtureInfo.SheetName);
             testCase = sheet.GetCase(fixtureInfo.TestCaseName);
+            Loggi.Debug("FixtureBook : Case : " + testCase);
         }
 
         /// <summary>

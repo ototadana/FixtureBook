@@ -66,6 +66,7 @@
     <Compile Include="FixtureTest\Cast\Temp\Datas\Data.cs" />
     <Compile Include="FixtureTest\Cast\Temp\Datas\Order.cs" />
     <Compile Include="FixtureTest\Cast\Temp\Datas\OrderDetail.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\Datas\OrderDetails.cs" />
     <Compile Include="FixtureTest\Cast\Temp\DataTableFactoryTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\DataTableValidatorTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\DictionaryFactoryTest.cs" />
@@ -74,6 +75,9 @@
     <Compile Include="FixtureTest\Cast\Temp\PocoValidatorTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\TempActors.cs" />
     <Compile Include="FixtureTest\Cast\Temp\TempConductorTest.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\ObjectValidatorBaseTest.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\ObjectFactoryBaseTest.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\AssertieTest.cs" />
     <Compile Include="FixtureTest\FixtureBookAttributeTest.cs" />
     <Compile Include="FixtureTest\FixtureBookTest.cs" />
     <Compile Include="FixtureTest\Staff\BookTest.cs" />
@@ -84,12 +88,15 @@
     <Compile Include="FixtureTest\Staff\SheetTest.cs" />
     <Compile Include="FixtureTest\Staff\TableTest.cs" />
     <Compile Include="FixtureTest\Staff\TestUtil.cs" />
+    <Compile Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.cs" />
+    <Compile Include="FixtureTest\Staff\Xlsx\XlsxUtilTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxAuthorTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxSharedStringsTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxStylesTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxTestUtil.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxWorkbookTest.cs" />
     <Compile Include="FixtureTest\Toolkit\CallerFinderTest.cs" />
+    <Compile Include="FixtureTest\Toolkit\PathUtilTest.cs" />
     <Compile Include="JunkTest\ClassesTest.cs" />
     <Compile Include="JunkTest\ConfigExceptionTest.cs" />
     <Compile Include="JunkTest\ConfigTest.cs" />
@@ -110,6 +117,7 @@
   <ItemGroup>
     <Content Include="FixtureTest\Cast\Temp\DatabaseUpdaterTest.txt" />
     <Content Include="FixtureTest\Cast\Temp\DatabaseValidatorTest.txt" />
+    <Content Include="FixtureTest\Cast\Temp\ObjectValidatorBaseTest.txt" />
     <Content Include="FixtureTest\Staff\Xlsx\sample1\sharedStrings.xml" />
     <Content Include="FixtureTest\Staff\Xlsx\sample1\sheet1.xml" />
     <Content Include="FixtureTest\Staff\Xlsx\sample1\sheet2.xml" />
@@ -137,10 +145,13 @@
     <None Include="FixtureTest\Cast\Temp\PocoValidatorTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\TempActors.xlsx" />
     <None Include="FixtureTest\Cast\Temp\DataTableFactoryTest.xlsx" />
+    <None Include="FixtureTest\Cast\Temp\ObjectValidatorBaseTest.xlsx" />
+    <None Include="FixtureTest\Cast\Temp\ObjectFactoryBaseTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest.xlsx" />
     <None Include="FixtureTest\FixtureBookTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest_02.xlsx" />
     <None Include="FixtureTest\Staff\BookTest.xlsx" />
+    <None Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\sample1.xlsx" />
   </ItemGroup>
   <ItemGroup />

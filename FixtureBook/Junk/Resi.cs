@@ -22,7 +22,7 @@ namespace XPFriend.Junk
     /// <summary>
     /// リソース管理。
     /// </summary>
-    internal sealed class Resi
+    internal static class Resi
     {
         private static ResourceProvider provider = ResourceProvider.Instance;
 
@@ -30,8 +30,6 @@ namespace XPFriend.Junk
         {
             Add(Properties.Resources.ResourceManager);
         }
-
-        private Resi() {}
 
         /// <summary>
         /// 指定した ResourceManager のリソースを管理対象として追加する。

@@ -27,7 +27,7 @@ namespace XPFriend.Fixture.Cast.Temp
     /// </summary>
     internal class PocoFactory : ObjectFactoryBase, IObjectFactory
     {
-        private PocoUtil propertiesUtil = new PocoUtil();
+        private PocoUtil pocoUtil = new PocoUtil();
 
         public PocoFactory(TempObjectFactory parent) : base(parent) { }
 
@@ -54,7 +54,7 @@ namespace XPFriend.Fixture.Cast.Temp
             string name = column.Name;
             string textValue = GetValue(row, name);
             Type type = obj.GetType();
-            PropertyInfo property = GetPropertyInfo(name, type, table, row);
+            PropertyInfo property = pocoUtil.GetPropertyInfo(name, type, table, row);
             object value = ToObject(name, property.PropertyType, GetComponentType(property), textValue, table, row);
             SetProperty<T>(obj, property, value, name, type, table, row);
         }
@@ -68,18 +68,6 @@ namespace XPFriend.Fixture.Cast.Temp
             catch (Exception e)
             {
                 throw new ConfigException(e, "M_Fixture_Temp_ObjectFactory_SetProperty", columnName, type, table, row, value);
-            }
-        }
-
-        private PropertyInfo GetPropertyInfo(string columnName, Type type, Table table, Row row)
-        {
-            try
-            {
-                return propertiesUtil[type][columnName];
-            }
-            catch (Exception e)
-            {
-                throw new ConfigException(e, "M_Fixture_Temp_ObjectFactory_NoSuchProperty", columnName, type, table, row);
             }
         }
 

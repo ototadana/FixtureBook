@@ -21,11 +21,9 @@ namespace XPFriend.Junk
     /// <summary>
     /// ロギング。
     /// </summary>
-    internal sealed class Loggi
+    internal static class Loggi
     {
         private static LoggiLogger logger = LoggiLogger.Instance;
-
-        private Loggi() {}
 
         /// <summary>
         /// デバッグレベルのログ出力を行なう。

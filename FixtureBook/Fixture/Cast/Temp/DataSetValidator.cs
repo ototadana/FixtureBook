@@ -42,8 +42,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
             if (dataSet.Tables.Count < typeName.Length)
             {
-                Assertie.AreEqual(typeName.Length, dataSet.Tables.Count, 
-                    "M_Fixture_Temp_ObjectValidator_AssertTableNumberExp", 
+                Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertTableNumberExp", 
                     ToStringInternal(typeName), ToStringInternal(dataSet.Tables), Section);
             }
 
@@ -68,8 +67,8 @@ namespace XPFriend.Fixture.Cast.Temp
             else if (dataSet.Tables.Count > Section.TableNames.Count)
             {
                 Assertie.Fail(
-                    "M_Fixture_Temp_ObjectValidator_AssertTableNumberImp", 
-                    dataSet.Tables.Count, Section.TableNames.Count, Section);
+                    "M_Fixture_Temp_ObjectValidator_AssertTableNumberImp",
+                    Section.TableNames.Count, dataSet.Tables.Count, Section);
             }
             else
             {
@@ -78,6 +77,7 @@ namespace XPFriend.Fixture.Cast.Temp
                 for(int i = 0; i < dataSet.Tables.Count; i++) 
                 {
                     Loggi.Warn("DataSet.Table[" + i + "] = " + Section.TableNames[i]);
+                    tableNames.Add(Section.TableNames[i]);
                 }
             }
             return tableNames.ToArray();

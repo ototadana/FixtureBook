@@ -24,11 +24,21 @@ namespace XPFriend.FixtureTest
 
         [TestMethod]
         [FixtureBook(@"FixtureTest\FixtureBookAttributeTest_02.xlsx")]
-        public void テストメソッドでFixtureBookのパスを上書きできること()
+        private void テストメソッドでFixtureBookのパスを上書きできること()
         {
             // expect
             Assert.AreEqual("DEF", new FixtureBook().GetObject<FixtureBookAttributeTestData>().Text);
         }
+
+        [TestMethod]
+        [FixtureBook(@"..\..\FixtureTest\FixtureBookAttributeTest_02.xlsx")]
+        [Fixture("FixtureBookAttributeTest", "テストメソッドでFixtureBookのパスを上書きできること")]
+        public void binフォルダからの相対パス指定ができること()
+        {
+            // expect
+            Assert.AreEqual("DEF", new FixtureBook().GetObject<FixtureBookAttributeTestData>().Text);
+        }
+
     }
 
     public class FixtureBookAttributeTestData

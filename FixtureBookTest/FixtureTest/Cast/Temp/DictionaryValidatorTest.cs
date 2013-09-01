@@ -59,6 +59,47 @@ namespace XPFriend.FixtureTest.Cast.Temp
             fixtureBook.Validate(actual, "Data");
         }
 
+        [TestMethod]
+        [Fixture("DictionaryValidatorTest", "Validateは指定されたオブジェクトが予想結果と等しいかどうかを調べる")]
+        public void Validateは指定されたリストが予想結果と等しいかどうかを調べる()
+        {
+            // setup
+            List<Dictionary<string, object>> actual = fixtureBook.GetList<Dictionary<string, object>>("Data");
+
+            // expect
+            fixtureBook.Validate(actual, "Data");
+        }
+
+        [TestMethod]
+        [Fixture("DictionaryValidatorTest", "Validateは指定されたオブジェクトが予想結果と等しいかどうかを調べる")]
+        public void Validateは指定された配列が予想結果と等しいかどうかを調べる()
+        {
+            // setup
+            Dictionary<string, object>[] actual = fixtureBook.GetArray<Dictionary<string, object>>("Data");
+
+            // expect
+            fixtureBook.Validate(actual, "Data");
+        }
+
+        [TestMethod]
+        public void DictionaryValidatorはValidate_Exceptionメソッドの実行はできない()
+        {
+            // setup
+            Sheet sheet = TempActors.Book.GetSheet("HasRole");
+            DictionaryValidator validator = GetDictionaryValidator(sheet.GetCase("ロールなし"));
+
+            // expect
+            try
+            {
+                validator.Validate<Exception>(() => { }, null);
+                throw new Exception("ここにはこない");
+            }
+            catch (NotImplementedException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         private DictionaryValidator GetDictionaryValidator(Case testCase)
         {
             TempObjectValidator parent = new TempObjectValidator();

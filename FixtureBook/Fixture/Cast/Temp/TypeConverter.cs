@@ -210,7 +210,7 @@ namespace XPFriend.Fixture.Cast.Temp
             {
                 return new Guid(textValue);
             }
-            return Convert.ChangeType(textValue, type);
+            return Convert.ChangeType(textValue, Nullable.GetUnderlyingType(type) ?? type);
         }
     }
 

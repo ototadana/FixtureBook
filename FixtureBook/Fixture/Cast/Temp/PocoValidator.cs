@@ -16,6 +16,7 @@
 using System;
 using System.Reflection;
 using XPFriend.Fixture.Role;
+using XPFriend.Fixture.Staff;
 using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
@@ -25,7 +26,7 @@ namespace XPFriend.Fixture.Cast.Temp
     /// </summary>
     internal class PocoValidator : ObjectValidatorBase, IObjectValidator
     {
-        private PocoUtil propertiesUtil = new PocoUtil();
+        private PocoUtil pocoUtil = new PocoUtil();
 
         public PocoValidator(IObjectValidator parent) : base(parent) { }
 
@@ -34,24 +35,30 @@ namespace XPFriend.Fixture.Cast.Temp
             return Section != null && Section.HasTable();
         }
 
-        protected override object GetPropertyValue(object obj, string name)
+        protected override object GetPropertyValue(object obj, string name, Table table, Row row)
         {
             Type type = obj.GetType();
-            PropertyInfo property = propertiesUtil[type][name];
+            PropertyInfo property = pocoUtil.GetPropertyInfo(name, type, table, row);
             return property.GetValue(obj, null);
         }
 
         public override void Validate<TException>(Action action, string typeName)
         {
+            bool isNormalEnd = false;
             try
             {
                 action();
-                Assertie.Fail("M_Fixture_Temp_ObjectValidator_Exception", typeof(TException).Name);
+                isNormalEnd = true;
             }
             catch (TException e)
             {
                 Loggi.Debug(e);
                 Validate(e, typeName);
+            }
+
+            if (isNormalEnd)
+            {
+                Assertie.Fail("M_Fixture_Temp_ObjectValidator_Exception", typeof(TException).Name);
             }
         }
 

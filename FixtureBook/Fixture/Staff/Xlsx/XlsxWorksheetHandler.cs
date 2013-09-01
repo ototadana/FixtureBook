@@ -55,7 +55,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
 
         internal void Parse(Stream stream)
         {
-            XlsxUtil.Load(stream, HandleStartElement, HandleEndElement, handleText);
+            XlsxUtil.Load(stream, HandleStartElement, HandleEndElement, HandleText);
         }
 
         private void HandleStartElement(XmlTextReader reader)
@@ -96,7 +96,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
                     formatIndex = -1;
                 }
 
-		    } 
+	        } 
         }
 
         private bool IsTextTag(string name)
@@ -109,11 +109,11 @@ namespace XPFriend.Fixture.Staff.Xlsx
             if (IsTextTag(reader.Name))
             {
                 vIsOpen = false;
-                output(cellRef, getValue());
+                Output(cellRef, GetValue());
             }
         }
 
-        private void output(string cellReference, string formattedValue) 
+        private void Output(string cellReference, string formattedValue) 
         {
 		    if (cellParser.DebugEnabled) {
                 Loggi.Debug("[" + cellReference + "]" + formattedValue);                
@@ -152,7 +152,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
             return value - 1;
         }
          
-        private string getValue()
+        private string GetValue()
         {
             if (dataType == DataType.Boolean)
             {
@@ -197,7 +197,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
             }
         }
 
-        private void handleText(XmlTextReader reader)
+        private void HandleText(XmlTextReader reader)
         {
             if (vIsOpen)
             {

@@ -21,11 +21,9 @@ namespace XPFriend.Junk
     /// <summary>
     /// アプリケーション設定情報管理。
     /// </summary>
-    internal sealed class Config
+    internal static class Config
     {
         private static ConfigManager instance = ConfigManager.Instance;
-
-        private Config() { }
 
         /// <summary>
         /// 指定された設定項目名で値を設定する。

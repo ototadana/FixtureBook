@@ -126,6 +126,7 @@ namespace XPFriend.JunkTest
 
             // then
             Assert.AreEqual("xxx", Config.Get("aaa", null));
+            Assert.AreEqual("xxx", Config.Get("aaa"));
         }
 
         [TestMethod]

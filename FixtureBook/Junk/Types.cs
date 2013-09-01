@@ -18,7 +18,7 @@ using System.Reflection;
 
 namespace XPFriend.Junk
 {
-    internal class Types
+    internal static class Types
     {
         /// <summary>
         /// 指定された名前のタイプを取得する。

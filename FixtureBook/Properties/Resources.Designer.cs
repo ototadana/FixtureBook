@@ -299,7 +299,7 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
-        ///   {4}行目で列{0}に指定された &quot;{1}&quot; を {2}型に変換できません。（{3}） に類似しているローカライズされた文字列を検索します。
+        ///   {4}行目で列 {0} に指定された &quot;{1}&quot; を {2}型に変換できません。（{3}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Temp_ObjectFactory_ConvertError {
             get {
@@ -355,14 +355,14 @@ namespace XPFriend.Properties {
         /// <summary>
         ///   テーブル定義「{0}」が定義されていますが、実際の値は null でした。（{1}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string M_Fixture_Temp_ObjectValidator_AssertNotNull {
+        internal static string M_Fixture_Temp_ObjectValidator_AssertNull {
             get {
-                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertNotNull", resourceCulture);
+                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」でした。（{2}） に類似しているローカライズされた文字列を検索します。
+        ///   引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」しかありませんでした。（{2}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberExp {
             get {
@@ -371,7 +371,7 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
-        ///   テーブル定義名が明示的に指定されなかったため、全テーブルを検証しようとしましたが、「E.取得データ」のテーブル定義の数({0})が DataSet.Tables の数({1})よりも少なかったため、検証できませんでした。 ({2}) に類似しているローカライズされた文字列を検索します。
+        ///   テーブル定義名が明示的に指定されなかったため、DataSet の全 DataTable を検証しようとしましたが、「E.取得データ」のテーブル定義の数({0})が DataSet に含まれる DataTable の数({1})よりも少なかったため、検証できませんでした。 ({2}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberImp {
             get {

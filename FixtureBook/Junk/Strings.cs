@@ -18,10 +18,8 @@ namespace XPFriend.Junk
     /// <summary>
     /// 文字列関連ユーティリティ。
     /// </summary>
-    internal sealed class Strings
+    internal static class Strings
     {
-        private Strings() { }
-
         /// <summary>
         /// 指定された文字列が null または長さゼロであれば true を返す。
         /// </summary>
