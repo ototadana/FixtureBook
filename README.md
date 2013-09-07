@@ -7,7 +7,6 @@ FixtureBook とは
 
 FixtureBook とは単体テストで使用するデータを .xlsx ファイルに記述できるようにするための仕組みです。
 
-
 機能
 ----
 
@@ -19,7 +18,51 @@ FixtureBook を使うと、.xlsx ファイル上に記述した以下のよう�
 *   テスト後のDBテーブルのあるべき状態を表すデータ。
 
 
-セットアップ方法
+どんなアプリに使える？
+----------------------
+
+Webアプリケーションのバックエンドロジック等、
+データベースの入出力を中心としたクラスのテストに向いています。
+
+
+特徴
+----
+
+#### テストコードが非常にシンプル
+
+テストコードが非常にシンプルになります。
+
+```c#
+    FixtureBook.ExpectReturn((Employee parameter) => dao.GetEmployees(parameter));
+```
+
+この1行のコードで、
+
+1.  データベースに必要なデータをセットアップし、
+2.  parameter オブジェクトを作成し、
+3.  `dao.GetEmployees(parameter)` を実行し、
+4.  その戻り値を予想結果と比較する
+
+という処理が行えます。
+
+
+
+#### 設定が簡単
+
+1.  NuGet でインストールして、
+2.  App.config に [データベースへの接続設定をする](./Document/Tutorial-Setup.md) 
+
+だけで使い始められます。
+
+
+
+#### APIがシンプル
+
+利用するのは `FixtureBook` クラスだけです。
+
+
+
+インストール方法
 ----------------
 
 [NuGet](https://www.nuget.org/packages/FixtureBook/) でインストールするのが簡単です。
@@ -130,6 +173,9 @@ FixtureBook 利用例
 >戻り値をチェックしない場合には `Expect`、
 >例外発生をチェックしたい場合には `ExpectThrown` が利用可能です。
 
+>Excelシート名とテストクラス名が同じ場合は、`Excelシート名__テストケース記述` というテストメソッド名の代わりに
+>`テストケース記述` というふうに Excel シート名を省略した形のメソッド名にすることもできます。
+
 
 FixtureBook クラスのメソッド
 ----------------------------
@@ -148,12 +194,12 @@ FixtureBook 属性と Fixture 属性
 -------------------------------
 
 以下のように、クラスまたはメソッドに `[FixtureBook]` 属性を指定すると、
-利用する .xlsx ファイルのパスが指定できます。
+利用する .xlsx ファイルのパスを明示的に指定できます。
 
 ```c#
     [TestClass]
-    [FixtureBook("Examples/RetireHandler.xlsx")]
-    public class RetireHandlerTest
+    [FixtureBook("Test/More/EmployeeStoreTest_02.xlsx")]
+    public class EmployeeStoreTest
 ```
 
 `[FixtureBook]` 属性がクラスとメソッドの両方に付いている場合は、
@@ -165,7 +211,7 @@ FixtureBook 属性と Fixture 属性
 
 ```c#
     [TestMethod]
-    [Fixture("UpdateRetire", "年齢が60才以上ならば退職フラグをtrueにして名前を消去する")]
+    [Fixture("GetEmployees", "引数の退職フラグがtrueの場合データベーステーブルEmployees上の退職者のみが取得できる")]
     public void TestMethod1()
 ```
 
