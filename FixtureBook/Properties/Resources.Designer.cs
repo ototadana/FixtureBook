@@ -178,6 +178,24 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
+        ///   指定されたインデックス ({0}) の引数はありません。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_Conductor_InvalidParameterIndex {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_Conductor_InvalidParameterIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Expect / ExpectReturn / ExpectThrown が実行されていません。これらのいずれかのメソッドの実行後に {0} を呼び出してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_Conductor_InvalidStatus {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_Conductor_InvalidStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   DBテーブル「{0}」へのデータ登録に失敗しました。（{1}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Temp_Database_CreateInsertCommand {

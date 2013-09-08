@@ -298,5 +298,38 @@ namespace XPFriend.Fixture.Staff
         {
             dressingRoom.Conductor.ExpectThrown<TException>(action, types);
         }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した際の引数を取得する。
+        /// </summary>
+        /// <typeparam name="T">取得する引数の型</typeparam>
+        /// <param name="index">取得する引数のインデックス</param>
+        /// <returns>引数の値</returns>
+        public T GetParameterAt<T>(int index)
+        {
+            return dressingRoom.Conductor.GetParameterAt<T>(index);
+        }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した際の引数の値を
+        /// 「E.取得データ」に記述された値と同じかどうかを検証する。
+        /// このメソッドでは、「E.取得データ」のテーブル定義名は「D.パラメタ」の定義名と同じものとみなされる。
+        /// </summary>
+        /// <param name="index">検証する引数のインデックス</param>
+        public void ValidateParameterAt(int index)
+        {
+            dressingRoom.Conductor.ValidateParameterAt(index);
+        }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した際の引数の値を
+        /// 「E.取得データ」に記述された値と同じかどうかを検証する。
+        /// </summary>
+        /// <param name="index">検証する引数のインデックス</param>
+        /// <param name="name">テーブル定義名</param>
+        public void ValidateParameterAt(int index, string name)
+        {
+            dressingRoom.Conductor.ValidateParameterAt(index, name);
+        }
     }
 }

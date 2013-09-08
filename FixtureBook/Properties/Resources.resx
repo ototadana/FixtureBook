@@ -156,6 +156,12 @@
   <data name="M_Fixture_Sheet_GetCase" xml:space="preserve">
     <value>テストケース 「{0}」はシート「{1}」に存在しません</value>
   </data>
+  <data name="M_Fixture_Temp_Conductor_InvalidParameterIndex" xml:space="preserve">
+    <value>指定されたインデックス ({0}) の引数はありません。</value>
+  </data>
+  <data name="M_Fixture_Temp_Conductor_InvalidStatus" xml:space="preserve">
+    <value>Expect / ExpectReturn / ExpectThrown が実行されていません。これらのいずれかのメソッドの実行後に {0} を呼び出してください。</value>
+  </data>
   <data name="M_Fixture_Temp_DatabaseConnection_NoConnectionSettings" xml:space="preserve">
     <value>データベース接続設定がありません。
 App.config ファイルを作成し、以下のように connectionStrings の設定を行ってください。

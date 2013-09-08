@@ -541,6 +541,74 @@ namespace XPFriend.FixtureTest
                 Assert.IsTrue(e.Message.IndexOf("<zzt>") > -1);
             }
         }
+
+        [TestMethod]
+        [Fixture("ValidateParameter", "GetParameterAtおよびValidateParameterAtのテスト")]
+        public void GetParameterAtは指定したインデックスの引数を取得する()
+        {
+            // setup
+            FixtureBookTestData[] data = new FixtureBookTestData[4];
+            FixtureBook fixtureBook = FixtureBook.Expect((FixtureBookTestData p1, FixtureBookTestData p2,
+                FixtureBookTestData p3, FixtureBookTestData p4) => 
+            {
+                data[0] = p1;
+                data[1] = p2;
+                data[2] = p3;
+                data[3] = p4;
+            });
+
+            // expect
+            Assert.AreSame(data[0], fixtureBook.GetParameterAt<FixtureBookTestData>(0));
+            Assert.AreSame(data[1], fixtureBook.GetParameterAt<FixtureBookTestData>(1));
+            Assert.AreSame(data[2], fixtureBook.GetParameterAt<FixtureBookTestData>(2));
+            Assert.AreSame(data[3], fixtureBook.GetParameterAt<FixtureBookTestData>(3));
+            Assert.AreEqual("abc", fixtureBook.GetParameterAt<FixtureBookTestData>(0).Text);
+            Assert.AreEqual("def", fixtureBook.GetParameterAt<FixtureBookTestData>(1).Text);
+            Assert.AreEqual("ghi", fixtureBook.GetParameterAt<FixtureBookTestData>(2).Text);
+            Assert.AreEqual("jkl", fixtureBook.GetParameterAt<FixtureBookTestData>(3).Text);
+        }
+
+        [TestMethod]
+        [Fixture("ValidateParameter", "GetParameterAtおよびValidateParameterAtのテスト")]
+        public void ValidateParameterAtは指定したインデックスの引数を検証する() 
+        {
+            // setup
+            FixtureBook fixtureBook = FixtureBook.Expect((FixtureBookTestData p1, FixtureBookTestData p2,
+                FixtureBookTestData p3, FixtureBookTestData p4) => {});
+
+            // expect : normal
+            fixtureBook.ValidateParameterAt(0);
+            fixtureBook.ValidateParameterAt(1, 2, 3);
+            
+
+            fixtureBook.ValidateParameterAt(0, "Parameter1");
+            fixtureBook.ValidateParameterAt(1, "Parameter2").
+                ValidateParameterAt(2, "Parameter3").
+                ValidateParameterAt(3, "Parameter4");
+
+            // expect : error
+            try
+            {
+                fixtureBook.ValidateParameterAt(0, "Parameter2");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e.Message);
+                Assert.IsTrue(e.Message.IndexOf("<abc>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<def>") > -1);
+            }
+
+            // expect : error
+            try
+            {
+                fixtureBook.ValidateParameterAt(0, "xxx");
+            }
+            catch (ConfigException e)
+            {
+                Console.WriteLine(e.Message);
+                Assert.IsTrue(e.Message.IndexOf("xxx") > -1);
+            }
+        }
     }
 
     public class FixtureBookTestData

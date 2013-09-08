@@ -456,5 +456,39 @@ namespace XPFriend.FixtureTest.Cast.Temp
                 Assert.IsTrue(e.Message.IndexOf("<def>") > -1);
             }
         }
+
+        [TestMethod]
+        public void ValidateParameter__Expect系メソッドを呼ぶ前にGetParamterAtメソッドを呼ぶと例外が発生する()
+        {
+            // expect
+            new FixtureBook().Validate<ConfigException>(() => new FixtureBook().GetParameterAt<string>(0));
+        }
+
+        [TestMethod]
+        public void ValidateParameter__Expect系メソッドを呼ぶ前にValidateParamterAtメソッドを呼ぶと例外が発生する()
+        {
+            // expect
+            new FixtureBook().Validate<ConfigException>(() => new FixtureBook().ValidateParameterAt(0));
+            new FixtureBook().Validate<ConfigException>(() => new FixtureBook().ValidateParameterAt(0, "xxx"));
+        }
+
+        [TestMethod]
+        public void ValidateParameter__GetParamterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
+        {
+            // expect
+            new FixtureBook().Validate<ConfigException>(() => FixtureBook.Expect(() => { }).GetParameterAt<string>(0));
+        }
+
+        [TestMethod]
+        public void ValidateParameter__ValidateParamterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
+        {
+            // expect
+            new FixtureBook().Validate<ConfigException>(() => 
+                FixtureBook.Expect((FixtureBookAttributeTestData a, FixtureBookAttributeTestData b) => { }
+                ).ValidateParameterAt(2));
+            new FixtureBook().Validate<ConfigException>(() => 
+                FixtureBook.Expect((FixtureBookAttributeTestData a) => { }
+                ).ValidateParameterAt(2, "xxx"));
+        }
     }
 }

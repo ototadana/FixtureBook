@@ -26,6 +26,8 @@ namespace XPFriend.Fixture.Cast.Temp
     internal class TempConductor : IConductor
     {
         private Case testCase;
+        private object[] parameters;
+        private string[] parameterNames;
 
         public TempConductor() { }
 
@@ -72,6 +74,9 @@ namespace XPFriend.Fixture.Cast.Temp
         private object[] GetParameters(Type[] types)
         {
             object[] parameters = new object[types.Length];
+            this.parameters = parameters;
+            this.parameterNames = new string[parameters.Length];
+
             for (int i = 0; i < parameters.Length; i++)
             {
                 parameters[i] = GetParameter(types[i], i);
@@ -82,6 +87,7 @@ namespace XPFriend.Fixture.Cast.Temp
         private object GetParameter(Type type, int index)
         {
             string tableName = GetTableName(index, Section.SectionType.ObjectForExec);
+            parameterNames[index] = tableName;
             return GetParameter(type, tableName);
         }
 
@@ -156,5 +162,38 @@ namespace XPFriend.Fixture.Cast.Temp
             public string Name { get; set; }
             public object Value { get; set; }
         }
+
+
+        public void ValidateParameterAt(int index, string name)
+        {
+            AssertParameterIndex(index, "ValidateParamterAt");
+            testCase.Validate(parameters[index], name);
+        }
+
+        public void ValidateParameterAt(int index)
+        {
+            AssertParameterIndex(index, "ValidateParamterAt");
+            testCase.Validate(parameters[index], parameterNames[index]);
+        }
+
+        public T GetParameterAt<T>(int index)
+        {
+            AssertParameterIndex(index, "GetParamterAt");
+            return (T)parameters[index];
+        }
+
+        private void AssertParameterIndex(int index, string methodName)
+        {
+            if (parameters == null)
+            {
+                throw new ConfigException("M_Fixture_Temp_Conductor_InvalidStatus", methodName);
+            }
+
+            if (index >= parameters.Length)
+            {
+                throw new ConfigException("M_Fixture_Temp_Conductor_InvalidParameterIndex", index);
+            }
+        }
+
     }
 }

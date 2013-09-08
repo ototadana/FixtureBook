@@ -46,5 +46,11 @@ namespace XPFriend.Fixture.Role
         /// <param name="action">テスト対象処理</param>
         /// <param name="types">actionに渡す引数の型</param>
         void ExpectThrown<TException>(Delegate action, params Type[] types) where TException : Exception;
+
+        void ValidateParameterAt(int index, string name);
+
+        void ValidateParameterAt(int index);
+
+        T GetParameterAt<T>(int index);
     }
 }

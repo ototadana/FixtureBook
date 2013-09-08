@@ -32,6 +32,7 @@ namespace XPFriend.Fixture
     {
         internal const string NameSeparatorKey = "FixtureBook.nameSeparator";
         internal const string DefaultNameSeparator = "__";
+        private static readonly string[] SpecialMethodSeparator = new string[] { "<", ">" };
         private static string[] nameSeparator;
 
         static FixtureBook()
@@ -63,6 +64,10 @@ namespace XPFriend.Fixture
 
         private static string[] GetNamesByTestName(string name)
         {
+            if(name.StartsWith("<"))
+            {
+                name = name.Split(SpecialMethodSeparator, StringSplitOptions.RemoveEmptyEntries)[0];
+            }
             return name.Split(nameSeparator, StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -563,6 +568,66 @@ namespace XPFriend.Fixture
             FixtureBook fixtureBook = new FixtureBook(true);
             fixtureBook.testCase.ExpectThrown<TException>(action, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
             return fixtureBook;
+        }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した際の引数を取得する。
+        /// </summary>
+        /// <example>
+        /// 利用例：
+        /// <code>
+        /// Data data = FixtureBook.Expect(...).GetParameterAt&lt;Data&gt;(0); // 第1引数を取得する
+        /// </code>
+        /// </example>
+        /// <typeparam name="T">取得する引数の型</typeparam>
+        /// <param name="index">取得する引数のインデックス</param>
+        /// <returns>引数の値</returns>
+        public T GetParameterAt<T>(int index)
+        {
+            InitializeIfNotYet();
+            return testCase.GetParameterAt<T>(index);
+        }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した後の引数の値が
+        /// 「E.取得データ」に記述された値と同じになっているかどうかを検証する。
+        /// このメソッドでは、「E.取得データ」のテーブル定義名は「D.パラメタ」の定義名と同じものとみなされる。
+        /// </summary>
+        /// <example>
+        /// 利用例：
+        /// <code>
+        /// FixtureBook.Expect(...).ValidateParameterAt(0, 1); // 第1引数、第2引数を検証する
+        /// </code>
+        /// </example>
+        /// <param name="index">検証する引数のインデックス</param>
+        public FixtureBook ValidateParameterAt(params int[] index)
+        {
+            InitializeIfNotYet();
+            foreach (int i in index)
+            {
+                testCase.ValidateParameterAt(i);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Expect, ExpectReturn, ExpectThrown を実行した後の引数の値が
+        /// 「E.取得データ」に記述された値と同じになっているかどうかを検証する。
+        /// </summary>
+        /// <example>
+        /// 利用例：
+        /// <code>
+        /// FixtureBook.Expect(...).ValidateParameterAt(0, "Data1"); // 第1引数を "Data1" という名前のテーブル定義で検証する
+        /// </code>
+        /// </example>
+        /// <param name="index">検証する引数のインデックス</param>
+        /// <param name="name">テーブル定義名</param>
+        /// <returns>このインスタンス</returns>
+        public FixtureBook ValidateParameterAt(int index, string name)
+        {
+            InitializeIfNotYet();
+            testCase.ValidateParameterAt(index, name);
+            return this;
         }
     }
 }

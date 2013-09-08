@@ -189,6 +189,7 @@ FixtureBook の操作は以下のメソッドでできます。
   <tr><td>Expect</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) ValidateStorage でデータ状態の検証を行う。</td></tr>
   <tr><td>ExpectReturn</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) Validate で実行した処理の戻り値を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
   <tr><td>ExpectThrown</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) Validate で実行した処理中に発生した例外を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
+  <tr><td>ValidateParameterAt</td><td>Expect / ExpectReturn / ExpectThrown を実行した後の引数の値が「E.取得データ」に記述された値と同じになっているかどうかを検証する。例えば <code>FixtureBook.Expect((Data data1, Data data2) => ...).ValidateParameterAt(0);</code> とすると、data1 の値が「E.取得データ」で記述されたものと同じになっているかどうかを検証できる。</td></tr>
 </table>
 
 
