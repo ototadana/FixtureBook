@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using XPFriend.Fixture;
 using XPFriend.Fixture.Cast.Temp;
 using XPFriend.Fixture.Staff;
 using XPFriend.FixtureTest.Cast.Temp.Datas;
+using XPFriend.Junk;
 
 namespace XPFriend.FixtureTest.Cast.Temp
 {
@@ -215,6 +217,23 @@ namespace XPFriend.FixtureTest.Cast.Temp
             TempObjectFactory parent = new TempObjectFactory();
             parent.Initialize(testCase);
             return parent.pocoFactory;
+        }
+
+        [TestMethod]
+        public void 指定されたプロパティが存在しない場合は例外が発生する()
+        {
+            try
+            {
+                // when
+                fixtureBook.GetObject<Data>();
+            }
+            catch (ConfigException e)
+            {
+                // then
+                Console.WriteLine(e.Message);
+                Assert.AreEqual("M_Fixture_Temp_ObjectFactory_NoSuchProperty", e.ResourceKey);
+                Assert.IsTrue(e.Message.IndexOf("zzz") > -1);
+            }
         }
     }
 }
