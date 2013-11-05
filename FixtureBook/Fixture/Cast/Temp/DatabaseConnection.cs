@@ -155,7 +155,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
         internal bool IsSQLServer { get; set; }
 
-        internal void Connect()
+        private void Connect()
         {
             connection = factory.CreateConnection();
             connection.ConnectionString = connectionString;

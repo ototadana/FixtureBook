@@ -15,7 +15,6 @@
  */
 using System.Data;
 using XPFriend.Fixture.Staff;
-using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -36,37 +35,6 @@ namespace XPFriend.Fixture.Cast.Temp
             string[] tableNames = testCase.GetSection(sectionType).TableNames.ToArray();
             tempObjectFactory.SectionType = sectionType;
             return tempObjectFactory.GetObject<DataSet>(tableNames);
-        }
-
-        internal virtual void UpdateColumnTypes(Database database, Section.SectionType sectionType)
-        {
-            Section section = testCase.GetSection(sectionType);
-            foreach (string tableName in section.TableNames)
-            {
-                Table table = section.GetTable(tableName);
-                UpdateColumnTypes(database, table);
-            }
-        }
-
-        private static void UpdateColumnTypes(Database database, Table table)
-        {
-            DataTable metaData = database.GetMetaData(table);
-            foreach (Column column in table.Columns)
-            {
-                if (column != null)
-                {
-                    DataColumn dataColumn = metaData.Columns[column.Name];
-                    if (dataColumn == null)
-                    {
-                        throw new ConfigException("M_Fixture_Temp_DatabaseOperator_Column_NotFound",
-                            metaData.TableName, column.Name, table);
-                    }
-                    if (column.Type == null && column.ComponentType == null)
-                    {
-                        column.SetType(dataColumn.DataType);
-                    }
-                }
-            }
         }
     }
 }

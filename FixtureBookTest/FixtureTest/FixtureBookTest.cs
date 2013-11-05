@@ -8,6 +8,11 @@ using System.Data;
 
 namespace XPFriend.FixtureTest
 {
+    public class FixtureBookTestData
+    {
+        public string Text { get; set; }
+    }
+
     [TestClass]
     public class FixtureBookTest
     {
@@ -85,11 +90,7 @@ namespace XPFriend.FixtureTest
         {
             // setup
             Loggi.DebugEnabled = true;
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("delete from TypesTable");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "delete from TypesTable");
             FixtureBook fixtureBook = new FixtureBook();
 
             // when
@@ -98,19 +99,13 @@ namespace XPFriend.FixtureTest
             fixtureBook.Validate(obj);
 
             // then
-            using (Database database = new Database())
-            {
-                Assert.AreEqual(0, database.ExecuteQuery("select * from TypesTable").Rows.Count);
-            }
+            Assert.AreEqual(0, Database.ExecuteQuery(null, "select * from TypesTable").Rows.Count);
 
             // when
             fixtureBook.Setup();
 
             // then
-            using (Database database = new Database())
-            {
-                Assert.AreEqual(1, database.ExecuteQuery("select * from TypesTable").Rows.Count);
-            }
+            Assert.AreEqual(1, Database.ExecuteQuery(null, "select * from TypesTable").Rows.Count);
         }
 
         [TestMethod]
@@ -118,11 +113,7 @@ namespace XPFriend.FixtureTest
         {
             // setup
             Loggi.DebugEnabled = true;
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("delete from TypesTable");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "delete from TypesTable");
             FixtureBook fixtureBook = new FixtureBook();
 
             // when
@@ -134,6 +125,7 @@ namespace XPFriend.FixtureTest
             catch (AssertFailedException e)
             {
                 Console.WriteLine(e);
+                Assert.IsTrue(e.Message.IndexOf("*") == -1);
             }
         }
 
@@ -609,10 +601,5 @@ namespace XPFriend.FixtureTest
                 Assert.IsTrue(e.Message.IndexOf("xxx") > -1);
             }
         }
-    }
-
-    public class FixtureBookTestData
-    {
-        public string Text { get; set; }
     }
 }

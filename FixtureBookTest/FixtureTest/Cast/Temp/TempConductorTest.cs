@@ -114,21 +114,14 @@ namespace XPFriend.FixtureTest.Cast.Temp
 
         private void ValidateDatabase(int expect) 
         {
-            using (Database database = new Database())
-            {
-                DataTable table = database.ExecuteQuery("select int1 from TypesTable");
-                Assert.AreEqual(1, table.Rows.Count);
-                Assert.AreEqual(expect, table.Rows[0]["int1"]);
-            }
+            DataTable table = Database.ExecuteQuery(null, "select int1 from TypesTable");
+            Assert.AreEqual(1, table.Rows.Count);
+            Assert.AreEqual(expect, table.Rows[0]["int1"]);
         }
 
         private void UpdateDatabase(int expect)
         {
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("update TypesTable set int1 = " + expect);
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "update TypesTable set int1 = " + expect);
         }
 
         [TestMethod]

@@ -59,11 +59,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("delete from TypesTable");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "delete from TypesTable");
 
             try
             {
@@ -88,12 +84,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.Use("Oracle");
-                database.ExecuteNonQuery("delete from TYPES_TABLE");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery("Oracle", "delete from TYPES_TABLE");
 
             try
             {
@@ -107,6 +98,29 @@ namespace XPFriend.FixtureTest.Cast.Temp
                 string message = e.Message;
                 Console.WriteLine(message);
                 Assert.IsTrue(Regex.IsMatch(message, ".*TYPES_TABLE.*TYPES_TABLE.*"));
+                Assert.IsTrue(message.IndexOf("*") == -1);
+            }
+        }
+
+        [TestMethod]
+        public void 指定した検索列が存在しない場合はエラー()
+        {
+            // setup
+            Loggi.DebugEnabled = true;
+            fixtureBook.Setup();
+
+            try
+            {
+                // when
+                fixtureBook.ValidateStorage();
+                Assert.Fail("ここにはこない");
+            }
+            catch (Exception e)
+            {
+                // then
+                string message = e.Message;
+                Console.WriteLine(message);
+                Assert.IsTrue(Regex.IsMatch(message, ".*TypesTable.*TypesTable.*"));
                 Assert.IsTrue(message.IndexOf("*") == -1);
             }
         }
@@ -283,11 +297,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("update TypesTable set bigint1=2 where Id=2");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "update TypesTable set bigint1=2 where Id=2");
 
             try
             {
@@ -312,12 +322,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.Use("Oracle");
-                database.ExecuteNonQuery("update TYPES_TABLE set VARCHAR1='c' where Id=2");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery("Oracle", "update TYPES_TABLE set VARCHAR1='c' where Id=2");
 
             try
             {
@@ -378,11 +383,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.ExecuteNonQuery("delete from TypesTable where Id = 2");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery(null, "delete from TypesTable where Id = 2");
 
             // expect
             fixtureBook.ValidateStorage();
@@ -395,12 +396,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // setup
             Loggi.DebugEnabled = true;
             fixtureBook.Setup();
-            using (Database database = new Database())
-            {
-                database.Use("Oracle");
-                database.ExecuteNonQuery("delete from TYPES_TABLE where ID = 2");
-                database.Commit();
-            }
+            Database.ExecuteNonQuery("Oracle", "delete from TYPES_TABLE where ID = 2");
 
             // expect
             fixtureBook.ValidateStorage();
@@ -503,7 +499,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
         {
             // setup
             Loggi.DebugEnabled = true;
-                fixtureBook.Setup();
+            fixtureBook.Setup();
 
             // expect
             fixtureBook.ValidateStorage();

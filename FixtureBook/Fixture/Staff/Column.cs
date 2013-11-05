@@ -27,6 +27,7 @@ namespace XPFriend.Fixture.Staff
         private string name;
         private string type;
         private string componentType;
+        private bool searchKey;
 
         /// <summary>
         /// 列データを作成する。
@@ -39,12 +40,12 @@ namespace XPFriend.Fixture.Staff
             if (name != null && name.StartsWith("*"))
             {
                 this.name = name.Substring(1);
-                this.IsSearchKey = true;
+                this.searchKey = true;
             }
             else
             {
                 this.name = name;
-                this.IsSearchKey = false;
+                this.searchKey = false;
             }
             this.type = type;
             this.componentType = componentType;
@@ -58,7 +59,7 @@ namespace XPFriend.Fixture.Staff
         /// <summary>
         /// 検索キーかどうか。
         /// </summary>
-        public bool IsSearchKey { get; set; }
+        public bool IsSearchKey { get { return searchKey; } }
 
         /// <summary>
         /// 列タイプ。
@@ -79,6 +80,10 @@ namespace XPFriend.Fixture.Staff
             return type == null && componentType != null;
         }
 
+        /// <summary>
+        /// この列に型設定を行う。
+        /// </summary>
+        /// <param name="type">設定する型。</param>
         public void SetType(Type type)
         {
             if (type.IsArray)

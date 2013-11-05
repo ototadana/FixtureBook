@@ -26,6 +26,8 @@ namespace XPFriend.Fixture.Staff
         private string tableName;
         private List<Column> columns = new List<Column>();
         private List<Row> rows = new List<Row>();
+        private List<string> keyColumnNames;
+        private bool? hasKeyColumn = null;
 
         /// <summary>
         /// テーブルを作成する。
@@ -86,6 +88,66 @@ namespace XPFriend.Fixture.Staff
         public override string ToString()
         {
             return section.ToString() + " - " + Name;
+        }
+
+        public bool HasKeyColumn
+        {
+            get
+            {
+                if (hasKeyColumn == null)
+                {
+                    hasKeyColumn = InitHasKeyColumn();
+                }
+                return (bool)hasKeyColumn;
+            }
+        }
+
+        private bool? InitHasKeyColumn()
+        {
+            foreach (Column column in columns)
+            {
+                if (column != null && column.IsSearchKey)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<string> GetKeyColumnNames()
+        {
+            if (keyColumnNames == null)
+            {
+                keyColumnNames = CreateKeyColumnNames();
+            }
+            return keyColumnNames;
+        }
+
+        private List<string> CreateKeyColumnNames()
+        {
+            List<string> keyColumns = new List<string>();
+            foreach (Column column in columns)
+            {
+                if (column != null && column.IsSearchKey)
+                {
+                    keyColumns.Add(column.Name);
+                }
+            }
+
+            if (keyColumns.Count > 0)
+            {
+                return keyColumns;
+            }
+
+            foreach (Column column in columns)
+            {
+                if (column != null)
+                {
+                    keyColumns.Add(column.Name);
+                }
+            }
+
+            return keyColumns;
         }
     }
 }

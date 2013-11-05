@@ -57,6 +57,7 @@ namespace XPFriend.Fixture.Cast.Temp
         protected virtual DataTable GetDataTable(string typeName)
         {
             Table table = GetTable(Section, typeof(DataTable), typeName);
+            initSearchKeyMap(table);
             DataTable dataTable = CreateDataTable(table);
             DynaType dynaType = typeConverter.GetDynaType(table);
 
@@ -101,13 +102,28 @@ namespace XPFriend.Fixture.Cast.Temp
             {
                 if (column != null)
                 {
-                    searchKeyMap[column.Name] = column.IsSearchKey;
                     Type type = new DynaColumn(column).Type;
                     DataColumn dataColumn = new DataColumn(column.Name, type);
                     dataTable.Columns.Add(dataColumn);
                 }
             }
             return dataTable;
+        }
+
+        private void initSearchKeyMap(Table table)
+        {
+            foreach (Column column in table.Columns)
+            {
+                if (column != null)
+                {
+                    searchKeyMap[column.Name] = false;
+                }
+            }
+
+            foreach (string columnName in table.GetKeyColumnNames())
+            {
+                searchKeyMap[columnName] = true;
+            }
         }
     }
 }

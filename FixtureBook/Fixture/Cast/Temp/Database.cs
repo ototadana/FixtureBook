@@ -30,7 +30,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
         internal class MetaData
         {
-            public DataTable DataTable { get; set; }
+            public DataTable MetaDataTable { get; set; }
             public bool? HasIdentityColumn { get; set; }
         }
 
@@ -102,7 +102,7 @@ namespace XPFriend.Fixture.Cast.Temp
                 try
                 {
                     string onOff = enabled ? " ON" : " OFF";
-                    ExecuteNonQuery(connection.CreateCommand("SET IDENTITY_INSERT " + tableName + onOff));
+                    ExecuteNonQuery(CreateCommand("SET IDENTITY_INSERT " + tableName + onOff));
                 }
                 catch (Exception e)
                 {
@@ -164,7 +164,7 @@ namespace XPFriend.Fixture.Cast.Temp
                 sql.Append("insert into ").Append(table.TableName);
                 sql.Append(GetColumnList(table.Columns));
                 sql.Append(GetValueList(table.Columns));
-                return connection.CreateCommand(sql.ToString());
+                return CreateCommand(sql.ToString());
             }
             catch (Exception e)
             {
@@ -222,11 +222,32 @@ namespace XPFriend.Fixture.Cast.Temp
 
         internal void Delete(DataTable table, Table tableInfo)
         {
+            String queryPrefix = "delete from " + table.TableName + " where ";
+            List<string> columnNames = new List<string>();
+            foreach (DataColumn column in table.Columns)
+            {
+                columnNames.Add(column.ColumnName);
+            }
+
             List<Row> rowInfo = tableInfo.Rows;
             int rowIndex = 0;
             foreach (DataRow row in table.Rows)
             {
-                Delete(table, row, tableInfo, rowInfo[rowIndex++]);
+                Delete(table, row, queryPrefix, columnNames, tableInfo, rowInfo[rowIndex++]);
+            }
+        }
+
+        private void Delete(DataTable table, DataRow row, String queryPrefix, List<string> columnNames, Table tableInfo, Row rowInfo)
+        {
+            try
+            {
+                DbCommand command = connection.CreateCommand();
+                SetQueryString(table, row, command, queryPrefix, columnNames);
+                ExecuteNonQuery(command);
+            }
+            catch (Exception e)
+            {
+                throw new ConfigException(e, "M_Fixture_Temp_Database_DeleteRow", table.TableName, tableInfo, rowInfo);
             }
         }
 
@@ -238,28 +259,30 @@ namespace XPFriend.Fixture.Cast.Temp
 
         private static void PrintSQL(DbCommand command)
         {
-            if (Loggi.DebugEnabled)
+            if (!Loggi.DebugEnabled)
             {
-                StringBuilder sqlText = new StringBuilder();
-                foreach (DbParameter parameter in command.Parameters)
-                {
-                    if (sqlText.Length == 0)
-                    {
-                        sqlText.Append(command.CommandText).Append(" - ");
-                    }
-                    else
-                    {
-                        sqlText.Append(", ");
-                    }
-                    sqlText.Append(parameter.Value);
-                }
+                return;
+            }
 
+            StringBuilder sqlText = new StringBuilder();
+            foreach (DbParameter parameter in command.Parameters)
+            {
                 if (sqlText.Length == 0)
                 {
-                    sqlText.Append(command.CommandText);
+                    sqlText.Append(command.CommandText).Append(" - ");
                 }
-                Loggi.Debug("SQL: " + sqlText.ToString());
+                else
+                {
+                    sqlText.Append(", ");
+                }
+                sqlText.Append(parameter.Value);
             }
+
+            if (sqlText.Length == 0)
+            {
+                sqlText.Append(command.CommandText);
+            }
+            Loggi.Debug("SQL: " + sqlText.ToString());
         }
 
         private void SetQueryString(DataTable table, DataRow row, DbCommand command, String queryPrefix, List<string> columnNames)
@@ -293,7 +316,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
             try
             {
-                return TypeConverter.ChangeType((string)columnValue, columnType);
+                return TypeConverter.ChangeType(valueAsText, columnType);
             }
             catch (Exception)
             {
@@ -374,26 +397,6 @@ namespace XPFriend.Fixture.Cast.Temp
             parameter.Value = parameterValue;
         }
 
-        private void Delete(DataTable table, DataRow row, Table tableInfo, Row rowInfo)
-        {
-            try
-            {
-                DbCommand command = connection.CreateCommand();
-                String queryPrefix = "delete from " + table.TableName + " where ";
-                List<string> columnNames = new List<string>();
-                foreach (DataColumn column in table.Columns)
-                {
-                    columnNames.Add(column.ColumnName);
-                }
-                SetQueryString(table, row, command, queryPrefix, columnNames);
-                ExecuteNonQuery(command);
-            }
-            catch (Exception e)
-            {
-                throw new ConfigException(e, "M_Fixture_Temp_Database_DeleteRow", table.TableName, tableInfo, rowInfo);
-            }
-        }
-
         // FIXME : DataTableValidator の機能が一部こっちに入っていてきれいに役割分担できていないのでイマイチ。
         public DataTable Select(List<string> keyColumns, DataTable keyTable, Table tableInfo)
         {
@@ -465,9 +468,9 @@ namespace XPFriend.Fixture.Cast.Temp
 
             if (rowCount == 0)
             {
-                string message = (keyColumns.Count == result.Columns.Count) ?
-                    "M_Fixture_Temp_DatabaseValidator_NotFound_With_Comment" : 
-                    "M_Fixture_Temp_DatabaseValidator_NotFound";
+                string message = tableInfo.HasKeyColumn ?
+                    "M_Fixture_Temp_DatabaseValidator_NotFound" :
+                    "M_Fixture_Temp_DatabaseValidator_NotFound_With_Comment";
                 Assertie.Fail(message, result.TableName, tableInfo, rowInfo, ToString(keyColumns, keyRow));
             }
 
@@ -542,11 +545,11 @@ namespace XPFriend.Fixture.Cast.Temp
         {
             MetaData metaData = GetMetaData(tableName);
 
-            if (metaData.DataTable == null)
+            if (metaData.MetaDataTable == null)
             {
-                metaData.DataTable = ExecuteQuery("select * from " + tableName + " where 1=2");
+                metaData.MetaDataTable = ExecuteQuery("select * from " + tableName + " where 1=2");
             }
-            return metaData.DataTable;
+            return metaData.MetaDataTable;
         }
 
         private MetaData GetMetaData(string tableName)
@@ -561,16 +564,36 @@ namespace XPFriend.Fixture.Cast.Temp
             return metaData;
         }
 
-        internal DataTable ExecuteQuery(string queryString)
+        public static DataTable ExecuteQuery(string databaseName, string queryString)
+        {
+            using (Database database = new Database())
+            {
+                if (databaseName != null)
+                {
+                    database.Use(databaseName);
+                }
+                return database.ExecuteQuery(queryString);
+            }
+        }
+
+        private DataTable ExecuteQuery(string queryString)
         {
             DbCommand command = CreateCommand(queryString);
             return ExecuteQuery(command);
         }
 
-        internal void ExecuteNonQuery(string sql)
+        public static void ExecuteNonQuery(string databaseName, string sql)
         {
-            DbCommand command = CreateCommand(sql);
-            ExecuteNonQuery(command);
+            using (Database database = new Database())
+            {
+                if (databaseName != null)
+                {
+                    database.Use(databaseName);
+                }
+                DbCommand command = database.CreateCommand(sql);
+                database.ExecuteNonQuery(command);
+                database.Commit();
+            }
         }
 
         internal DbCommand CreateCommand(string sql)

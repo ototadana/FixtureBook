@@ -27,11 +27,8 @@ namespace XPFriend.FixtureTest.Cast.Temp
             fixtureBook.Setup();
 
             // then
-            using (Database database = new Database())
-            {
-                DataTable table = database.ExecuteQuery("select * from TypesTable order by Id");
-                fixtureBook.Validate(table, "TypesTable");
-            }
+            DataTable table = Database.ExecuteQuery(null, "select * from TypesTable order by Id");
+            fixtureBook.Validate(table, "TypesTable");
         }
 
         [TestMethod]
@@ -44,12 +41,8 @@ namespace XPFriend.FixtureTest.Cast.Temp
             fixtureBook.Setup();
 
             // then
-            using (Database database = new Database())
-            {
-                database.Use("Oracle");
-                DataTable table = database.ExecuteQuery("select * from TYPES_TABLE order by ID");
-                fixtureBook.Validate(table, "TYPES_TABLE");
-            }
+            DataTable table = Database.ExecuteQuery("Oracle", "select * from TYPES_TABLE order by ID");
+            fixtureBook.Validate(table, "TYPES_TABLE");
         }
 
         [TestMethod]
