@@ -30,6 +30,13 @@ namespace XPFriend.Fixture
     /// </summary>
     public class FixtureBook
     {
+        internal class FixtureInfo
+        {
+            public string FilePath { get; set; }
+            public string SheetName { get; set; }
+            public string TestCaseName { get; set; }
+        }
+
         internal const string NameSeparatorKey = "FixtureBook.nameSeparator";
         internal const string DefaultNameSeparator = "__";
         private static readonly string[] SpecialMethodSeparator = new string[] { "<", ">" };
@@ -52,17 +59,22 @@ namespace XPFriend.Fixture
             return new string[] { type.Name, method.Name };
         }
 
-        private static string[] GetNamesByAttribute(MemberInfo method)
+        private static string[] GetNamesByAttribute(Type type, MemberInfo method)
         {
             FixtureAttribute attribute = (FixtureAttribute)Attribute.GetCustomAttribute(method, typeof(FixtureAttribute));
             if (attribute == null)
             {
                 return null;
             }
-            return new string[] { attribute.Category, attribute.Description };
+            string category = attribute.Category;
+            if (category == null)
+            {
+                category = type.Name;
+            }
+            return new string[] { category, attribute.Description };
         }
 
-        private static string[] GetNamesByTestName(string name)
+        private static string[] GetNamesByMethodName(string name)
         {
             if(name.StartsWith("<"))
             {
@@ -140,13 +152,13 @@ namespace XPFriend.Fixture
         {
             MemberInfo method = stackFrame.GetMethod();
             Type type = method.ReflectedType;
-            String[] name = GetNamesByAttribute(method);
+            String[] name = GetNamesByAttribute(type, method);
             if(name != null) 
             {
                 return CreateFixtureInfo(stackFrame, method, type, name);
             }
 
-            name = GetNamesByTestName(method.Name);
+            name = GetNamesByMethodName(method.Name);
             if (name.Length >= 2)
             {
                 return CreateFixtureInfo(stackFrame, method, type, name);
@@ -164,13 +176,6 @@ namespace XPFriend.Fixture
         {
             string filePath = PathUtil.EditFilePath(GetFilePath(stackFrame, type, method));
             return new FixtureInfo{FilePath = filePath, SheetName = name[0], TestCaseName = name[1]};
-        }
-
-        internal class FixtureInfo 
-        {
-            public string FilePath {get; set;}
-            public string SheetName {get; set;}
-            public string TestCaseName {get; set;}
         }
 
         private void Initialize(FixtureInfo fixtureInfo)
@@ -199,11 +204,11 @@ namespace XPFriend.Fixture
         }
 
         /// <summary>
-        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトを生成する。
+        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトを作成する。
         /// </summary>
-        /// <typeparam name="T">生成するオブジェクトのクラス</typeparam>
+        /// <typeparam name="T">作成するオブジェクトのクラス</typeparam>
         /// <param name="name">テーブル定義名</param>
-        /// <returns>生成されたオブジェクト</returns>
+        /// <returns>作成されたオブジェクト</returns>
         public T GetObject<T>(params string[] name)
         {
             InitializeIfNotYet();
@@ -211,21 +216,21 @@ namespace XPFriend.Fixture
         }
 
         /// <summary>
-        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトのリストを生成する。
+        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトのリストを作成する。
         /// </summary>
-        /// <typeparam name="T">生成するリスト要素オブジェクトクラス</typeparam>
-        /// <returns>生成されたリスト</returns>
+        /// <typeparam name="T">作成するリスト要素オブジェクトクラス</typeparam>
+        /// <returns>作成されたリスト</returns>
         public List<T> GetList<T>()
         {
             return GetList<T>(null);
         }
 
         /// <summary>
-        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトのリストを生成する。
+        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトのリストを作成する。
         /// </summary>
-        /// <typeparam name="T">生成するリスト要素オブジェクトクラス</typeparam>
+        /// <typeparam name="T">作成するリスト要素オブジェクトクラス</typeparam>
         /// <param name="name">テーブル定義名</param>
-        /// <returns>生成されたリスト</returns>
+        /// <returns>作成されたリスト</returns>
         public List<T> GetList<T>(string name)
         {
             InitializeIfNotYet();
@@ -233,21 +238,21 @@ namespace XPFriend.Fixture
         }
 
         /// <summary>
-        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトの配列を生成する。
+        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトの配列を作成する。
         /// </summary>
-        /// <typeparam name="T">生成する配列要素オブジェクトクラス</typeparam>
-        /// <returns>生成された配列</returns>
+        /// <typeparam name="T">作成する配列要素オブジェクトクラス</typeparam>
+        /// <returns>作成された配列</returns>
         public T[] GetArray<T>()
         {
             return GetArray<T>(null);
         }
 
         /// <summary>
-        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトの配列を生成する。
+        /// 「D.パラメタ」に記述されたデータを用いてオブジェクトの配列を作成する。
         /// </summary>
-        /// <typeparam name="T">生成する配列要素オブジェクトクラス</typeparam>
+        /// <typeparam name="T">作成する配列要素オブジェクトクラス</typeparam>
         /// <param name="name">テーブル定義名</param>
-        /// <returns>生成された配列</returns>
+        /// <returns>作成された配列</returns>
         public T[] GetArray<T>(string name)
         {
             InitializeIfNotYet();

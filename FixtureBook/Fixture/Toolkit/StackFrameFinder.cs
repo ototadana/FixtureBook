@@ -54,7 +54,7 @@ namespace XPFriend.Fixture.Toolkit
             }
             if (list.Count == 0)
             {
-                throw new InvalidOperationException("cannot find a StackFrame of " + type.FullName);
+                throw new InvalidOperationException("cannot find a StackFrame of " + className);
             }
             return list;
         }

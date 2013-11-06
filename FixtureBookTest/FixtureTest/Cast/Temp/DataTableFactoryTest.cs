@@ -64,7 +64,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
         }
 
         [TestMethod]
-        [Fixture("DataTableFactoryTest", "GetObjectは指定された名前の定義を読み込んでオブジェクト作成する")]
+        [Fixture("GetObjectは指定された名前の定義を読み込んでオブジェクト作成する")]
         public void GetListは指定された名前の定義を読み込んでリスト作成する()
         {
             // when

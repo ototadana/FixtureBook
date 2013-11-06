@@ -22,7 +22,7 @@ using XPFriend.Fixture.Toolkit;
 namespace XPFriend.FixtureTest.Toolkit
 {
     [TestClass]
-    public class CallerFinderTest
+    public class StackFrameFinderTest
     {
         [TestMethod]
         public void Findは指定されたクラスのStackFrameを取得する()
@@ -43,7 +43,7 @@ namespace XPFriend.FixtureTest.Toolkit
     {
         public void Call2()
         {
-            List<StackFrame> frames = StackFrameFinder.Find(typeof(CallerFinderTest));
+            List<StackFrame> frames = StackFrameFinder.Find(typeof(StackFrameFinderTest));
             foreach (StackFrame frame in frames)
             {
                 Console.WriteLine("called : " + frame);

@@ -42,5 +42,14 @@ namespace XPFriend.Fixture
             Category = category;
             Description = description;
         }
+
+        /// <summary>
+        /// テストで使用するテストケースを指定する。
+        /// </summary>
+        /// <param name="description">テストケース記述（テストケース名）</param>
+        public FixtureAttribute(string description)
+        {
+            Description = description;
+        }
     }
 }
