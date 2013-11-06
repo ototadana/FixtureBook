@@ -139,65 +139,12 @@ namespace XPFriend.Fixture.Cast.Temp
             return Convert.FromBase64String(textValue);
         }
 
-        protected virtual string ToStringFromByteArray(byte[] actualBytes, string expected)
-        {
-            if (IsFilePath(expected))
-            {
-                string filePath = PathUtil.GetFilePath(expected);
-                if (filePath != null)
-                {
-                    string actualFilePath = Path.GetFullPath(filePath + ".tmp");
-                    File.WriteAllBytes(actualFilePath, actualBytes);
-                    return actualFilePath;
-                }
-            }
-
-            if (IsBarSeparatedArray(expected))
-            {
-                return FromListtoString(actualBytes);
-            }
-
-            return Convert.ToBase64String(actualBytes);
-        }
-
-        protected virtual string ToString(string expected, object actual)
-        {
-            if (actual is IList && !Section.HasTable(expected))
-            {
-                return FromListtoString((IList)actual);
-            }
-            return ToString(actual);
-        }
-
-        protected virtual string FromListtoString(IList list)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (object o in list)
-            {
-                if (sb.Length > 0)
-                {
-                    sb.Append('|');
-                }
-                sb.Append(ToString(o));
-            }
-            return sb.ToString();
-        }
-
-        protected virtual string ToString(object o)
-        {
-            if (o == null)
-            {
-                return null;
-            }
-            return o.ToString();
-        }
-
-        private bool IsFilePath(string textValue)
+        protected bool IsFilePath(string textValue)
         {
             return textValue.IndexOfAny(FilePathMark) > -1;
         }
 
-        private bool IsBarSeparatedArray(string textValue)
+        protected bool IsBarSeparatedArray(string textValue)
         {
             return textValue.Length == 1 || textValue.IndexOf('|') > -1;
         }

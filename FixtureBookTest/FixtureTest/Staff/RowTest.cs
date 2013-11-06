@@ -106,13 +106,13 @@ namespace XPFriend.FixtureTest.Staff
         }
 
         [TestMethod]
-        public void ToStringは行番号と削除指定行かどうかを表す文字列を返す()
+        public void ToStringは行番号を返す()
         {
-            ToStringは行番号と削除指定行かどうかを表す文字列を返す("C", "T002", 0, false, 16);
-            ToStringは行番号と削除指定行かどうかを表す文字列を返す("C", "T002", 1, true, 17);
+            ToStringは行番号を返す("C", "T002", 0, 16);
+            ToStringは行番号を返す("C", "T002", 1, 17);
         }
 
-        private void ToStringは行番号と削除指定行かどうかを表す文字列を返す(string sectionName, string tableName, int index, bool deleted, int rowNumber)
+        private void ToStringは行番号を返す(string sectionName, string tableName, int index, int rowNumber)
         {
             // setup
             Section section = testCase.GetSection(sectionName);
@@ -124,7 +124,7 @@ namespace XPFriend.FixtureTest.Staff
 
             // then
             Console.WriteLine(s);
-            Assert.IsTrue(s.EndsWith(rowNumber.ToString()));
+            Assert.AreEqual(rowNumber.ToString(), s);
         }
     }
 }

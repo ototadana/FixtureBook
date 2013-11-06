@@ -16,10 +16,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
+using XPFriend.Fixture.Toolkit;
 using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
@@ -71,8 +73,11 @@ namespace XPFriend.Fixture.Cast.Temp
                 type = null;
                 foreach (object o in (IEnumerable)obj)
                 {
-                    type = o.GetType();
-                    break;
+                    if (o != null)
+                    {
+                        type = o.GetType();
+                        break;
+                    }
                 }
                 actual = ToICollection((IEnumerable)obj);
             }
@@ -206,7 +211,7 @@ namespace XPFriend.Fixture.Cast.Temp
             return "(" + actual.GetType() + ")";
         }
 
-        private bool AssertEqualsAsBool(Table table, Row row, string columnName, string expected, object actual)
+        protected virtual bool AssertEqualsAsBool(Table table, Row row, string columnName, string expected, object actual)
         {
             if (actual is bool)
             {
@@ -215,7 +220,7 @@ namespace XPFriend.Fixture.Cast.Temp
             return false;
         }
 
-        private bool AssertEqualsAsByteArray(Table table, Row row, string columnName, string expected, object actual)
+        protected virtual bool AssertEqualsAsByteArray(Table table, Row row, string columnName, string expected, object actual)
         {
             if (!(actual is byte[]))
             {
@@ -386,6 +391,59 @@ namespace XPFriend.Fixture.Cast.Temp
                 return true;
             }
             return false;
+        }
+
+        private string ToStringFromByteArray(byte[] actualBytes, string expected)
+        {
+            if (IsFilePath(expected))
+            {
+                string filePath = PathUtil.GetFilePath(expected);
+                if (filePath != null)
+                {
+                    string actualFilePath = Path.GetFullPath(filePath + ".tmp");
+                    File.WriteAllBytes(actualFilePath, actualBytes);
+                    return actualFilePath;
+                }
+            }
+
+            if (IsBarSeparatedArray(expected))
+            {
+                return FromListToString(actualBytes);
+            }
+
+            return Convert.ToBase64String(actualBytes);
+        }
+
+        private string ToString(string expected, object actual)
+        {
+            if (actual is IList && !Section.HasTable(expected))
+            {
+                return FromListToString((IList)actual);
+            }
+            return ToString(actual);
+        }
+
+        private string FromListToString(IList list)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (object o in list)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.Append('|');
+                }
+                sb.Append(ToString(o));
+            }
+            return sb.ToString();
+        }
+
+        private string ToString(object o)
+        {
+            if (o == null)
+            {
+                return null;
+            }
+            return o.ToString();
         }
 
         private object ToStringInternal(object actual)
