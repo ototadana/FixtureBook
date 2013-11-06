@@ -97,18 +97,18 @@ namespace XPFriend.Fixture.Cast.Temp
             return new Result { Name = tableName, Value = result };
         }
 
-        private void Validate(Result parameter)
+        private void Validate(Result result)
         {
             Section section = testCase.GetSection(Section.SectionType.ExpectedResult);
-            if (section != null && section.HasTable(parameter.Name))
+            if (section != null && section.HasTable(result.Name))
             {
-                if (parameter.Value is DataSet)
+                if (result.Value is DataSet)
                 {
-                    testCase.Validate(parameter.Value);
+                    testCase.Validate(result.Value);
                 }
                 else
                 {
-                    testCase.Validate(parameter.Value, parameter.Name);
+                    testCase.Validate(result.Value, result.Name);
                 }
             }
         }
@@ -166,19 +166,19 @@ namespace XPFriend.Fixture.Cast.Temp
 
         public void ValidateParameterAt(int index, string name)
         {
-            AssertParameterIndex(index, "ValidateParamterAt");
+            AssertParameterIndex(index, "ValidateParameterAt");
             testCase.Validate(parameters[index], name);
         }
 
         public void ValidateParameterAt(int index)
         {
-            AssertParameterIndex(index, "ValidateParamterAt");
+            AssertParameterIndex(index, "ValidateParameterAt");
             testCase.Validate(parameters[index], parameterNames[index]);
         }
 
         public T GetParameterAt<T>(int index)
         {
-            AssertParameterIndex(index, "GetParamterAt");
+            AssertParameterIndex(index, "GetParameterAt");
             return (T)parameters[index];
         }
 

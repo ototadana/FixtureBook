@@ -126,7 +126,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
 
         [TestMethod]
         [Fixture("Expect", "引数1つの場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる")]
-        public void Expect__引数1つの場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる_正常終了()
+        public void Expect__引数がある場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる_正常終了()
         {
             // setup
             bool called = false;
@@ -145,7 +145,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
 
         [TestMethod]
         [Fixture("Expect", "引数1つの場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる")]
-        public void Expect__引数1つの場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる_ValidateStorageエラー()
+        public void Expect__引数がある場合にGetObjectとテスト対象メソッド呼び出しとValidateStorageができる_ValidateStorageエラー()
         {
             try
             {
@@ -245,7 +245,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
             {
                 //then
                 Console.WriteLine(e.Message);
-                    Assert.IsTrue(e.Message.IndexOf("<abc>") > -1);
+                Assert.IsTrue(e.Message.IndexOf("<abc>") > -1);
                 Assert.IsTrue(e.Message.IndexOf("<ABC>") > -1);
             }
         }
@@ -283,7 +283,7 @@ namespace XPFriend.FixtureTest.Cast.Temp
 
         [TestMethod]
         [Fixture("ExpectReturn", "パラメタ引数1つの場合はパラメタ取得と戻り値の検証ができる")]
-        public void ExpectReturn__パラメタ引数1つの場合はパラメタ取得と戻り値の検証ができる_正常終了()
+        public void ExpectReturn__パラメタ引数がある場合はパラメタ取得と戻り値の検証ができる_正常終了()
         {
             FixtureBook.ExpectReturn((FixtureBookAttributeTestData param) =>
             {
@@ -294,13 +294,14 @@ namespace XPFriend.FixtureTest.Cast.Temp
 
         [TestMethod]
         [Fixture("ExpectReturn", "パラメタ引数1つの場合はパラメタ取得と戻り値の検証ができる")]
-        public void ExpectReturn__パラメタ引数1つの場合はパラメタ取得と戻り値の検証ができる_エラー()
+        public void ExpectReturn__パラメタ引数がある場合はパラメタ取得と戻り値の検証ができる_エラー()
         {
             try
             {
                 // when
                 FixtureBook.ExpectReturn((FixtureBookAttributeTestData param) =>
                 {
+                    Assert.AreEqual("abc", param.Text);
                     return new FixtureBookAttributeTestData { Text = "yyy" };
                 });
                 throw new Exception("ここにはこない");
@@ -451,14 +452,14 @@ namespace XPFriend.FixtureTest.Cast.Temp
         }
 
         [TestMethod]
-        public void ValidateParameter__Expect系メソッドを呼ぶ前にGetParamterAtメソッドを呼ぶと例外が発生する()
+        public void ValidateParameter__Expect系メソッドを呼ぶ前にGetParameterAtメソッドを呼ぶと例外が発生する()
         {
             // expect
             new FixtureBook().Validate<ConfigException>(() => new FixtureBook().GetParameterAt<string>(0));
         }
 
         [TestMethod]
-        public void ValidateParameter__Expect系メソッドを呼ぶ前にValidateParamterAtメソッドを呼ぶと例外が発生する()
+        public void ValidateParameter__Expect系メソッドを呼ぶ前にValidateParameterAtメソッドを呼ぶと例外が発生する()
         {
             // expect
             new FixtureBook().Validate<ConfigException>(() => new FixtureBook().ValidateParameterAt(0));
@@ -466,14 +467,14 @@ namespace XPFriend.FixtureTest.Cast.Temp
         }
 
         [TestMethod]
-        public void ValidateParameter__GetParamterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
+        public void ValidateParameter__GetParameterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
         {
             // expect
             new FixtureBook().Validate<ConfigException>(() => FixtureBook.Expect(() => { }).GetParameterAt<string>(0));
         }
 
         [TestMethod]
-        public void ValidateParameter__ValidateParamterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
+        public void ValidateParameter__ValidateParameterAtメソッドのインデックスがExpectの引数の数よりも多い場合は例外が発生する()
         {
             // expect
             new FixtureBook().Validate<ConfigException>(() => 
