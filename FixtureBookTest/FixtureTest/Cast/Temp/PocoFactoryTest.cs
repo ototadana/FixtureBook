@@ -235,5 +235,51 @@ namespace XPFriend.FixtureTest.Cast.Temp
                 Assert.IsTrue(e.Message.IndexOf("zzz") > -1);
             }
         }
+
+        [TestMethod]
+        public void stringを作成できる()
+        {
+            // when
+            string obj = fixtureBook.GetObject<String>();
+            // then
+            Assert.AreEqual("a", obj);
+
+            // when
+            List<string> list = fixtureBook.GetList<string>();
+            // then
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual("a", list[0]);
+            Assert.AreEqual("b", list[1]);
+
+            // when
+            string[] array = fixtureBook.GetArray<string>();
+            // then
+            Assert.AreEqual(2, array.Length);
+            Assert.AreEqual("a", array[0]);
+            Assert.AreEqual("b", array[1]);
+        }
+
+        [TestMethod]
+        public void intを作成できる()
+        {
+            // when
+            int obj = fixtureBook.GetObject<int>();
+            // then
+            Assert.AreEqual(1, obj);
+
+            // when
+            List<int> list = fixtureBook.GetList<int>();
+            // then
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual(1, list[0]);
+            Assert.AreEqual(2, list[1]);
+
+            // when
+            int[] array = fixtureBook.GetArray<int>();
+            // then
+            Assert.AreEqual(2, array.Length);
+            Assert.AreEqual(1, array[0]);
+            Assert.AreEqual(2, array[1]);
+        }
     }
 }

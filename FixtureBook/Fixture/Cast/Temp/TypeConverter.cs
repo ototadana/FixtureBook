@@ -212,6 +212,11 @@ namespace XPFriend.Fixture.Cast.Temp
             }
             return Convert.ChangeType(textValue, Nullable.GetUnderlyingType(type) ?? type);
         }
+
+        public static bool IsConvertible(Type type)
+        {
+            return typeof(IComparable).IsAssignableFrom(type);
+        }
     }
 
     internal class DynaRow<T>

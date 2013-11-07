@@ -132,7 +132,7 @@ namespace XPFriend.Fixture.Cast.Temp
                     return list;
                 }
             }
-            else if (typeof(IComparable).IsAssignableFrom(type))
+            else if (TypeConverter.IsConvertible(type))
             {
                 return TypeConverter.ChangeType(textValue, type);
             }

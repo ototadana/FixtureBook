@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
@@ -27,6 +28,8 @@ namespace XPFriend.Fixture.Cast.Temp
     /// </summary>
     internal class PocoFactory : ObjectFactoryBase, IObjectFactory
     {
+        private const string OWN = "-";
+
         private PocoUtil pocoUtil = new PocoUtil();
 
         public PocoFactory(TempObjectFactory parent) : base(parent) { }
@@ -38,6 +41,11 @@ namespace XPFriend.Fixture.Cast.Temp
 
         protected override T CreateObject<T>(Table table, Row row)
         {
+            if(IsSimpleType(typeof(T), row))
+            {
+                return (T)TypeConverter.ChangeType(row.Values[OWN], typeof(T));
+            }
+
             T obj = Activator.CreateInstance<T>();
             foreach (Column column in table.Columns)
             {
@@ -47,6 +55,13 @@ namespace XPFriend.Fixture.Cast.Temp
                 }
             }
             return obj;
+        }
+
+        private bool IsSimpleType(Type type, Row row)
+        {
+            Dictionary<string, string> values = row.Values;
+            return values.Count == 1 && values.ContainsKey(OWN) &&
+                TypeConverter.IsConvertible(type);
         }
 
         protected void SetProperty<T>(Table table, Row row, Column column, T obj)
