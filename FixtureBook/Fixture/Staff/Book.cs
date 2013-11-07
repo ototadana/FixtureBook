@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using System;
 using System.Collections.Generic;
 using System.IO;
 using XPFriend.Junk;
@@ -34,36 +35,46 @@ namespace XPFriend.Fixture.Staff
         /// <summary>
         /// 指定されたファイルを読み込み、ブックのインスタンスを取得する。
         /// 
-        /// 一度読み込んだファイル内容はキャッシュに蓄えられるため、同一ファイルを指定して
+        /// 一度読み込んだファイル内容はキャッシュに蓄えられるため、
+        /// 同一のテストクラスとファイルパスファイルを指定して
         /// GetInstance を指定した場合、二度目以降はファイルの読み込みは行われない。
         /// </summary>
+        /// <param name="testClass">テストクラス</param>
         /// <param name="filePath">読み込むファイルのパス</param>
         /// <returns>ブックのインスタンス</returns>
+        public static Book GetInstance(Type testClass, string filePath)
+        {
+            return GetInstance(testClass, filePath, new Director());
+        }
+
         public static Book GetInstance(string filePath)
         {
-            return GetInstance(filePath, new Director());
+            return GetInstance(typeof(Book), filePath, new Director());
         }
 
         /// <summary>
         /// 指定されたファイルを読み込み、ブックのインスタンスを取得する。
         /// 
-        /// 一度読み込んだファイル内容はキャッシュに蓄えられるため、同一ファイルを指定して
+        /// 一度読み込んだファイル内容はキャッシュに蓄えられるため、
+        /// 同一のテストクラスとファイルパスファイルを指定して
         /// GetInstance を指定した場合、二度目以降はファイルの読み込みは行われない。
         /// </summary>
+        /// <param name="testClass">テストクラス</param>
         /// <param name="filePath">読み込むファイルのパス</param>
         /// <param name="director">ディレクタ</param>
         /// <returns>Book のインスタンス</returns>
-        public static Book GetInstance(string filePath, Director director)
+        public static Book GetInstance(Type testClass, string filePath, Director director)
         {
             string canonicalPath = Path.GetFullPath(filePath);
+            string id = testClass.FullName + "@" + canonicalPath;
             lock (bookMap)
             {
                 Book book = null;
-                bookMap.TryGetValue(canonicalPath, out book);
+                bookMap.TryGetValue(id, out book);
                 if (book == null)
                 {
                     book = new Book(canonicalPath, director);
-                    bookMap[canonicalPath] = book;
+                    bookMap[id] = book;
                 }
                 return book;
             }

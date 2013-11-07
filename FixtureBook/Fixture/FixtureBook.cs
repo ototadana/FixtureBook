@@ -32,6 +32,7 @@ namespace XPFriend.Fixture
     {
         internal class FixtureInfo
         {
+            public Type TestClass { get; set; }
             public string FilePath { get; set; }
             public string SheetName { get; set; }
             public string TestCaseName { get; set; }
@@ -175,12 +176,12 @@ namespace XPFriend.Fixture
         private static FixtureInfo CreateFixtureInfo(StackFrame stackFrame, MemberInfo method, Type type, String[] name)
         {
             string filePath = PathUtil.EditFilePath(GetFilePath(stackFrame, type, method));
-            return new FixtureInfo{FilePath = filePath, SheetName = name[0], TestCaseName = name[1]};
+            return new FixtureInfo{TestClass = type, FilePath = filePath, SheetName = name[0], TestCaseName = name[1]};
         }
 
         private void Initialize(FixtureInfo fixtureInfo)
         {
-            book = Book.GetInstance(fixtureInfo.FilePath);
+            book = Book.GetInstance(fixtureInfo.TestClass, fixtureInfo.FilePath);
             sheet = book.GetSheet(fixtureInfo.SheetName);
             testCase = sheet.GetCase(fixtureInfo.TestCaseName);
             Loggi.Debug("FixtureBook : Case : " + testCase);

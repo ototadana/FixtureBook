@@ -88,6 +88,7 @@
     <Compile Include="FixtureTest\Staff\SheetTest.cs" />
     <Compile Include="FixtureTest\Staff\TableTest.cs" />
     <Compile Include="FixtureTest\Staff\TestUtil.cs" />
+    <Compile Include="FixtureTest\Staff\BookExtraTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxUtilTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxAuthorTest.cs" />
@@ -153,6 +154,7 @@
     <None Include="FixtureTest\FixtureBookTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest_02.xlsx" />
     <None Include="FixtureTest\Staff\BookTest.xlsx" />
+    <None Include="FixtureTest\Staff\BookExtraTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\sample1.xlsx" />
   </ItemGroup>
