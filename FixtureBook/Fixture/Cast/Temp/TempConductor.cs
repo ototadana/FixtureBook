@@ -17,8 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Text;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
+using XPFriend.Fixture.Toolkit;
 using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
@@ -195,5 +197,113 @@ namespace XPFriend.Fixture.Cast.Temp
             }
         }
 
+        public void Expect(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            testCase.Setup();
+            DynamicInvokeInternal(targetClass, targetMethod, targetMethodParameter);
+            testCase.ValidateStorageInternal();
+        }
+
+        private object DynamicInvoke(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            try
+            {
+                return DynamicInvokeInternal(targetClass, targetMethod, targetMethodParameter);
+            }
+            catch (TargetInvocationException e)
+            {
+                Loggi.Debug(e);
+                throw e.InnerException;
+            }
+        }
+
+        private object DynamicInvokeInternal(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            MethodInfo method = GetMethod(targetClass, targetMethod, targetMethodParameter);
+            object instance = null;
+            if (!method.IsStatic)
+            {
+                instance = NewInstance(targetClass);
+            }
+            return method.Invoke(instance, GetParameters(method.GetParameters()));
+        }
+
+        private object[] GetParameters(ParameterInfo[] parameterInfo)
+        {
+            Type[] types = new Type[parameterInfo.Length];
+            for (int i = 0; i < types.Length; i++)
+            {
+                types[i] = parameterInfo[i].ParameterType;
+            }
+            return GetParameters(types);
+        }
+
+        private object NewInstance(Type targetClass)
+        {
+            try
+            {
+                return Activator.CreateInstance(targetClass);
+            }
+            catch (Exception e)
+            {
+                throw new ConfigException(e, "M_Fixture_Temp_Conductor_CannotCreateInstance", targetClass.FullName);
+            }
+        }
+
+        private MethodInfo GetMethod(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            if (targetMethodParameter != null && targetMethodParameter.Length > 0)
+            {
+                MethodInfo method = targetClass.GetMethod(targetMethod, targetMethodParameter);
+                if (method == null)
+                {
+                    throw new ConfigException("M_Fixture_Temp_Conductor_CannotFindMethod",
+                        targetClass.FullName, GetMethodName(targetMethod, targetMethodParameter));
+                }
+                return method;
+            }
+
+            {
+                MethodInfo method = MethodFinder.FindMethod(targetClass, targetMethod);
+                if (method == null)
+                {
+                    throw new ConfigException("M_Fixture_Temp_Conductor_CannotFindMethod",
+                        targetClass.FullName, targetMethod);
+                }
+                return method;
+            }
+        }
+
+        private object GetMethodName(string targetMethod, Type[] targetMethodParameter)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(targetMethod).Append("(");
+            for (int i = 0; i < targetMethodParameter.Length; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append(", ");
+                }
+                sb.Append(targetMethodParameter[i].FullName);
+            }
+            sb.Append(")");
+            return sb;
+        }
+
+        public void ExpectReturn(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            testCase.Setup();
+            object result = DynamicInvokeInternal(targetClass, targetMethod, targetMethodParameter);
+            Validate(ToResult(result));
+            testCase.ValidateStorageInternal();
+        }
+
+        public void ExpectThrown<TException>(Type targetClass, string targetMethod, Type[] targetMethodParameter) where TException : Exception
+        {
+            testCase.Setup();
+            testCase.Validate<TException>(() => 
+                DynamicInvoke(targetClass, targetMethod, targetMethodParameter), null);
+            testCase.ValidateStorageInternal();
+        }
     }
 }

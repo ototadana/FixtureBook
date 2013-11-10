@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using XPFriend.Fixture.Cast.Temp;
 using XPFriend.Fixture.Staff;
 using XPFriend.Fixture.Toolkit;
 using XPFriend.Junk;
@@ -112,7 +113,7 @@ namespace XPFriend.Fixture
                 Path.GetFileNameWithoutExtension(testClassFileName) + ".xlsx");
         }
 
-
+        private Type testClass;
         private Book book;
         private Sheet sheet;
         private Case testCase;
@@ -181,6 +182,7 @@ namespace XPFriend.Fixture
 
         private void Initialize(FixtureInfo fixtureInfo)
         {
+            testClass = fixtureInfo.TestClass;
             book = Book.GetInstance(fixtureInfo.TestClass, fixtureInfo.FilePath);
             sheet = book.GetSheet(fixtureInfo.SheetName);
             testCase = sheet.GetCase(fixtureInfo.TestCaseName);
@@ -304,6 +306,79 @@ namespace XPFriend.Fixture
             testCase.ValidateStorage();
         }
 
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// 
+        /// テスト対象メソッドは、テストクラス名およびテストカテゴリ（シート）名からテスト対象クラスおよびメソッドを類推して実行する。
+        /// 例えば、テストクラス名が 「ExampleTest」で、テストカテゴリ（シート）名が「Execute」の場合、
+        /// Example クラスの Execute メソッドが実行される。
+        /// </summary>
+        /// <returns>FixtureBook のインスタンス</returns>
+        public static FixtureBook Expect()
+        {
+            return Expect(null, null);
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBook のインスタンス</returns>
+        public static FixtureBook Expect(Type targetClass, string targetMethod, params Type[] targetMethodParameter)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            if (targetClass == null)
+            {
+                targetClass = fixtureBook.GetDefaultTargetClass();
+            }
+
+            if (targetMethod == null)
+            {
+                targetMethod = fixtureBook.GetDefaultTargetMethod(targetClass);
+            }
+            fixtureBook.testCase.Expect(targetClass, targetMethod, targetMethodParameter);
+            return fixtureBook;
+        }
+
+        private string GetDefaultTargetMethod(Type targetClass)
+        {
+            string methodName = sheet.Name;
+            MethodInfo method = MethodFinder.FindMethod(targetClass, methodName);
+            if (method == null)
+            {
+                throw new ConfigException("M_Fixture_FixtureBook_GetDefaultTargetMethod", methodName, targetClass.FullName, testCase);
+            }
+            return methodName;
+        }
+
+        private Type GetDefaultTargetClass()
+        {
+            string targetClassName = GetTargetClassName();
+            Type targetClass = TypeConverter.ToType(targetClassName, null);
+            if (targetClass == typeof(object))
+            {
+                throw new ConfigException("M_Fixture_FixtureBook_GetDefaultTargetClass", targetClassName, testCase);
+            }
+            return targetClass;
+        }
+
+        private string GetTargetClassName()
+        {
+            string testClassName = testClass.FullName;
+            if (testClassName.EndsWith("Test"))
+            {
+                return testClassName.Substring(0, testClassName.Length - 4);
+            }
+            throw new ConfigException("M_Fixture_FixtureBook_GetDefaultTargetClassName", testClassName, testCase);
+        }
+
         /// <summary>
         /// Setup を行い、action を実行し、ValidateStorage を行う。
         /// ただし、「F.更新後データ」にテーブル定義がない場合は ValidateStorage の実行は行われない。
@@ -388,6 +463,47 @@ namespace XPFriend.Fixture
         {
             FixtureBook fixtureBook = new FixtureBook(true);
             fixtureBook.testCase.Expect(action, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+            return fixtureBook;
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// テスト対象メソッドの戻り値を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// 
+        /// テスト対象メソッドは、テストクラス名およびテストカテゴリ（シート）名からテスト対象クラスおよびメソッドを類推して実行する。
+        /// 例えば、テストクラス名が 「ExampleTest」で、テストカテゴリ（シート）名が「Execute」の場合、
+        /// Example クラスの Execute メソッドが実行される。
+        /// </summary>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn()
+        {
+            return ExpectReturn(null, null);
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// テスト対象メソッドの戻り値を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectReturn(Type targetClass, string targetMethod, params Type[] targetMethodParameter)
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            if (targetClass == null)
+            {
+                targetClass = fixtureBook.GetDefaultTargetClass();
+            }
+            if (targetMethod == null)
+            {
+                targetMethod = fixtureBook.GetDefaultTargetMethod(targetClass);
+            }
+            fixtureBook.testCase.ExpectReturn(targetClass, targetMethod, targetMethodParameter);
             return fixtureBook;
         }
 
@@ -481,6 +597,48 @@ namespace XPFriend.Fixture
             FixtureBook fixtureBook = new FixtureBook(true);
             fixtureBook.testCase.ExpectReturn(func, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
             return fixtureBook;
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にして、指定されたテスト対象メソッドを実行し、
+        /// テスト対象メソッドで発生した例外を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// 
+        /// テスト対象メソッドは、テストクラス名およびテストカテゴリ（シート）名からテスト対象クラスおよびメソッドを類推して実行する。
+        /// 例えば、テストクラス名が 「ExampleTest」で、テストカテゴリ（シート）名が「Execute」の場合、
+        /// Example クラスの Execute メソッドが実行される。
+        /// </summary>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public static FixtureBook ExpectThrown()
+        {
+            return ExpectThrown<Exception>(null, null);
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にして、指定されたテスト対象メソッドを実行し、
+        /// テスト対象メソッドで発生した例外を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBook のインスタンス</returns>
+        public static FixtureBook ExpectThrown<TException>(Type targetClass, string targetMethod, params Type[] targetMethodParameter) where TException : Exception
+        {
+            FixtureBook fixtureBook = new FixtureBook(true);
+            if (targetClass == null)
+            {
+                targetClass = fixtureBook.GetDefaultTargetClass();
+            }
+            if (targetMethod == null)
+            {
+                targetMethod = fixtureBook.GetDefaultTargetMethod(targetClass);
+            }
+            fixtureBook.testCase.ExpectThrown<TException>(targetClass, targetMethod, targetMethodParameter);
+            return fixtureBook;	
         }
 
         /// <summary>

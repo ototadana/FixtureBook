@@ -138,6 +138,15 @@
   <data name="M_Fixture_Case_Validate_Storage" xml:space="preserve">
     <value>{0} に「F.更新後データ」の記述が見つかりません</value>
   </data>
+  <data name="M_Fixture_FixtureBook_GetDefaultTargetClass" xml:space="preserve">
+    <value>「{0}」という名前のクラスが見つかりませんでした。テスト対象クラスのクラスが「{0}」でない場合、テストクラス名をテスト対象クラス名+"Test"とするか、引数で明示的にテスト対象クラス名を指定してください。({1})</value>
+  </data>
+  <data name="M_Fixture_FixtureBook_GetDefaultTargetClassName" xml:space="preserve">
+    <value>「{0}」というクラス名から、テスト対象クラス名を類推できませんでした。例えばテスト対象クラス名が  "TargetClass" である時、テストクラス名を "TagetClassTest" とすればこの例外は発生しなくなります。({1})</value>
+  </data>
+  <data name="M_Fixture_FixtureBook_GetDefaultTargetMethod" xml:space="preserve">
+    <value>「{0}」というメソッドは「{1}」にありませんでした。別の名前のメソッドをテストしたい場合は、このメソッドの引数にテスト対象クラスとテスト対象メソッド名を明示的に指定してください。({2})</value>
+  </data>
   <data name="M_Fixture_FixtureBook_GetSection_ExpectedResult" xml:space="preserve">
     <value>「E.取得データ」がありません。({0})</value>
   </data>
@@ -155,6 +164,12 @@
   </data>
   <data name="M_Fixture_Sheet_GetCase" xml:space="preserve">
     <value>テストケース 「{0}」はシート「{1}」に存在しません</value>
+  </data>
+  <data name="M_Fixture_Temp_Conductor_CannotCreateInstance" xml:space="preserve">
+    <value>クラス ({0}) のインスタンスが作成できません。</value>
+  </data>
+  <data name="M_Fixture_Temp_Conductor_CannotFindMethod" xml:space="preserve">
+    <value>クラス ({0}) には {1} というメソッドがありません。</value>
   </data>
   <data name="M_Fixture_Temp_Conductor_InvalidParameterIndex" xml:space="preserve">
     <value>指定されたインデックス ({0}) の引数はありません。</value>

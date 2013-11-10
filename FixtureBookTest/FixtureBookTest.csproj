@@ -36,7 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Oracle.DataAccess, Version=2.112.3.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -96,8 +98,16 @@
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxStylesTest.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxTestUtil.cs" />
     <Compile Include="FixtureTest\Staff\Xlsx\XlsxWorkbookTest.cs" />
+    <Compile Include="FixtureTest\TestTargetClassExample.cs" />
     <Compile Include="FixtureTest\Toolkit\StackFrameFinderTest.cs" />
     <Compile Include="FixtureTest\Toolkit\PathUtilTest.cs" />
+    <Compile Include="FixtureTest\NoTestTargetClassTest.cs" />
+    <Compile Include="FixtureTest\Tutorial\Employee.cs" />
+    <Compile Include="FixtureTest\Tutorial\EmployeeStore.cs" />
+    <Compile Include="FixtureTest\Tutorial\EmployeeStoreTest.cs" />
+    <Compile Include="FixtureTest\TestTargetClassExampleTest.cs" />
+    <Compile Include="FixtureTest\TestTargetClassExampleVATest.cs" />
+    <Compile Include="FixtureTest\ViolatedTestClassNameTst.cs" />
     <Compile Include="JunkTest\ClassesTest.cs" />
     <Compile Include="JunkTest\ConfigExceptionTest.cs" />
     <Compile Include="JunkTest\ConfigTest.cs" />
@@ -153,10 +163,15 @@
     <None Include="FixtureTest\FixtureBookAttributeTest.xlsx" />
     <None Include="FixtureTest\FixtureBookTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest_02.xlsx" />
+    <None Include="FixtureTest\NoTestTargetClassTest.xlsx" />
     <None Include="FixtureTest\Staff\BookTest.xlsx" />
     <None Include="FixtureTest\Staff\BookExtraTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\sample1.xlsx" />
+    <None Include="FixtureTest\TestTargetClassExampleTest.xlsx" />
+    <None Include="FixtureTest\TestTargetClassExampleVATest.xlsx" />
+    <None Include="FixtureTest\Tutorial\EmployeeStoreTest.xlsx" />
+    <None Include="FixtureTest\ViolatedTestClassNameTst.xlsx" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

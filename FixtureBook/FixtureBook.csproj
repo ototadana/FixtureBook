@@ -101,6 +101,7 @@
     <Compile Include="Fixture\Staff\Xlsx\XlsxUtil.cs" />
     <Compile Include="Fixture\Staff\Xlsx\XlsxWorkbook.cs" />
     <Compile Include="Fixture\Staff\Xlsx\XlsxWorksheetHandler.cs" />
+    <Compile Include="Fixture\Toolkit\MethodFinder.cs" />
     <Compile Include="Fixture\Toolkit\PathUtil.cs" />
     <Compile Include="Fixture\Toolkit\StackFrameFinder.cs" />
     <Compile Include="Junk\Classes.cs" />

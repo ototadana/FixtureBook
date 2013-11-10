@@ -124,6 +124,33 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
+        ///   「{0}」という名前のクラスが見つかりませんでした。テスト対象クラスのクラスが「{0}」でない場合、テストクラス名をテスト対象クラス名+&quot;Test&quot;とするか、引数で明示的にテスト対象クラス名を指定してください。({1}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetDefaultTargetClass {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetDefaultTargetClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   「{0}」というクラス名から、テスト対象クラス名を類推できませんでした。例えばテスト対象クラス名が  &quot;TargetClass&quot; である時、テストクラス名を &quot;TagetClassTest&quot; とすればこの例外は発生しなくなります。({1}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetDefaultTargetClassName {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetDefaultTargetClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   「{0}」というメソッドは「{1}」にありませんでした。別の名前のメソッドをテストしたい場合は、このメソッドの引数にテスト対象クラスとテスト対象メソッド名を明示的に指定してください。({2}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_FixtureBook_GetDefaultTargetMethod {
+            get {
+                return ResourceManager.GetString("M_Fixture_FixtureBook_GetDefaultTargetMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   「E.取得データ」がありません。({0}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_FixtureBook_GetSection_ExpectedResult {
@@ -174,6 +201,24 @@ namespace XPFriend.Properties {
         internal static string M_Fixture_Sheet_GetCase {
             get {
                 return ResourceManager.GetString("M_Fixture_Sheet_GetCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   クラス ({0}) のインスタンスが作成できません。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_Conductor_CannotCreateInstance {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_Conductor_CannotCreateInstance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   クラス ({0}) には {1} というメソッドがありません。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_Conductor_CannotFindMethod {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_Conductor_CannotFindMethod", resourceCulture);
             }
         }
         

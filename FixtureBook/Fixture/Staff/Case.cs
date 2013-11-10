@@ -331,5 +331,50 @@ namespace XPFriend.Fixture.Staff
         {
             dressingRoom.Conductor.ValidateParameterAt(index, name);
         }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBook のインスタンス</returns>
+        public void Expect(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            dressingRoom.Conductor.Expect(targetClass, targetMethod, targetMethodParameter);
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にしてテスト対象メソッドを実行し、
+        /// テスト対象メソッドの戻り値を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBookのインスタンス</returns>
+        public void ExpectReturn(Type targetClass, string targetMethod, Type[] targetMethodParameter)
+        {
+            dressingRoom.Conductor.ExpectReturn(targetClass, targetMethod, targetMethodParameter);
+        }
+
+        /// <summary>
+        /// 「B.テストデータクリア条件」と「C.テストデータ」でデータベーステーブルの登録を行い、
+        /// 「D.パラメタ」に定義されたオブジェクトを引数にして、指定されたテスト対象メソッドを実行し、
+        /// テスト対象メソッドで発生した例外を「E.取得データ」の値で検証し、
+        /// 「F.更新後データ」にテーブル定義があれば データベースの値検証を行う。
+        /// </summary>
+        /// <typeparam name="TException">発生が予想される例外</typeparam>
+        /// <param name="targetClass">テスト対象クラス</param>
+        /// <param name="targetMethod">テスト対象メソッド</param>
+        /// <param name="targetMethodParameter">テスト対象メソッドのパラメタ</param>
+        /// <returns>FixtureBook のインスタンス</returns>
+        public void ExpectThrown<TException>(Type targetClass, string targetMethod, Type[] targetMethodParameter) where TException : Exception
+        {
+            dressingRoom.Conductor.ExpectThrown<TException>(targetClass, targetMethod, targetMethodParameter);
+        }
     }
 }

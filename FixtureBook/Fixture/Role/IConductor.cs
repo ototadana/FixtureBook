@@ -52,5 +52,11 @@ namespace XPFriend.Fixture.Role
         void ValidateParameterAt(int index);
 
         T GetParameterAt<T>(int index);
+
+        void Expect(Type targetClass, string targetMethod, Type[] targetMethodParameter);
+
+        void ExpectReturn(Type targetClass, string targetMethod, Type[] targetMethodParameter);
+
+        void ExpectThrown<TException>(Type targetClass, string targetMethod, Type[] targetMethodParameter) where TException : Exception;
     }
 }
