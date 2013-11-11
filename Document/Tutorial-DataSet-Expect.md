@@ -23,10 +23,68 @@
 テストメソッド記述例
 --------------------
 
-Expect / ExpectReturn / ExpectThrown メソッドを使用する場合には、
-テスト対象の処理をラムダ式で記述します。
-
+Expect / ExpectReturn / ExpectThrown メソッドを使用して
 これまでのテストメソッドを書き直すと以下のようになります。
+
+
+    [TestClass]
+    public class EmployeeStoreTest
+    {
+        [TestMethod]
+        public void Save__データベーステーブルEMPLOYEEに従業員データを新規追加できる()
+        {
+            FixtureBook.Expect();
+        }
+
+        [TestMethod]
+        public void Delete__指定した従業員データのIDをキーにしてデータベーステーブルEMPLOYEE上のデータが削除される()
+        {
+            FixtureBook.Expect();
+        }
+
+        [TestMethod]
+        public void GetAllEmployees__データベーステーブルEMPLOYEE上の全データが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        public void GetEmployees__引数の退職フラグが1の場合データベーステーブルEMPLOYEE上の退職者のみが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        public void GetEmployees__引数の退職フラグが0の場合データベーステーブルEMPLOYEE上の未退職者のみが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        [Fixture("Delete", @"指定した従業員データのIDが null ならば ""Invalid ID"" というメッセージを持つ ApplicationException が発生する")]
+        public void Delete__指定した従業員データのIDがnullならばInvalid_IDというメッセージを持つApplicationExceptionが発生する()
+        {
+            FixtureBook.ExpectThrown();
+        }
+    }
+
+
+上記のように記述した場合、以下のルールに従ってテスト対象メソッドが呼び出されます。
+
+*   テストクラス名（例：EmployeeStoreTest）から "Test" を外した名前のクラス（例：EmployeeStore）をテスト対象クラスとする。
+*   シート名（例：Save, Delete 等）と同じ名前のメソッドをテスト対象メソッドとする。
+
+このルールに従えない場合、Expect / ExpectReturn / ExpectThrown メソッドの引数で、
+テスト対象クラスやテスト対象メソッドを明示的に指定することも可能です。
+
+
+
+テスト対象処理をラムダ式で実装する
+----------------------------------
+
+テスト対象メソッドを直接呼び出すかわりに、
+任意の処理をテスト対象としたい場合には、
+以下のようにテスト対象処理をラムダ式で記述できます。
 
 
     [TestClass]

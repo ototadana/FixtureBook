@@ -29,15 +29,17 @@ Webアプリケーションのバックエンドロジック等、
 
 テストコードが非常にシンプルになります。
 
-```c#
-    FixtureBook.ExpectReturn((Employee parameter) => dao.GetEmployees(parameter));
-```
+    [TestMethod]
+    public void GetAllEmployees__データベーステーブルEmployees上の全データが取得できる()
+    {
+        FixtureBook.ExpectReturn();
+    }
 
-この1行のコードで、
+というコードだけで、
 
 1.  データベースに必要なデータをセットアップし、
-2.  parameter オブジェクトを作成し、
-3.  `dao.GetEmployees(parameter)` を実行し、
+2.  テスト対象の getAllEmployees メソッドに引数として渡すオブジェクトを作成し、
+3.  テスト対象の getAllEmployees メソッドを実行し、
 4.  その戻り値を予想結果と比較する
 
 という処理が行えます。
@@ -153,7 +155,7 @@ FixtureBook の使い方はとてもシンプルです。
         [TestMethod]
         public void GetEmployees__引数の退職フラグがtrueの場合データベーステーブルEmployees上の退職者のみが取得できる()
         {
-            FixtureBook.ExpectReturn((Employee parameter) => new EmployeeStore().GetEmployees(parameter));
+            FixtureBook.ExpectReturn();
         }
     }
 
@@ -161,17 +163,17 @@ FixtureBook の使い方はとてもシンプルです。
 
 1.  `B.テストデータクリア条件` に記述された条件でデータベーステーブルからデータ行を削除した後に
     `C.テストデータ` に記述されたデータがデータベーステーブルに追加される。
-2.  `D.パラメタ` に記述された内容で Employee クラスのインスタンスが作成され、引数（ `Employee parameter` ）として渡される。
-3.  テスト対象処理 `new EmployeeStore().GetEmployees(parameter)` が実行される。
-4.  `GetEmployees` の戻り値が `E.取得データ` に記述した内容と合致しているかどうかがチェックされる。
+2.  テスト対象クラス `EmployeeStore` のデフォルトコンストラクタが呼び出されて EmployeeStore のインスタンスが作成される。
+3.  `D.パラメタ` に記述された内容で `Employee` クラスのインスタンスが作成される。
+4.  作成した Employee インスタンスを引数として用い、
+    `EmployeeStore` の `getEmployees` がテスト対象メソッドとして実行される。
+5.  `getEmployees` の戻り値が `E.取得データ` に記述した内容と合致しているかどうかがチェックされる。
 
 ##### 参考
 >この例では、`ExpectReturn` を使いましたが、
 >戻り値をチェックしない場合には `Expect`、
 >例外発生をチェックしたい場合には `ExpectThrown` が利用可能です。
 
->Excelシート名とテストクラス名が同じ場合は、`Excelシート名__テストケース記述` というテストメソッド名の代わりに
->`テストケース記述` というふうに Excel シート名を省略した形のメソッド名にすることもできます。
 
 
 3. API
@@ -186,9 +188,9 @@ FixtureBook の操作は以下のメソッドでできます。
   <tr><td>GetObject / GetList / GetArray</td><td><code>D.パラメタ</code>に記述した内容で初期化されたオブジェクトを取得する。</td></tr>
   <tr><td>Validate</td><td>引数に指定されたオブジェクトが<code>E.取得データ</code>に記述した予想結果と同じかどうか検証する。</td></tr>
   <tr><td>ValidateStorage</td><td>DB上のデータが<code>F.更新後データ</code>に記述した予想結果と同じかどうか検証する。</td></tr>
-  <tr><td>Expect</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) ValidateStorage でデータ状態の検証を行う。</td></tr>
-  <tr><td>ExpectReturn</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) Validate で実行した処理の戻り値を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
-  <tr><td>ExpectThrown</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理を実行し、(4) Validate で実行した処理中に発生した例外を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
+  <tr><td>Expect</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理（または命名規約から類推されるメソッド）を実行し、(4) ValidateStorage でデータ状態の検証を行う。</td></tr>
+  <tr><td>ExpectReturn</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理（または命名規約から類推されるメソッド）を実行し、(4) Validate で実行した処理の戻り値を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
+  <tr><td>ExpectThrown</td><td>(1)Setup でデータのセットアップを行い, (2) GetXxx でパラメタオブジェクトを取得し、(3) 引数に指定された処理（または命名規約から類推されるメソッド）を実行し、(4) Validate で実行した処理中に発生した例外を検証し、(5) ValidateStorage でデータ状態の検証を行う。</td></tr>
   <tr><td>ValidateParameterAt</td><td>Expect / ExpectReturn / ExpectThrown を実行した後の引数の値が「E.取得データ」に記述された値と同じになっているかどうかを検証する。例えば <code>FixtureBook.Expect((Data data1, Data data2) => ...).ValidateParameterAt(0);</code> とすると、data1 の値が「E.取得データ」で記述されたものと同じになっているかどうかを検証できる。</td></tr>
 </table>
 

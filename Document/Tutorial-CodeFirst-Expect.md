@@ -23,10 +23,76 @@
 テストメソッド記述例
 --------------------
 
-Expect / ExpectReturn / ExpectThrown メソッドを使用する場合には、
-テスト対象の処理をラムダ式で記述します。
-
+Expect / ExpectReturn / ExpectThrown メソッドを使用して
 これまでのテストメソッドを書き直すと以下のようになります。
+
+
+    [TestClass]
+    public class EmployeeStoreTest
+    {
+        ...
+
+        [TestMethod]
+        public void Save__データベーステーブルEmployeesに存在しないIdの従業員データを渡した場合には新規追加される()
+        {
+            FixtureBook.Expect();
+        }
+
+        [TestMethod]
+        public void Save__データベーステーブルEmployeesに存在するIdの従業員データを渡した場合には既存データが更新される()
+        {
+            FixtureBook.Expect();
+        }
+
+        [TestMethod]
+        public void Delete__指定した従業員データのIdをキーにしてデータベーステーブルEmployees上のデータが削除される()
+        {
+            FixtureBook.Expect();
+        }
+
+        [TestMethod]
+        public void GetAllEmployees__データベーステーブルEmployees上の全データが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        public void GetEmployees__引数の退職フラグがtrueの場合データベーステーブルEmployees上の退職者のみが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        public void GetEmployees__引数の退職フラグがfalseの場合データベーステーブルEmployees上の未退職者のみが取得できる()
+        {
+            FixtureBook.ExpectReturn();
+        }
+
+        [TestMethod]
+        [Fixture("Delete", @"指定した従業員データのIdが 0 ならば ""Invalid Id"" というメッセージを持つ ApplicationException が発生する")]
+        public void Delete__指定した従業員データのIdが0ならばInvalid_Idというメッセージを持つApplicationExceptionが発生する()
+        {
+            FixtureBook.ExpectThrown();
+        }
+    }
+
+
+上記のように記述した場合、以下のルールに従ってテスト対象メソッドが呼び出されます。
+
+*   テストクラス名（例：EmployeeStoreTest）から "Test" を外した名前のクラス（例：EmployeeStore）をテスト対象クラスとする。
+*   シート名（例：Save, Delete 等）と同じ名前のメソッドをテスト対象メソッドとする。
+
+このルールに従えない場合、Expect / ExpectReturn / ExpectThrown メソッドの引数で、
+テスト対象クラスやテスト対象メソッドを明示的に指定することも可能です。
+
+
+テスト対象処理をラムダ式で実装する
+----------------------------------
+
+テスト対象メソッドを直接呼び出すかわりに、
+任意の処理をテスト対象としたい場合には、
+以下のようにテスト対象処理をラムダ式で記述できます。
+
 
     [TestClass]
     public class EmployeeStoreTest

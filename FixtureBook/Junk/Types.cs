@@ -15,11 +15,16 @@
  */
 using System;
 using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 namespace XPFriend.Junk
 {
     internal static class Types
     {
+        private static List<Assembly> assemblies;
+
         /// <summary>
         /// 指定された名前のタイプを取得する。
         /// </summary>
@@ -40,7 +45,12 @@ namespace XPFriend.Junk
 
         private static Type GetTypeFromCurrentDomain(string name)
         {
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            if (assemblies == null)
+            {
+                assemblies = LoadAllAssemblies();
+            }
+
+            foreach (Assembly assembly in assemblies)
             {
                 Type type = assembly.GetType(name);
                 if (type != null)
@@ -49,6 +59,28 @@ namespace XPFriend.Junk
                 }
             }
             return null;
+        }
+
+        private static List<Assembly> LoadAllAssemblies()
+        {
+            List<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            List<string> loaded = new List<string>(assemblies.Count);
+            for (int i = 0; i < assemblies.Count; i++)
+            {
+                try
+                {
+                    loaded.Add(assemblies[i].Location);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            string[] all = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+            List<string> toLoad = all.Where(path =>
+                !loaded.Contains(path, StringComparer.InvariantCultureIgnoreCase)).ToList();
+            toLoad.ForEach(path =>
+                assemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
+            return assemblies;
         }
     }
 }
