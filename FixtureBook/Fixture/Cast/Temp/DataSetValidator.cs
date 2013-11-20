@@ -28,7 +28,7 @@ namespace XPFriend.Fixture.Cast.Temp
 
         public override bool HasRole(object obj, params string[] typeName)
         {
-            return Section != null && Section.HasTable() && obj is DataSet;
+            return Section != null && obj is DataSet;
         }
 
         public override void Validate(object obj, params string[] typeName)

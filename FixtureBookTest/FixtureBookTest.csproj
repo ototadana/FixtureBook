@@ -80,6 +80,7 @@
     <Compile Include="FixtureTest\Cast\Temp\ObjectValidatorBaseTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\ObjectFactoryBaseTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\AssertieTest.cs" />
+    <Compile Include="FixtureTest\Cast\Temp\EmptyValidateTest.cs" />
     <Compile Include="FixtureTest\FixtureBookAttributeTest.cs" />
     <Compile Include="FixtureTest\FixtureBookTest.cs" />
     <Compile Include="FixtureTest\Staff\BookTest.cs" />
@@ -160,6 +161,7 @@
     <None Include="FixtureTest\Cast\Temp\DataTableFactoryTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\ObjectValidatorBaseTest.xlsx" />
     <None Include="FixtureTest\Cast\Temp\ObjectFactoryBaseTest.xlsx" />
+    <None Include="FixtureTest\Cast\Temp\EmptyValidateTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest.xlsx" />
     <None Include="FixtureTest\FixtureBookTest.xlsx" />
     <None Include="FixtureTest\FixtureBookAttributeTest_02.xlsx" />

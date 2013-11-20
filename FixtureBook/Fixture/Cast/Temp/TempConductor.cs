@@ -88,34 +88,39 @@ namespace XPFriend.Fixture.Cast.Temp
 
         private object GetParameter(Type type, int index)
         {
-            string tableName = GetTableName(index, Section.SectionType.ObjectForExec);
+            string tableName = GetTableName(index, Section.SectionType.ObjectForExec, type);
             parameterNames[index] = tableName;
             return GetParameter(type, tableName);
         }
 
         private Result ToResult(object result)
         {
-            string tableName = GetTableName(0, Section.SectionType.ExpectedResult);
+            string tableName = GetTableName(0, Section.SectionType.ExpectedResult, GetType(result));
             return new Result { Name = tableName, Value = result };
+        }
+
+        private Type GetType(object result)
+        {
+            return (result == null) ? typeof(object) : result.GetType();
         }
 
         private void Validate(Result result)
         {
             Section section = testCase.GetSection(Section.SectionType.ExpectedResult);
-            if (section != null && section.HasTable(result.Name))
+            if (section != null)
             {
                 if (result.Value is DataSet)
                 {
                     testCase.Validate(result.Value);
                 }
-                else
+                else if(section.HasTable(result.Name))
                 {
                     testCase.Validate(result.Value, result.Name);
                 }
             }
         }
 
-        private string GetTableName(int index, Section.SectionType sectionType)
+        private string GetTableName(int index, Section.SectionType sectionType, Type type)
         {
             Section section = testCase.GetSection(sectionType);
             if (section == null)
@@ -125,6 +130,10 @@ namespace XPFriend.Fixture.Cast.Temp
 
             if (!section.HasTable(index))
             {
+                if (index == 0 && typeof(DataSet).IsAssignableFrom(type))
+                {
+                    return null;
+                }
                 throw new ConfigException("M_Fixture_FixtureBook_GetTable_" + sectionType, index + 1, section);
             }
             return section.GetTable(index).Name;
