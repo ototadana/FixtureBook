@@ -28,8 +28,6 @@ namespace XPFriend.Fixture.Cast.Temp
     /// </summary>
     internal class PocoFactory : ObjectFactoryBase, IObjectFactory
     {
-        private const string OWN = "-";
-
         private PocoUtil pocoUtil = new PocoUtil();
 
         public PocoFactory(TempObjectFactory parent) : base(parent) { }

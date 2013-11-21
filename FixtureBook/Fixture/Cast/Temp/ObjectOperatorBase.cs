@@ -28,6 +28,7 @@ namespace XPFriend.Fixture.Cast.Temp
     {
         protected const string NULL = "${NULL}";
         protected const string EMPTY = "${EMPTY}";
+        protected const string OWN = "-";
 
         protected Case testCase;
         private Section.SectionType sectiontype;

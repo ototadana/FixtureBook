@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
@@ -37,9 +38,21 @@ namespace XPFriend.Fixture.Cast.Temp
 
         protected override object GetPropertyValue(object obj, string name, Table table, Row row)
         {
+            if (IsSimpleType(obj, row))
+            {
+                return obj;
+            }
+
             Type type = obj.GetType();
             PropertyInfo property = pocoUtil.GetPropertyInfo(name, type, table, row);
             return property.GetValue(obj, null);
+        }
+
+        private bool IsSimpleType(object value, Row row)
+        {
+            Dictionary<string, string> values = row.Values;
+            return values.Count == 1 && values.ContainsKey(OWN) &&
+                (value == null || TypeConverter.IsConvertible(value.GetType()));
         }
 
         public override void Validate<TException>(Action action, string typeName)

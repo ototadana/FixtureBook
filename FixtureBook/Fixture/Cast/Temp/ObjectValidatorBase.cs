@@ -68,7 +68,7 @@ namespace XPFriend.Fixture.Cast.Temp
                 actual = (Array)obj;
                 type = obj.GetType().GetElementType();
             }
-            else if (obj is IEnumerable && !(obj is IDictionary))
+            else if (obj is IEnumerable && !(obj is IDictionary) && !(obj is string))
             {
                 type = null;
                 foreach (object o in (IEnumerable)obj)
@@ -111,10 +111,22 @@ namespace XPFriend.Fixture.Cast.Temp
 
         protected virtual void AssertNull(string typeName)
         {
-            if (Section.HasTable(typeName))
-            {
+            if (Section.HasTable(typeName) && !IsNull(Section.GetTable(typeName)))
+            { 
                 Assertie.Fail("M_Fixture_Temp_ObjectValidator_AssertNull", typeName, Section.GetTable(typeName));
             }
+        }
+
+        private bool IsNull(Table table)
+        {
+            if (table.Rows.Count != 1)
+            {
+                return false;
+            }
+
+            Dictionary<string, string> values = table.Rows[0].Values;
+            return values.Count == 1 && values.ContainsKey(OWN) &&
+                values[OWN] == NULL;
         }
 
         protected virtual void AssertEquals(Table table, ICollection actualList)
@@ -461,5 +473,5 @@ namespace XPFriend.Fixture.Cast.Temp
         {
             throw new NotImplementedException();
         }
-    }
+   }
 }

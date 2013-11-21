@@ -286,7 +286,7 @@ FixtureBook は以下のような論理構造になっています。
 *   Dictionary<string,object> オブジェクト
 *   DataTable
 *   DataSet
-
+*   string, int 等のオブジェクト
 
 ##### POCO オブジェクト
 
@@ -371,6 +371,27 @@ GetObject の引数でテーブル定義名を明示的に指定しなければ�
     DataSet dataSet = fixtureBook.GetObject<DataSet>("Table1");
 ```
 
+##### string, int 等のオブジェクト
+
+`D.パラメタ` の列名行に `-` を指定するとデータ行に記述した値でオブジェクトが作成されます。
+
+![D.string, int 等のオブジェクト](./images/FixtureBookReference-14.png?raw=true)
+
+
+以下のように GetObject, GetList, GetArray が利用できます。
+
+```c#
+    // stringを取得する
+    string obj = fixtureBook.GetObject<String>();
+
+    // stringのリストを取得する
+    List<string> list = fixtureBook.GetList<string>();
+
+    // stringの配列を取得する
+    string[] array = fixtureBook.GetArray<string>();
+```
+
+
 
 #### テーブル定義検索ルール
 
@@ -422,7 +443,7 @@ Validate メソッドで検証することができるオブジェクトは以�
 *    Dictionary<string,object> オブジェクト
 *    DataTable
 *    DataSet
-
+*    string, int 等のオブジェクト
 
 ##### POCO オブジェクト
 
@@ -463,6 +484,14 @@ DataSet 内に複数の DataTable がある場合、全ての DataTable が検�
 ただし、Validate の引数でテーブル定義名を明示的に指定している場合は、
 その名前を持つ DataTable のみが検証の対象となります。
 
+
+##### string, int 等のオブジェクト
+
+`E.取得データ` の列名行に `-` を指定すると、データ行に記述した予想結果値と比較検証することができます。
+
+![D.string, int 等のオブジェクト](./images/FixtureBookReference-15.png?raw=true)
+
+Validate メソッドの引数には単体オブジェクトの他に、リスト・配列を指定することもできます。
 
 
 #### テーブル定義検索ルール

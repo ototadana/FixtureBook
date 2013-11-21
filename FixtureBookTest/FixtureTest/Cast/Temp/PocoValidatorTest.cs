@@ -78,5 +78,204 @@ namespace XPFriend.FixtureTest.Cast.Temp
             parent.Initialize(testCase);
             return parent.pocoValidator;
         }
+
+        [TestMethod]
+        [Fixture("stringを検証できる")]
+        public void stringを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return "aa"; });
+        }
+
+        [TestMethod]
+        [Fixture("stringを検証できる")]
+        public void stringを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return "bb"; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("intを検証できる")]
+        public void intを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return 1; });
+        }
+
+        [TestMethod]
+        [Fixture("intを検証できる")]
+        public void intを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return 2; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("nullを検証できる")]
+        public void nullを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { string a = null; return a; });
+        }
+
+        [TestMethod]
+        [Fixture("nullを検証できる")]
+        public void nullを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return "a"; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("stringの配列を検証できる")]
+        public void stringの配列を検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new string[] { "aa", "b" }; });
+        }
+
+        [TestMethod]
+        [Fixture("stringの配列を検証できる")]
+        public void stringの配列を検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return "aa"; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("intの配列を検証できる")]
+        public void intの配列を検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new int[] { 1, 2 }; });
+        }
+
+        [TestMethod]
+        [Fixture("intの配列を検証できる")]
+        public void intの配列を検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return new int[] { 1, 3 }; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("nullと空文字列の配列を検証できる")]
+        public void nullと空文字列の配列を検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new string[] { null, "" }; });
+        }
+
+        [TestMethod]
+        [Fixture("nullと空文字列の配列を検証できる")]
+        public void nullと空文字列の配列を検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return new string[] { "", "" }; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("stringの配列を検証できる")]
+        public void stringのリストを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new List<string>() { "aa", "b" }; });
+        }
+
+        [TestMethod]
+        [Fixture("stringの配列を検証できる")]
+        public void stringのリストを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return new List<string>() { "aa", "bb" }; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("intの配列を検証できる")]
+        public void intのリストを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new List<int>() { 1, 2 }; });
+        }
+
+        [TestMethod]
+        [Fixture("intの配列を検証できる")]
+        public void intのリストを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return new List<int>() { 1, 3 }; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("nullと空文字列の配列を検証できる")]
+        public void nullと空文字列のリストを検証できる_正常()
+        {
+            FixtureBook.ExpectReturn(() => { return new List<string>() { null, "" }; });
+        }
+
+        [TestMethod]
+        [Fixture("nullと空文字列の配列を検証できる")]
+        public void nullと空文字列のリストを検証できる_エラー()
+        {
+            try
+            {
+                FixtureBook.ExpectReturn(() => { return new List<string>() { "", "" }; });
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
     }
 }
