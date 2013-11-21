@@ -12,6 +12,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2013 XPFriend Community</copyright>
-    <tags>ユニットテスト 単体テスト フィクスチャ XPFriend fixture unit test testing .xlsx</tags>
+    <tags>ユニットテスト 単体テスト フィクスチャ データ XPFriend fixture unit test testing .xlsx Excel</tags>
   </metadata>
 </package>

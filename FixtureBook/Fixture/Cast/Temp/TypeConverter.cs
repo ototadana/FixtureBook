@@ -215,7 +215,10 @@ namespace XPFriend.Fixture.Cast.Temp
 
         public static bool IsConvertible(Type type)
         {
-            return typeof(IComparable).IsAssignableFrom(type);
+            return typeof(IConvertible).IsAssignableFrom(type) ||
+                typeof(DateTimeOffset).IsAssignableFrom(type) ||
+                typeof(TimeSpan).IsAssignableFrom(type) ||
+                typeof(Guid).IsAssignableFrom(type);
         }
     }
 

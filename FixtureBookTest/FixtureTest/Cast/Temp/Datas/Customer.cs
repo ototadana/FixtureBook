@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace XPFriend.FixtureTest.Cast.Temp.Datas
 {
-    public class Customer
+    public class Customer : System.IComparable
     {
         public string Code { get; set; }
         public string Name { get; set; }
         public string Telno { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
