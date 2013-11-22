@@ -53,6 +53,14 @@ namespace XPFriend.FixtureTest
             Assert.AreEqual("DEF", new FixtureBook().GetObject<FixtureBookAttributeTestData>().Text);
         }
 
+        [TestMethod]
+        [FixtureBook("FixtureBookAttributeTest_02.xlsx")]
+        [Fixture("FixtureBookAttributeTest", "テストメソッドでFixtureBookのパスを上書きできること")]
+        public void フォルダ指定無しの場合ソースフォルダからファイル取得できる()
+        {
+            // expect
+            Assert.AreEqual("DEF", new FixtureBook().GetObject<FixtureBookAttributeTestData>().Text);
+        }
     }
 
     public class FixtureBookAttributeTestData

@@ -98,11 +98,22 @@ namespace XPFriend.Fixture
                 string path = ((FixtureBookAttribute)attribute).Name;
                 if (path != null)
                 {
-                    return path;
+                    string tmp = PathUtil.EditFilePath(path);
+                    if (File.Exists(tmp))
+                    {
+                        return tmp;
+                    }
+
+                    if (path.Equals(Path.GetFileName(path)))
+                    {
+                        string directoryName = Path.GetDirectoryName(stackFrame.GetFileName());
+                        path = Path.Combine(directoryName, path);
+                    }
+                    return PathUtil.EditFilePath(path);
                 }
             }
 
-            return GetDefaultFilePath(stackFrame);
+            return PathUtil.EditFilePath(GetDefaultFilePath(stackFrame));
         }
 
         private static string GetDefaultFilePath(StackFrame frame)
@@ -176,7 +187,7 @@ namespace XPFriend.Fixture
 
         private static FixtureInfo CreateFixtureInfo(StackFrame stackFrame, MemberInfo method, Type type, String[] name)
         {
-            string filePath = PathUtil.EditFilePath(GetFilePath(stackFrame, type, method));
+            string filePath = GetFilePath(stackFrame, type, method);
             return new FixtureInfo{TestClass = type, FilePath = filePath, SheetName = name[0], TestCaseName = name[1]};
         }
 
