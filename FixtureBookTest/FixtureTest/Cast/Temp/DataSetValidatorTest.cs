@@ -117,6 +117,25 @@ namespace XPFriend.FixtureTest.Cast.Temp
         }
 
         [TestMethod]
+        [Fixture("引数で指定されたテーブル定義名よりもDataSetの中に含まれるDataTableが少ないと例外が発生する")]
+        public void テーブル定義名が明示的に指定されない場合E取得データに記述されたテーブル数よりもDataSetの中に含まれるDataTableが少ない場合はエラーになる()
+        {
+            // setup
+            DataSet dataSet = fixtureBook.GetObject<DataSet>();
+
+            // when
+            try
+            {
+                fixtureBook.Validate(dataSet);
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
         public void 引数でテーブル名指定をしていない場合はDataSetのテーブル名と一致するテーブル定義を使って検証を行う()
         {
             // 正常終了
@@ -200,6 +219,40 @@ namespace XPFriend.FixtureTest.Cast.Temp
                     Assert.IsTrue(e.Message.IndexOf("<aaa>") > -1);
                     Assert.IsTrue(e.Message.IndexOf("<bbb>") > -1);
                 }
+            }
+        }
+
+        [TestMethod]
+        [Fixture("DataSetを利用する場合は複数のテーブルを指定できる")]
+        public void DataSetの中身が空の場合にE取得データに定義がある場合はエラーになる()
+        {
+            try
+            {
+                // when
+                fixtureBook.Validate(new DataSet());
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                // then
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("DataSetを利用する場合は複数のテーブルを指定できる")]
+        public void ExpectReturnを呼び出した時DataSetの中身が空の場合にE取得データに定義がある場合はエラーになる()
+        {
+            try
+            {
+                // when
+                FixtureBook.ExpectReturn(() => new DataSet());
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                // then
+                Console.WriteLine(e);
             }
         }
     }

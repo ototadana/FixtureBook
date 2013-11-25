@@ -253,6 +253,9 @@ App.config 記述例
   <data name="M_Fixture_Temp_ObjectValidator_AssertNull" xml:space="preserve">
     <value>テーブル定義「{0}」が定義されていますが、実際の値は null でした。（{1}）</value>
   </data>
+  <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumberEquals" xml:space="preserve">
+    <value>「E.取得データ」のテーブル定義の数({0})が DataSet に含まれる DataTable の数({1})と異なります。DataSetの中の特定のDataTableのみを検証したい場合は、Validateメソッドの引数でテーブル定義名を明示的に指定してください。({2})</value>
+  </data>
   <data name="M_Fixture_Temp_ObjectValidator_AssertTableNumberExp" xml:space="preserve">
     <value>引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」しかありませんでした。（{2}）</value>
   </data>

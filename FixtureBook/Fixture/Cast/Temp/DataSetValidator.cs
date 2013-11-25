@@ -38,6 +38,13 @@ namespace XPFriend.Fixture.Cast.Temp
             if (typeName == null || typeName.Length == 0) 
             {
                 typeName = GetTableNamesFrom(dataSet);
+                if (dataSet.Tables.Count != Section.TableNames.Count)
+                {
+                    Assertie.Fail(
+                        "M_Fixture_Temp_ObjectValidator_AssertTableNumberEquals",
+                        Section.TableNames.Count, dataSet.Tables.Count, Section);
+                }
+
             }
 
             if (dataSet.Tables.Count < typeName.Length)
@@ -74,7 +81,7 @@ namespace XPFriend.Fixture.Cast.Temp
             {
                 string messageFormat = Resi.Get("M_Fixture_Temp_ObjectValidator_UseTableOrder");
                 Loggi.Warn(String.Format(messageFormat, Section));
-                for(int i = 0; i < dataSet.Tables.Count; i++) 
+                for (int i = 0; i < dataSet.Tables.Count; i++)
                 {
                     Loggi.Warn("DataSet.Table[" + i + "] = " + Section.TableNames[i]);
                     tableNames.Add(Section.TableNames[i]);

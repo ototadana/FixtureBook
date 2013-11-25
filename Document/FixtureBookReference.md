@@ -375,7 +375,7 @@ GetObject の引数でテーブル定義名を明示的に指定しなければ�
 
 `D.パラメタ` の列名行に `-` を指定するとデータ行に記述した値でオブジェクトが作成されます。
 
-![D.string, int 等のオブジェクト](./images/FixtureBookReference-14.png?raw=true)
+![string, int 等のオブジェクト](./images/FixtureBookReference-14.png?raw=true)
 
 
 以下のように GetObject, GetList, GetArray が利用できます。
@@ -480,16 +480,22 @@ DataRow の列値が DBNull.Value の場合、検証時には null として扱�
 
 DataRow の列値が DBNull.Value の場合、検証時には null として扱われます。
 
-DataSet 内に複数の DataTable がある場合、全ての DataTable が検証の対象になります。
-ただし、Validate の引数でテーブル定義名を明示的に指定している場合は、
+DataSet 内にある特定の DataTable のみを検証の対象としたい場合。
+Validate メソッドの引数でテーブル定義名を明示的に指定してください。
 その名前を持つ DataTable のみが検証の対象となります。
+
+Validate の引数でテーブル定義名を明示的に指定しなかった場合は、
+全ての DataTable が検証の対象になります。
+この際、DataSet 内にある DataTable の数と
+`E.取得データ` に記述されたテーブル定義の数とが異なる場合には、
+エラーとなります。
 
 
 ##### string, int 等のオブジェクト
 
 `E.取得データ` の列名行に `-` を指定すると、データ行に記述した予想結果値と比較検証することができます。
 
-![D.string, int 等のオブジェクト](./images/FixtureBookReference-15.png?raw=true)
+![string, int 等のオブジェクト](./images/FixtureBookReference-15.png?raw=true)
 
 Validate メソッドの引数には単体オブジェクトの他に、リスト・配列を指定することもできます。
 

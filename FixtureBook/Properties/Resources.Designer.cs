@@ -425,6 +425,15 @@ namespace XPFriend.Properties {
         }
         
         /// <summary>
+        ///   「E.取得データ」のテーブル定義の数({0})が DataSet に含まれる DataTable の数({1})と異なります。DataSetの中の特定のDataTableのみを検証したい場合は、Validateメソッドの引数でテーブル定義名を明示的に指定してください。({2}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberEquals {
+            get {
+                return ResourceManager.GetString("M_Fixture_Temp_ObjectValidator_AssertTableNumberEquals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   引数で指定された定義名は「{0}」ですが、実際のDataSet中のDataTableは「{1}」しかありませんでした。（{2}） に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string M_Fixture_Temp_ObjectValidator_AssertTableNumberExp {
