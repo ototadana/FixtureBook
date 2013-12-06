@@ -51,6 +51,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
         private Section section;
         private Table table;
         private List<Column> columns;
+        private int tableRowIndex;
         private int columnNameRowIndex;
         private int columnValueRowIndex;
         private Dictionary<string, string> values;
@@ -82,7 +83,7 @@ namespace XPFriend.Fixture.Staff.Xlsx
                 }
                 else
                 {
-                    ChangeTable(value);
+                    ChangeTable(value, rowIndex);
                 }
                 return;
             }
@@ -97,6 +98,11 @@ namespace XPFriend.Fixture.Staff.Xlsx
         private void UpdateTable(int rowIndex, int columnIndex, string value)
         {
             if (table == null)
+            {
+                return;
+            }
+
+            if (rowIndex == tableRowIndex)
             {
                 return;
             }
@@ -213,29 +219,30 @@ namespace XPFriend.Fixture.Staff.Xlsx
             this.sheet = sheet;
             this.section = null;
             ChangeCase(Case.Anonymous);
-            ChangeTable((Table)null);
+            ChangeTable((Table)null, -1);
         }
 
         private void ChangeCase(string value)
         {
             this.testCase = Author.CreateCase(this.sheet, value);
-            ChangeTable((Table)null);
+            ChangeTable((Table)null, -1);
         }
 
         private void ChangeSection(string value)
         {
             this.section = Author.CreateSection(this.testCase, value);
-            ChangeTable((Table)null);
+            ChangeTable((Table)null, -1);
         }
 
-        private void ChangeTable(string value)
+        private void ChangeTable(string value, int rowIndex)
         {
-            ChangeTable(Author.CreateTable(this.section, value));
+            ChangeTable(Author.CreateTable(this.section, value), rowIndex);
         }
 
-        private void ChangeTable(Table table)
+        private void ChangeTable(Table table, int rowIndex)
         {
             this.table = table;
+            this.tableRowIndex = rowIndex;
             this.columns = null;
             this.columnNameRowIndex = -1;
             this.columnValueRowIndex = -1;

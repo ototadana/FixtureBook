@@ -210,5 +210,25 @@ namespace XPFriend.FixtureTest.Cast.Temp
             // then
             fixtureBook.ValidateStorage();
         }
+
+        [TestMethod]
+        public void テーブル名行に記載されている列名は無視される()
+        {
+            // setup
+            Loggi.DebugEnabled = true;
+            テーブル名行に記載されている列名は無視される_Setup();
+
+            // when
+            fixtureBook.Setup();
+
+            // then
+            fixtureBook.ValidateStorage();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void テーブル名行に記載されている列名は無視される_Setup()
+        {
+            new FixtureBook().Setup();
+        }
     }
 }
