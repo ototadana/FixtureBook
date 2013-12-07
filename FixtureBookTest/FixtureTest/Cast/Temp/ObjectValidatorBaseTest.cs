@@ -640,5 +640,82 @@ namespace XPFriend.FixtureTest.Cast.Temp
             }
         }
 
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_ロケール日付書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString();
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
+
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_ハイフン区切り日付書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString("yyyy-MM-dd");
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
+
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_ハイフン区切り日時書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
+
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_区切り文字なし日付書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString("yyyyMMdd");
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
+
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_区切り文字なし日時分書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString("yyyyMMddHHmm");
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
+
+        [TestMethod]
+        [Fixture("セル内容が${TODAY}の場合は本日の日付のみOK")]
+        public void セル内容がTODAYの場合は本日の日付のみOK_区切り文字なし日時分秒書式文字列()
+        {
+            // setup
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["date1"] = DateTime.Now.ToString("yyyyMMddHHmmss");
+            Console.WriteLine(data["date1"]);
+
+            // expect
+            fixtureBook.Validate(data);
+        }
     }
 }

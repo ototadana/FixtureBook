@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -29,6 +30,7 @@ namespace XPFriend.Fixture.Cast.Temp
     internal abstract class ObjectValidatorBase : ObjectOperatorBase
     {
         private const string TODAY = "${TODAY}";
+        private static readonly string[] DATEFORMATS = new string[] { "yyyyMMdd", "yyyyMMddHHmm", "yyyyMMddHHmmss" };
 
         private IObjectValidator parent;
 
@@ -280,6 +282,11 @@ namespace XPFriend.Fixture.Cast.Temp
         protected virtual bool AssertEqualsAsDate(Table table, Row row, string columnName,
             string expected, object actual)
         {
+            if (expected.IndexOf(TODAY) > -1 && actual is string)
+            {
+                actual = ToDate((string)actual);
+            }
+
             if (expected.IndexOf(TODAY) > -1 && (actual is DateTime || actual is DateTimeOffset))
             {
                 String today = Formi.Format(DateTime.Today, "yyyy-MM-dd");
@@ -302,6 +309,23 @@ namespace XPFriend.Fixture.Cast.Temp
                         "M_Fixture_Temp_ObjectValidator_AssertEquals", table, row, columnName, expected, actualAsText, GetType(actual));
             }
             return false;
+        }
+
+        private object ToDate(string s)
+        {
+            DateTime date;
+            if (DateTime.TryParse(s, out date))
+            {
+                return date;
+            }
+
+            if (DateTime.TryParseExact(s, DATEFORMATS, DateTimeFormatInfo.InvariantInfo, 
+                DateTimeStyles.None, out date))
+            {
+                return date;
+            }
+
+            return s;
         }
 
         protected virtual string DateTimeToString(IFormattable actual, string expected)
