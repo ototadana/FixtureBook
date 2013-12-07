@@ -36,6 +36,7 @@ namespace XPFriend.Fixture.Staff
         private DressingRoom dressingRoom;
         private Section[] sections = new Section[Section.MaxNumber + 1];
         private bool notYet = true;
+        private Dictionary<Type, Delegate> exceptionEditors = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// テストケース定義を作成する。
@@ -375,6 +376,30 @@ namespace XPFriend.Fixture.Staff
         public void ExpectThrown<TException>(Type targetClass, string targetMethod, Type[] targetMethodParameter) where TException : Exception
         {
             dressingRoom.Conductor.ExpectThrown<TException>(targetClass, targetMethod, targetMethodParameter);
+        }
+
+        /// <summary>
+        /// 検証対象の例外情報を編集するための処理を登録する。
+        /// </summary>
+        /// <param name="exceptionType">編集対象の例外</param>
+        /// <param name="exceptionEditor">編集処理</param>
+        public void RegisterExceptionEditor(Type exceptionType, Delegate exceptionEditor)
+        {
+            exceptionEditors[exceptionType] = exceptionEditor;
+        }
+
+        /// <summary>
+        /// RegisterExceptionEditor で登録された例外処理を取得する。
+        /// </summary>
+        /// <param name="exceptionType">編集対象の例外</param>
+        /// <returns>例外処理</returns>
+        public Delegate GetExceptionEditor(Type exceptionType)
+        {
+            if (exceptionEditors.ContainsKey(exceptionType))
+            {
+                return exceptionEditors[exceptionType];
+            }
+            return null;
         }
     }
 }

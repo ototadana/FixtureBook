@@ -17,6 +17,7 @@
 using System;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
+using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -26,6 +27,7 @@ namespace XPFriend.Fixture.Cast.Temp
         internal PocoValidator pocoValidator;
         internal DataSetValidator dataSetValidator;
         internal DataTableValidator dataTableValidator;
+        private Case testCase;
 
         public TempObjectValidator()
         {
@@ -41,6 +43,7 @@ namespace XPFriend.Fixture.Cast.Temp
             pocoValidator.Initialize(testCase);
             dataSetValidator.Initialize(testCase);
             dataTableValidator.Initialize(testCase);
+            this.testCase = testCase;
         }
 
         public bool HasRole(object obj, params string[] typeName)
@@ -73,7 +76,42 @@ namespace XPFriend.Fixture.Cast.Temp
 
         public void Validate<TException>(Action action, string typeName) where TException : Exception
         {
-            pocoValidator.Validate<TException>(action, typeName);
+            bool isNormalEnd = false;
+            try
+            {
+                action();
+                isNormalEnd = true;
+            }
+            catch (TException e)
+            {
+                Loggi.Debug(e);
+                object obj = e;
+                Delegate editor = GetExceptionEditor(e.GetType());
+                if (editor != null)
+                {
+                    obj = editor.DynamicInvoke(e);
+                }
+                Validate(obj, typeName);
+            }
+
+            if (isNormalEnd)
+            {
+                Assertie.Fail("M_Fixture_Temp_ObjectValidator_Exception", typeof(TException).Name);
+            }
+        }
+
+        private Delegate GetExceptionEditor(Type type)
+        {
+            Delegate editor = testCase.GetExceptionEditor(type);
+            if (editor != null)
+            {
+                return editor;
+            }
+            if (typeof(Exception).IsAssignableFrom(type.BaseType))
+            {
+                return GetExceptionEditor(type.BaseType);
+            }
+            return null;
         }
 
 

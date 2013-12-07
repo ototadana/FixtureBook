@@ -43,6 +43,7 @@ namespace XPFriend.Fixture
         internal const string DefaultNameSeparator = "__";
         private static readonly string[] SpecialMethodSeparator = new string[] { "<", ">" };
         private static string[] nameSeparator;
+        private static Dictionary<Type, Delegate> defaultExceptionEditors = new Dictionary<Type, Delegate>();
 
         static FixtureBook()
         {
@@ -197,6 +198,10 @@ namespace XPFriend.Fixture
             book = Book.GetInstance(fixtureInfo.TestClass, fixtureInfo.FilePath);
             sheet = book.GetSheet(fixtureInfo.SheetName);
             testCase = sheet.GetCase(fixtureInfo.TestCaseName);
+            foreach (Type exceptionType in defaultExceptionEditors.Keys)
+            {
+                testCase.RegisterExceptionEditor(exceptionType, defaultExceptionEditors[exceptionType]);
+            }
             Loggi.Debug("FixtureBook : Case : " + testCase);
         }
 
@@ -802,6 +807,38 @@ namespace XPFriend.Fixture
         {
             InitializeIfNotYet();
             testCase.ValidateParameterAt(index, name);
+            return this;
+        }
+
+        /// <summary>
+        /// 検証対象の例外情報を編集するための処理をデフォルト登録する。
+        /// </summary>
+        /// <typeparam name="TException">編集対象の例外</typeparam>
+        /// <param name="editor">編集処理</param>
+        public static void RegisterDefaultExceptionEditor<TException>(Func<TException,object> editor) where TException : Exception
+        {
+            defaultExceptionEditors[typeof(TException)] = editor;
+        }
+
+        /// <summary>
+        /// 例外処理のデフォルト登録を解除する。
+        /// </summary>
+        /// <typeparam name="TException"></typeparam>
+        public static void UnregisterDefaultExceptionEditor<TException>() where TException : Exception
+        {
+            defaultExceptionEditors.Remove(typeof(TException));
+        }
+
+        /// <summary>
+        /// 検証対象の例外情報を編集するための処理を登録する。
+        /// </summary>
+        /// <typeparam name="TException">編集対象の例外</typeparam>
+        /// <param name="editor">編集処理</param>
+        /// <returns>このインスタンス</returns>
+        public FixtureBook RegisterExceptionEditor<TException>(Func<TException, object> editor) where TException : Exception
+        {
+            InitializeIfNotYet();
+            testCase.RegisterExceptionEditor(typeof(TException), editor);
             return this;
         }
     }

@@ -34,6 +34,8 @@ namespace XPFriend.FixtureTest
         public void Cleanup()
         {
             Loggi.DebugEnabled = false;
+            FixtureBook.UnregisterDefaultExceptionEditor<SystemException>();
+            FixtureBook.UnregisterDefaultExceptionEditor<ApplicationException>();
         }
 
         [TestMethod]
@@ -614,6 +616,80 @@ namespace XPFriend.FixtureTest
                 Console.WriteLine(e.Message);
                 Assert.IsTrue(e.Message.IndexOf("xxx") > -1);
             }
+        }
+
+        [TestMethod]
+        [Fixture("Validateで例外発生がテストできる")]
+        public void RegisterExceptionEditorで登録したエディタで例外を編集できる()
+        {
+            // setup
+            FixtureBook fixtureBook = new FixtureBook();
+
+            // when
+            fixtureBook.RegisterExceptionEditor((SystemException e) =>
+            {
+                Console.WriteLine(e);
+                Assert.AreEqual("sys", e.Message);
+                return new Dictionary<string, string>() { { "Message", "zzz" } };
+            });
+            fixtureBook.RegisterExceptionEditor<ApplicationException>(e =>
+            {
+                Console.WriteLine(e);
+                Assert.AreEqual("app", e.Message);
+                return new Dictionary<string, string>() { { "Message", "zzz" } };
+            });
+
+            // then
+            fixtureBook.Validate<SystemException>(() => { throw new SystemException("sys"); }, "Exception");
+            fixtureBook.Validate<ApplicationException>(() => { throw new ApplicationException("app"); }, "Exception");
+        }
+
+        [TestMethod]
+        [Fixture("Validateで例外発生がテストできる")]
+        public void RegisterDefaultExceptionEditorで登録したエディタで例外を編集できる()
+        {
+            // when
+            FixtureBook.RegisterDefaultExceptionEditor((SystemException e) =>
+            {
+                Console.WriteLine(e);
+                Assert.AreEqual("sys", e.Message);
+                return new Dictionary<string, string>() { { "Message", "zzz" } };
+            });
+
+            // then
+            FixtureBook.ExpectThrown<SystemException>(() => { throw new SystemException("sys"); });
+            FixtureBook.ExpectThrown<SystemException>(typeof(SystemExceptionThrower), "ThrowSystemException");
+        }
+
+        [TestMethod]
+        [Fixture("Validateで例外発生がテストできる")]
+        public void RegisterDefaultExceptionEditorで登録したエディタはRegisterExceptionEditorで上書きできる()
+        {
+            // when
+            FixtureBook.RegisterDefaultExceptionEditor<ApplicationException>(e =>
+            {
+                Console.WriteLine(e);
+                Assert.AreEqual("app", e.Message);
+                return new Dictionary<string, string>() { { "Message", "ZZZ" } };
+            });
+            FixtureBook fixtureBook = new FixtureBook();
+            fixtureBook.RegisterExceptionEditor<ApplicationException>(e =>
+            {
+                Console.WriteLine(e);
+                Assert.AreEqual("app", e.Message);
+                return new Dictionary<string, string>() { { "Message", "zzz" } };
+            });
+
+            // then
+            fixtureBook.Validate<ApplicationException>(() => { throw new ApplicationException("app"); }, "Exception");
+        }
+    }
+
+    public class SystemExceptionThrower
+    {
+        public void ThrowSystemException()
+        {
+            throw new SystemException("sys");
         }
     }
 }

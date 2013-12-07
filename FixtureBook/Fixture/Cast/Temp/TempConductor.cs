@@ -41,7 +41,8 @@ namespace XPFriend.Fixture.Cast.Temp
         public void ExpectThrown<TException>(Delegate action, params Type[] types) where TException : Exception
         {
             testCase.Setup();
-            testCase.Validate<TException>(() => DynamicInvoke(action, types), null);
+            string tableName = GetTableName(0, Section.SectionType.ExpectedResult, typeof(TException));
+            testCase.Validate<TException>(() => DynamicInvoke(action, types), tableName);
             testCase.ValidateStorageInternal();
         }
 
@@ -106,17 +107,13 @@ namespace XPFriend.Fixture.Cast.Temp
 
         private void Validate(Result result)
         {
-            Section section = testCase.GetSection(Section.SectionType.ExpectedResult);
-            if (section != null)
+            if (result.Value is DataSet)
             {
-                if (result.Value is DataSet)
-                {
-                    testCase.Validate(result.Value);
-                }
-                else if(section.HasTable(result.Name))
-                {
-                    testCase.Validate(result.Value, result.Name);
-                }
+                testCase.Validate(result.Value);
+            }
+            else
+            {
+                testCase.Validate(result.Value, result.Name);
             }
         }
 
@@ -310,8 +307,9 @@ namespace XPFriend.Fixture.Cast.Temp
         public void ExpectThrown<TException>(Type targetClass, string targetMethod, Type[] targetMethodParameter) where TException : Exception
         {
             testCase.Setup();
+            string tableName = GetTableName(0, Section.SectionType.ExpectedResult, typeof(TException));
             testCase.Validate<TException>(() => 
-                DynamicInvoke(targetClass, targetMethod, targetMethodParameter), null);
+                DynamicInvoke(targetClass, targetMethod, targetMethodParameter), tableName);
             testCase.ValidateStorageInternal();
         }
     }

@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using XPFriend.Fixture.Role;
 using XPFriend.Fixture.Staff;
-using XPFriend.Junk;
 
 namespace XPFriend.Fixture.Cast.Temp
 {
@@ -54,26 +53,5 @@ namespace XPFriend.Fixture.Cast.Temp
             return values.Count == 1 && values.ContainsKey(OWN) &&
                 (value == null || TypeConverter.IsConvertible(value.GetType()));
         }
-
-        public override void Validate<TException>(Action action, string typeName)
-        {
-            bool isNormalEnd = false;
-            try
-            {
-                action();
-                isNormalEnd = true;
-            }
-            catch (TException e)
-            {
-                Loggi.Debug(e);
-                Validate(e, typeName);
-            }
-
-            if (isNormalEnd)
-            {
-                Assertie.Fail("M_Fixture_Temp_ObjectValidator_Exception", typeof(TException).Name);
-            }
-        }
-
     }
 }
