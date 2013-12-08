@@ -81,6 +81,7 @@
     <Compile Include="FixtureTest\Cast\Temp\ObjectFactoryBaseTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\AssertieTest.cs" />
     <Compile Include="FixtureTest\Cast\Temp\EmptyValidateTest.cs" />
+    <Compile Include="FixtureTest\ExceptionEditors.cs" />
     <Compile Include="FixtureTest\FixtureBookAttributeTest.cs" />
     <Compile Include="FixtureTest\FixtureBookTest.cs" />
     <Compile Include="FixtureTest\Staff\BookTest.cs" />

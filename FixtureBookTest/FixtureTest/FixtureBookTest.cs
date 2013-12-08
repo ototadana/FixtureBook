@@ -34,6 +34,8 @@ namespace XPFriend.FixtureTest
         public void Cleanup()
         {
             Loggi.DebugEnabled = false;
+            Config.Put(FixtureBook.ExceptionEditorKey, null);
+            FixtureBook.InitDefaultExceptionEditors();
             FixtureBook.UnregisterDefaultExceptionEditor<SystemException>();
             FixtureBook.UnregisterDefaultExceptionEditor<ApplicationException>();
         }
@@ -663,6 +665,19 @@ namespace XPFriend.FixtureTest
 
         [TestMethod]
         [Fixture("Validateで例外発生がテストできる")]
+        public void RegisterDefaultExceptionEditorは設定ファイルからも登録できる()
+        {
+            // when
+            Config.Put(FixtureBook.ExceptionEditorKey, "XPFriend.FixtureTest.ExceptionEditors");
+            FixtureBook.InitDefaultExceptionEditors();
+
+            // then
+            FixtureBook.ExpectThrown<SystemException>(() => { throw new SystemException("sys"); });
+            FixtureBook.ExpectThrown<ApplicationException>(() => { throw new ApplicationException("app"); });
+        }
+
+        [TestMethod]
+        [Fixture("Validateで例外発生がテストできる")]
         public void RegisterDefaultExceptionEditorで登録したエディタはRegisterExceptionEditorで上書きできる()
         {
             // when
@@ -679,7 +694,6 @@ namespace XPFriend.FixtureTest
                 Assert.AreEqual("app", e.Message);
                 return new Dictionary<string, string>() { { "Message", "zzz" } };
             });
-
             // then
             fixtureBook.Validate<ApplicationException>(() => { throw new ApplicationException("app"); }, "Exception");
         }

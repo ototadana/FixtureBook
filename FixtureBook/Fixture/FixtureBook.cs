@@ -40,6 +40,7 @@ namespace XPFriend.Fixture
         }
 
         internal const string NameSeparatorKey = "FixtureBook.nameSeparator";
+        internal const string ExceptionEditorKey = "FixtureBook.exceptionEditor";
         internal const string DefaultNameSeparator = "__";
         private static readonly string[] SpecialMethodSeparator = new string[] { "<", ">" };
         private static string[] nameSeparator;
@@ -49,6 +50,34 @@ namespace XPFriend.Fixture
         {
             Resi.Add(Resources.ResourceManager);
             InitNameSeparator();
+            InitDefaultExceptionEditors();
+        }
+
+        internal static void InitDefaultExceptionEditors()
+        {
+            string editorClass = Config.Get(ExceptionEditorKey, null);
+            if (editorClass == null)
+            {
+                return;
+            }
+            Type editors = Types.GetType(editorClass);
+            if (editors == null)
+            {
+                throw new ConfigException("invalid classname : " + editorClass);
+            }
+            MethodInfo[] methods = editors.GetMethods(BindingFlags.Public | BindingFlags.Static);
+            foreach (MethodInfo method in methods)
+            {
+                ParameterInfo[] parameterInfos = method.GetParameters();
+                if (!typeof(void).IsAssignableFrom(method.ReturnType) &&
+                    parameterInfos.Length == 1 && 
+                    typeof(Exception).IsAssignableFrom(parameterInfos[0].ParameterType))
+                {
+                    Type dt = typeof(Func<,>).MakeGenericType(new Type[] { parameterInfos[0].ParameterType, method.ReturnType });
+                    Delegate d = Delegate.CreateDelegate(dt, method);
+                    defaultExceptionEditors[parameterInfos[0].ParameterType] = d;
+                }
+            }
         }
 
         internal static void InitNameSeparator()
