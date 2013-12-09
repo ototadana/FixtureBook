@@ -171,6 +171,7 @@
     <None Include="FixtureTest\Staff\BookExtraTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\XlsxWorksheetHandlerTest.xlsx" />
     <None Include="FixtureTest\Staff\Xlsx\sample1.xlsx" />
+    <None Include="FixtureTest\Staff\CaseTest.xlsx" />
     <None Include="FixtureTest\TestTargetClassExampleTest.xlsx" />
     <None Include="FixtureTest\TestTargetClassExampleVATest.xlsx" />
     <None Include="FixtureTest\Tutorial\EmployeeStoreTest.xlsx" />

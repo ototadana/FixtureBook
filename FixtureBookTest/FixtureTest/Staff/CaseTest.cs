@@ -17,6 +17,9 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using XPFriend.Fixture.Staff;
 using XPFriend.Junk;
+using XPFriend.Fixture;
+using XPFriend.FixtureTest.Cast.Temp.Datas;
+using System.Runtime.CompilerServices;
 
 namespace XPFriend.FixtureTest.Staff
 {
@@ -221,6 +224,69 @@ namespace XPFriend.FixtureTest.Staff
                 Assert.AreEqual("M_Fixture_Case_Validate_Object", e.ResourceKey);
                 Assert.IsTrue(e.Message.IndexOf("テストケース001") > -1);
             }
+        }
+
+        [TestMethod]
+        public void GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される()
+        {
+            // setup
+            FixtureBook fixtureBook = new FixtureBook();
+
+            // when
+            Data data = fixtureBook.GetObject<Data>();
+
+            // then
+            Assert.AreEqual("a", data.Text1);
+            fixtureBook.ValidateStorage();
+        }
+
+        [TestMethod]
+        [Fixture("GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される")]
+        public void FixtureBookインスタンスが同一の場合は暗黙的Setupメソッド呼び出しは1回しか行われない()
+        {
+            // setup
+            Loggi.DebugEnabled = true;
+            FixtureBook fixtureBook = new FixtureBook();
+            fixtureBook.GetObject<Data>();
+            GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される_Setup();
+
+            // when
+            Data data = fixtureBook.GetObject<Data>();
+            try
+            {
+                fixtureBook.ValidateStorage();
+                throw new Exception("ここにはこない");
+            }
+            catch (AssertFailedException e)
+            {
+                // then
+                Console.WriteLine(e);
+            }
+        }
+
+        [TestMethod]
+        [Fixture("GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される")]
+        public void FixtureBookインスタンス毎に暗黙的Setupメソッド呼び出しは行われる()
+        {
+            // setup
+            Loggi.DebugEnabled = true;
+            new FixtureBook().GetObject<Data>();
+            GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される_Setup();
+
+            // when
+            FixtureBook fixtureBook = new FixtureBook();
+            Data data = fixtureBook.GetObject<Data>();
+
+            // then
+            Assert.AreEqual("a", data.Text1);
+            fixtureBook.ValidateStorage();
+        }
+
+        [Fixture("GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される_Setup")]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void GetObjectの呼び出しにより暗黙的にSetupメソッドが呼び出される_Setup()
+        {
+            new FixtureBook().Setup();
         }
     }
 }

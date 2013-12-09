@@ -51,6 +51,14 @@ namespace XPFriend.Fixture.Staff
             this.dressingRoom = director.AssignActors(this);
         }
 
+        private Case(Case testCase)
+        {
+            this.sheet = testCase.sheet;
+            this.caseName = testCase.caseName;
+            this.dressingRoom = testCase.dressingRoom;
+            this.sections = testCase.sections;
+        }
+
         /// <summary>
         /// テストケース名。
         /// </summary>
@@ -400,6 +408,18 @@ namespace XPFriend.Fixture.Staff
                 return exceptionEditors[exceptionType];
             }
             return null;
+        }
+
+        internal Case Copy()
+        {
+            if (notYet && exceptionEditors.Count == 0)
+            {
+                return this;
+            }
+            else
+            {
+                return new Case(this);
+            }
         }
     }
 }

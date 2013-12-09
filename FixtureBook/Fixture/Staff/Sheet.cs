@@ -89,7 +89,7 @@ namespace XPFriend.Fixture.Staff
             {
                 throw new ConfigException("M_Fixture_Sheet_GetCase", caseName, this);
             }
-            return testCase;
+            return testCase.Copy();
         }
 
         private void Write(Sheet sheet)
