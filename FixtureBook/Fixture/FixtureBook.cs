@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -154,6 +155,17 @@ namespace XPFriend.Fixture
                 Path.GetFileNameWithoutExtension(testClassFileName) + ".xlsx");
         }
 
+        /// <summary>
+        /// データベース接続情報。
+        /// </summary>
+        public static List<ConnectionStringSettings> ConnectionStrings
+        {
+            get
+            {
+                return DatabaseConnectionManager.ConnectionStrings;
+            }
+        }
+
         private Type testClass;
         private Book book;
         private Sheet sheet;
@@ -170,6 +182,18 @@ namespace XPFriend.Fixture
             {
                 Initialize();
             }
+        }
+
+        /// <summary>
+        /// FixtureBook を作成する。
+        /// </summary>
+        /// <param name="testClass">テストクラス</param>
+        /// <param name="bookPath">ブックのファイルパス</param>
+        /// <param name="sheetName">シート名</param>
+        /// <param name="testCaseName">テストケース名</param>
+        public FixtureBook(Type testClass, string bookPath, string sheetName, string testCaseName)
+        {
+            Initialize(testClass, bookPath, sheetName, testCaseName);
         }
 
         private void Initialize() 
@@ -223,15 +247,20 @@ namespace XPFriend.Fixture
 
         private void Initialize(FixtureInfo fixtureInfo)
         {
-            testClass = fixtureInfo.TestClass;
-            book = Book.GetInstance(fixtureInfo.TestClass, fixtureInfo.FilePath);
-            sheet = book.GetSheet(fixtureInfo.SheetName);
-            testCase = sheet.GetCase(fixtureInfo.TestCaseName);
+            Initialize(fixtureInfo.TestClass, fixtureInfo.FilePath, fixtureInfo.SheetName, fixtureInfo.TestCaseName);
+        }
+
+        private void Initialize(Type testClass, string bookPath, string sheetName, string testCaseName)
+        {
+            this.testClass = testClass;
+            this.book = Book.GetInstance(testClass, bookPath);
+            this.sheet = book.GetSheet(sheetName);
+            this.testCase = sheet.GetCase(testCaseName);
             foreach (Type exceptionType in defaultExceptionEditors.Keys)
             {
-                testCase.RegisterExceptionEditor(exceptionType, defaultExceptionEditors[exceptionType]);
+                this.testCase.RegisterExceptionEditor(exceptionType, defaultExceptionEditors[exceptionType]);
             }
-            Loggi.Debug("FixtureBook : Case : " + testCase);
+            Loggi.Debug("FixtureBook : Case : " + this.testCase);
         }
 
         /// <summary>
@@ -869,6 +898,14 @@ namespace XPFriend.Fixture
             InitializeIfNotYet();
             testCase.RegisterExceptionEditor(typeof(TException), editor);
             return this;
+        }
+
+        /// <summary>
+        /// ブックのキャッシュをクリアする。
+        /// </summary>
+        public static void ClearCache()
+        {
+            Book.ClearCache();
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Fixture\Cast\Temp\Assertie.cs" />
     <Compile Include="Fixture\Cast\Temp\Database.cs" />
     <Compile Include="Fixture\Cast\Temp\DatabaseConnection.cs" />
+    <Compile Include="Fixture\Cast\Temp\DatabaseConnectionManager.cs" />
     <Compile Include="Fixture\Cast\Temp\DatabaseOperator.cs" />
     <Compile Include="Fixture\Cast\Temp\DatabaseUpdater.cs" />
     <Compile Include="Fixture\Cast\Temp\DatabaseValidator.cs" />
@@ -136,6 +137,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using XPFriend.Fixture;
 using XPFriend.Fixture.Cast.Temp;
+using XPFriend.Fixture.Staff;
+using XPFriend.FixtureTest.Staff;
 using XPFriend.Junk;
 
 namespace XPFriend.FixtureTest
@@ -696,6 +698,61 @@ namespace XPFriend.FixtureTest
             });
             // then
             fixtureBook.Validate<ApplicationException>(() => { throw new ApplicationException("app"); }, "Exception");
+        }
+
+        [TestMethod]
+        public void コンストラクタで明示的にテストケースを指定できること()
+        {
+            // when
+            FixtureBookTestData obj = new FixtureBook(typeof(FixtureBookTest), @"..\..\FixtureTest\FixtureBookTest.xlsx", "Sheet1", "アンダーバー区切りで参照できること").GetObject<FixtureBookTestData>();
+
+            // then
+            Assert.AreEqual("efg", obj.Text);
+        }
+
+        [TestMethod]
+        public void ClearCacheはBookインスタンスのキャッシュをクリアする()
+        {
+            // setup
+            var instance1 = Book.GetInstance(BookTest.BookFilePath);
+
+            // when
+            FixtureBook.ClearCache();
+            var instance2 = Book.GetInstance(BookTest.BookFilePath);
+
+            // then
+            Assert.AreNotSame(instance1, instance2);
+        }
+
+        [TestMethod]
+        public void ConnectionStringsプロパティでデータベース接続情報を取得できる()
+        {
+            // when
+            var strings = FixtureBook.ConnectionStrings;
+
+            // then
+            Assert.AreEqual(2, strings.Count);
+            Assert.AreEqual("SQLServer", strings[0].Name);
+            Assert.AreEqual("System.Data.SqlClient", strings[0].ProviderName);
+            Assert.AreEqual("Oracle", strings[1].Name);
+            Assert.AreEqual("Oracle.DataAccess.Client", strings[1].ProviderName);
+
+            // setup
+            var sqlServer = strings[0];
+            var oracle = strings[1];
+            try
+            {
+                // when
+                strings.Clear();
+                // then
+                Assert.AreEqual(0, FixtureBook.ConnectionStrings.Count);
+            }
+            finally
+            {
+                // cleanup
+                FixtureBook.ConnectionStrings.Add(sqlServer);
+                FixtureBook.ConnectionStrings.Add(oracle);
+            }
         }
     }
 

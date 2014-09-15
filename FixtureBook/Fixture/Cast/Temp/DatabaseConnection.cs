@@ -123,15 +123,15 @@ namespace XPFriend.Fixture.Cast.Temp
             ConnectionStringSettings settings;
             if (DatabaseConnection.Default.Equals(databaseName))
             {
-                if (ConfigurationManager.ConnectionStrings.Count == 0)
+                if (DatabaseConnectionManager.ConnectionStrings.Count == 0)
                 {
                     throw new ConfigException("M_Fixture_Temp_DatabaseConnection_NoConnectionSettings");
                 }
-                settings = ConfigurationManager.ConnectionStrings[0];
+                settings = DatabaseConnectionManager.ConnectionStrings[0];
             }
             else
             {
-                settings = ConfigurationManager.ConnectionStrings[databaseName];
+                settings = DatabaseConnectionManager.Find(databaseName);
                 if (settings == null)
                 {
                     throw new ConfigException("M_Fixture_Temp_DatabaseConnection_NoSuchName", databaseName);
